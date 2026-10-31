@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gpt-thin-border-wide-shadow",
+        "value": "*",
+        "files": [
+          "public/index.html"
+        ],
+        "createdAt": "2026-10-31T08:30:43.314Z",
+        "reason": "Agent review: the three native dialogs are mutually exclusive; openDialog closes the current panel before opening another. This is a single overlay with a defined edge and elevation, not a row of cards."
+      }
+    ]
+  }
+}
