@@ -1,0 +1,10 @@
+public/
+.DS_Store
+__pycache__/
+*.pyc
+.impeccable/config.local.json
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/cache/
+.impeccable/live/
+private/
