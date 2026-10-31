@@ -6,13 +6,16 @@ from __future__ import annotations
 import hashlib
 import html
 import json
+from datetime import datetime
 from pathlib import Path
 import re
 import shutil
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public"
 ORIGIN = "https://journal.fuyaoskyrocket.ing"
+BUILD_YEAR = datetime.now(ZoneInfo("Asia/Shanghai")).year
 ROUTE = [
     ("chaiwan", "柴湾"), ("beijiao", "北角"), ("tongluowan", "铜锣湾"),
     ("wanzai", "湾仔"), ("zhonghuan", "中环"), ("jinzhong", "金锺"),
@@ -86,10 +89,16 @@ def document(title: str, description: str, body: str, path: str, assets: dict, p
     </div>
   </header>
   {body}
-  <footer class="site-footer"><div class="wrap footer-inner">
-    <a class="footer-signature" href="/">Journal</a>
-    <nav class="footer-nav" aria-label="页尾导航"><a href="/about/">关于文字</a><a href="#top">回到页首</a></nav>
-  </div></footer>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/">Journal</a>
+      <nav class="footer-nav" aria-label="页尾导航"><a href="/about/">关于文字</a><a href="#top">回到页首</a></nav>
+    </div>
+    <div class="wrap footer-meta">
+      <p>© 2016 - {BUILD_YEAR} <a href="https://fuyaoskyrocket.ing/">扶摇skyrocketing</a></p>
+      <p><a href="https://status.fuyaoskyrocket.ing/">服务状态</a> · 部署于阿里云</p>
+    </div>
+  </footer>
 </body>
 </html>
 '''

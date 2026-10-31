@@ -128,6 +128,8 @@ button:disabled { cursor: default; }
 .footer-signature { font: 400 1.5rem Georgia, serif; color: var(--night); }
 .footer-nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
 .footer-nav a { display: inline-flex; min-height: 2.75rem; align-items: center; }
+.footer-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem; padding-bottom: 2rem; color: var(--muted); font-size: var(--type-meta); line-height: 1.8; }
+.footer-meta a { display: inline-block; padding-block: 0.35rem; }
 
 @media (max-width: 67rem) {
   .cover-grid { gap: 3rem; }
@@ -167,6 +169,7 @@ button:disabled { cursor: default; }
   .standalone { padding-block: 3rem; }
   .footer-inner { gap: 1rem; min-height: 6rem; }
   .footer-nav { gap: 1rem; }
+  .footer-meta { flex-direction: column; align-items: flex-start; gap: 0; padding-bottom: 1.5rem; }
 }
 
 @media (max-width: 24rem) {
