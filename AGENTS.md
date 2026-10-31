@@ -1,6 +1,7 @@
 # FuyaoJournal 工作约定
 
 - 本目录是 Journal 静态站的权威源码。地点正文在 `content/`，样式与渐进增强脚本在 `src/`，页面模板在 `scripts/build.py`；通过 `python3 scripts/build.py` 生成 `public/`，不直接改远端发布副本。
+- 项目采用 GNU Affero General Public License v3.0（SPDX：`AGPL-3.0-only`）；根目录 `LICENSE` 保留完整许可文本，中英文 README 同步维护许可说明。
 - 只将 `public/` 发布为网站。产品记录、设计说明、构建脚本、私有部署记录和任何凭据均不得进入公开目录。
 - Journal 普通访问应显示独立的城市随笔页面，不自动跳转或反代个人主站。页尾版权署名可以显式链接主页。所有代理请求仍经过既有 relay，只调整其普通网页后端。
 - 全站共用主页确认的页尾文案：“© 2016 - 当前年份 扶摇skyrocketing”及“服务状态 · 部署于阿里云”。年份按东八区构建时间更新；不复制主页仓库版本号，不擅自补写免责声明。

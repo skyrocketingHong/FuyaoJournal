@@ -1,6 +1,7 @@
 <p align="center"><a href="README.md">English</a> · <a href="README_ZH.md">简体中文</a></p>
 <h1 align="center">FuyaoJournal</h1>
 <p align="center">A static Chinese literary journal, following a sequence of places from Chai Wan back to Central.</p>
+<p align="center"><a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0--only-blue.svg" alt="License: AGPL-3.0-only"></a></p>
 
 The site contains 23 original generated essays about 22 places, in the specified order inspired by Luo Dayou’s *飞车*. Central appears twice, with a separate closing essay. These pieces are literary imaginings, not firsthand travel reporting or transport advice. No song lyrics or audio are distributed.
 
@@ -47,6 +48,10 @@ Publish only `public/` to the static website backend. Keep product documents, so
 Source checks cover the complete route, local links and anchors, text contrast calculations, and the public output boundary. HTTP checks and the existing protocol probe are run during deployment. Browser rendering, motion smoothness, and visual acceptance remain manual.
 
 Cross-document transitions follow the [MDN View Transitions guidance](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@view-transition) and are optional enhancements.
+
+## License
+
+This project is licensed under the GNU Affero General Public License v3.0 (SPDX: `AGPL-3.0-only`). See [LICENSE](LICENSE) for the full terms.
 
 This project was developed with assistance from generative AI.
 

@@ -1,6 +1,7 @@
 <p align="center"><a href="README.md">English</a> · <a href="README_ZH.md">简体中文</a></p>
 <h1 align="center">FuyaoJournal</h1>
 <p align="center">从柴湾写起，再回到中环的静态中文沿途随记。</p>
+<p align="center"><a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0--only-blue.svg" alt="许可证：AGPL-3.0-only"></a></p>
 
 站点按指定的《飞车》地名顺序收录 23 篇原创生成随笔，涉及 22 个不同地点。中环出现两次，末篇另文收尾。文章是文学想象，不是亲历游记或交通指南；站点不发布歌曲歌词与音频。
 
@@ -47,6 +48,10 @@ DESIGN.md            依据实现整理的设计系统
 源码检查覆盖完整路线、本地链接与锚点、文字对比度计算及公开产物边界。部署时执行 HTTP 检查和既有协议探针。浏览器渲染、动效流畅度及视觉验收仍需人工完成。
 
 跨页过渡参考 [MDN View Transitions 文档](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@view-transition)，作为可降级的增强功能。
+
+## 许可证
+
+本项目采用 GNU Affero General Public License v3.0 许可证（SPDX：`AGPL-3.0-only`），完整条款见 [LICENSE](LICENSE)。
 
 本项目在开发过程中使用生成式 AI 协助编码。
 
