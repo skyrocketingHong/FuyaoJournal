@@ -1,101 +1,245 @@
 [
   {
-    "slug": "shenzhen",
-    "city": "深圳",
-    "title": "下班后的一段路",
-    "dek": "写字楼的灯，在回程里变远。",
-    "paragraphs": [
-      "深圳的高楼很容易写进照片，走出楼以后的一段路却需要另记。工牌收进包里，手机换到另一只手，玻璃门在身后合上。路口的人群渐渐聚起来，刚才各自忙碌的楼层，此刻都落到同一条斑马线上。",
-      "地铁里，一只折好的伞靠着鞋边，屏幕的光映在车窗上。到站提示响起，有人抬头确认站名，有人把书签夹回书里。车门开了又关，空出来的位置很快有人站上去，包带从肩头往里挪了一点。",
-      "从地铁口出来，天色已经暗了。便利店的门打开，一阵凉风短暂地吹到人行道上。回程还有几百步，手里的饭盒温着，前面那栋楼的某一扇窗正亮起来。"
-    ]
+    "id": "shenzhen",
+    "name": {
+      "zh": "深圳",
+      "en": "Shenzhen"
+    },
+    "title": {
+      "zh": "下班后的一段路",
+      "en": "A Stretch of Road After Work"
+    },
+    "dek": {
+      "zh": "写字楼的灯，在回程里变远。",
+      "en": "Office lights recede along the journey home."
+    },
+    "paragraphs": {
+      "zh": [
+        "深圳的高楼很容易写进照片，走出楼以后的一段路却需要另记。工牌收进包里，手机换到另一只手，玻璃门在身后合上。路口的人群渐渐聚起来，刚才各自忙碌的楼层，此刻都落到同一条斑马线上。",
+        "地铁里，一只折好的伞靠着鞋边，屏幕的光映在车窗上。到站提示响起，有人抬头确认站名，有人把书签夹回书里。车门开了又关，空出来的位置很快有人站上去，包带从肩头往里挪了一点。",
+        "从地铁口出来，天色已经暗了。便利店的门打开，一阵凉风短暂地吹到人行道上。回程还有几百步，手里的饭盒温着，前面那栋楼的某一扇窗正亮起来。"
+      ],
+      "en": [
+        "Shenzhen's tall buildings readily enter a photograph. The stretch of road after leaving one needs a separate note. An employee badge goes into a bag, a phone changes hands, and the glass door closes behind. People gather at the junction. Floors where everyone had been busy apart now meet on the same pedestrian crossing.",
+        "On the metro, a folded umbrella rests beside a shoe, and the light of a screen reflects in the window. The station announcement sounds. Someone looks up to check the name; someone slips a bookmark into a book. Doors open and close. Another person soon occupies the space left empty, and a bag strap is shifted a little farther onto a shoulder.",
+        "Outside the metro entrance, the sky has darkened. A convenience-store door opens, sending a brief breath of cool air onto the pavement. A few hundred steps remain. The lunch box in someone's hands is still warm, and one window in the building ahead has just lit up."
+      ]
+    }
   },
   {
-    "slug": "guangzhou",
-    "city": "广州",
-    "title": "骑楼下的半步",
-    "dek": "沿着檐下，留意行人让出的空隙。",
-    "paragraphs": [
-      "广州的骑楼下，脚步常常需要让出半步。有人推着小车经过，有人停下来收伞，店门前的纸箱刚被搬走，留下一个浅色的方印。沿着柱子往前走，明暗隔一段换一次，雨和日光都在檐外。",
-      "茶楼里，蒸笼的盖子被揭开。热气先遮住食物，又很快散去。杯里的茶添到一半，手便停了；桌上的碟子向中间挪，给后来端上的那一份腾出位置。一桌人的谈话随着这些细小动作，时近时远地续着。",
-      "离开时，街面已经换了一批行人。骑楼的柱脚仍在那里，旧漆边缘有一道细细的裂纹。有人侧过身，给迎面而来的婴儿车让出路，然后接着往前走。"
-    ]
+    "id": "guangzhou",
+    "name": {
+      "zh": "广州",
+      "en": "Guangzhou"
+    },
+    "title": {
+      "zh": "骑楼下的半步",
+      "en": "Half a Step Under the Arcades"
+    },
+    "dek": {
+      "zh": "沿着檐下，留意行人让出的空隙。",
+      "en": "Beneath the eaves, notice the gaps people make for one another."
+    },
+    "paragraphs": {
+      "zh": [
+        "广州的骑楼下，脚步常常需要让出半步。有人推着小车经过，有人停下来收伞，店门前的纸箱刚被搬走，留下一个浅色的方印。沿着柱子往前走，明暗隔一段换一次，雨和日光都在檐外。",
+        "茶楼里，蒸笼的盖子被揭开。热气先遮住食物，又很快散去。杯里的茶添到一半，手便停了；桌上的碟子向中间挪，给后来端上的那一份腾出位置。一桌人的谈话随着这些细小动作，时近时远地续着。",
+        "离开时，街面已经换了一批行人。骑楼的柱脚仍在那里，旧漆边缘有一道细细的裂纹。有人侧过身，给迎面而来的婴儿车让出路，然后接着往前走。"
+      ],
+      "en": [
+        "Under Guangzhou's arcaded buildings, walking often means giving up half a step. Someone pushes a trolley past; someone stops to fold an umbrella. Boxes have just been moved from a shop doorway, leaving a pale square behind. Moving along the columns, light and shade alternate. Rain and sunshine both remain beyond the eaves.",
+        "In a teahouse, the lid of a bamboo steamer is lifted. Steam first hides the food, then quickly clears. Tea is poured halfway up a cup, and the hand stops. Plates move toward the centre of the table to make room for the next dish. Around these small gestures, the conversation continues, sometimes close, sometimes farther away.",
+        "On leaving, a different set of pedestrians occupies the street. The bases of the arcade columns are still there, with a fine crack along the edge of the old paint. Someone turns sideways to let an approaching pushchair through, then carries on walking."
+      ]
+    }
   },
   {
-    "slug": "xiamen",
-    "city": "厦门",
-    "title": "海风拐进巷口",
-    "dek": "晾衣绳比远处的帆先动。",
-    "paragraphs": [
-      "在厦门，有时还看不见海，先看见衣服在晾衣绳上鼓起来。袖口朝着同一个方向，衣架碰出几声轻响。海风拐进巷口，被墙面分成几股，一股经过窗台的花盆，一股贴着台阶往更深的地方走。",
-      "石阶的边缘经过许多次踩踏，转角比中间更圆一点。拎着东西的人侧过身，让出窄处；楼上的水滴下来，在墙脚留下一小块深色。坡路使脚步有了高低，也让一段很短的相遇，多出一次停顿和点头。",
-      "走到开阔处，海才完整地出现。船在远处显得很慢，岸边的衣服却还在不停地动。看久了，眼睛会从那条遥远的水线收回来，寻找风刚才经过的那扇窗。"
-    ]
+    "id": "xiamen",
+    "name": {
+      "zh": "厦门",
+      "en": "Xiamen"
+    },
+    "title": {
+      "zh": "海风拐进巷口",
+      "en": "The Sea Breeze Turns into the Lane"
+    },
+    "dek": {
+      "zh": "晾衣绳比远处的帆先动。",
+      "en": "A washing line moves before the distant sails do."
+    },
+    "paragraphs": {
+      "zh": [
+        "在厦门，有时还看不见海，先看见衣服在晾衣绳上鼓起来。袖口朝着同一个方向，衣架碰出几声轻响。海风拐进巷口，被墙面分成几股，一股经过窗台的花盆，一股贴着台阶往更深的地方走。",
+        "石阶的边缘经过许多次踩踏，转角比中间更圆一点。拎着东西的人侧过身，让出窄处；楼上的水滴下来，在墙脚留下一小块深色。坡路使脚步有了高低，也让一段很短的相遇，多出一次停顿和点头。",
+        "走到开阔处，海才完整地出现。船在远处显得很慢，岸边的衣服却还在不停地动。看久了，眼睛会从那条遥远的水线收回来，寻找风刚才经过的那扇窗。"
+      ],
+      "en": [
+        "In Xiamen, clothes sometimes billow on a washing line before the sea comes into view. Cuffs point in the same direction, and hangers knock together softly. The sea breeze turns into a lane, where walls divide it into several currents. One passes the flowerpots on a windowsill; another follows the steps farther inside.",
+        "Many footsteps have worn the edges of the stone steps, rounding the corners a little more than the middle. Someone carrying things turns sideways to make room at a narrow point. Water drips from upstairs, leaving a small dark patch at the foot of a wall. Sloping streets give footsteps different heights and lend a brief encounter an extra pause and nod.",
+        "Only on reaching an open space does the whole sea appear. Boats in the distance look slow, while the clothes beside the shore keep moving. After watching for a while, the eye returns from that distant waterline to search for the window the wind passed a moment ago."
+      ]
+    }
   },
   {
-    "slug": "taibei",
-    "city": "台北",
-    "title": "骑楼下的雨声",
-    "dek": "雨把街道分成干湿两边。",
-    "paragraphs": [
-      "雨落进台北的街道，骑楼下的人先收拢脚步。伞尖朝外斜着，水沿着伞骨滴下，在地砖边缘接成细线。临街的灯映在湿处，干燥的一侧放着纸箱，箱角被人经过时轻轻碰歪，又很快扶正。",
-      "隔着雨，看不清很远的招牌，近处的字反倒读得仔细。店门上的营业牌、雨衣背后的褶皱、公交车窗上的水痕，都比平时更容易进入视线。车来了，等候的人往外跨一步，伞面短暂地碰到一起。",
-      "小雨不会忽然宣布结束。先是屋檐滴水的间隔长了，再是路口有人合起伞，试着走几步。骑楼让出的那条干燥窄路，最后又还给了来往的脚步和一辆慢慢推过的自行车。"
-    ]
+    "id": "taipei",
+    "name": {
+      "zh": "台北",
+      "en": "Taipei"
+    },
+    "title": {
+      "zh": "骑楼下的雨声",
+      "en": "Rain Beneath the Arcades"
+    },
+    "dek": {
+      "zh": "雨把街道分成干湿两边。",
+      "en": "Rain divides the street into wet and dry sides."
+    },
+    "paragraphs": {
+      "zh": [
+        "雨落进台北的街道，骑楼下的人先收拢脚步。伞尖朝外斜着，水沿着伞骨滴下，在地砖边缘接成细线。临街的灯映在湿处，干燥的一侧放着纸箱，箱角被人经过时轻轻碰歪，又很快扶正。",
+        "隔着雨，看不清很远的招牌，近处的字反倒读得仔细。店门上的营业牌、雨衣背后的褶皱、公交车窗上的水痕，都比平时更容易进入视线。车来了，等候的人往外跨一步，伞面短暂地碰到一起。",
+        "小雨不会忽然宣布结束。先是屋檐滴水的间隔长了，再是路口有人合起伞，试着走几步。骑楼让出的那条干燥窄路，最后又还给了来往的脚步和一辆慢慢推过的自行车。"
+      ],
+      "en": [
+        "Rain falls into Taipei's streets, and people beneath the arcades draw their footsteps closer. Umbrella tips angle outward. Water runs down the ribs and joins into fine lines at the edges of the paving. Street-facing lights reflect in the wet patches. Boxes occupy the dry side; a passer-by nudges one corner out of place, and it is quickly straightened.",
+        "Through the rain, distant signs are hard to read, while nearby words receive more attention. A shop's open sign, folds in the back of a raincoat, water marks on a bus window: each enters the eye more easily than usual. When a bus arrives, those waiting step outward, and their umbrellas briefly touch.",
+        "Light rain does not announce an abrupt ending. First, the drops from the eaves fall farther apart. Then someone at the junction closes an umbrella and tries a few steps. The narrow dry path beneath the arcade is finally returned to passing feet and a bicycle being pushed slowly along."
+      ]
+    }
   },
   {
-    "slug": "fuzhou",
-    "city": "福州",
-    "title": "榕荫下的一把椅子",
-    "dek": "树冠替午后收住了亮光。",
-    "paragraphs": [
-      "榕树的枝条伸得远，影子却聚得很密。福州街边的一把竹椅放进树荫里，椅背上的细纹便不再晃眼。气根垂在高处，风穿过时只动很小的幅度；树下的人抬起茶杯，又把它放回原来那个位置。",
-      "潮湿让声音也有了近处和远处。巷口的车声隔着叶子，显得低一些；杯盖碰到杯沿，却很清楚。经过的人不必知道这棵树的年纪，只需在树荫里站一会儿，就能感觉到脚下和街面上不同的温度。",
-      "一小片阳光从枝叶的缝隙里移过，先照到椅脚，再照到地上的落叶。竹椅空下来以后，椅面仍微微向下弯着，像是把刚才坐在这里的那一点重量，多留了片刻。"
-    ]
+    "id": "fuzhou",
+    "name": {
+      "zh": "福州",
+      "en": "Fuzhou"
+    },
+    "title": {
+      "zh": "榕荫下的一把椅子",
+      "en": "A Chair in the Banyan Shade"
+    },
+    "dek": {
+      "zh": "树冠替午后收住了亮光。",
+      "en": "The canopy gathers in the afternoon light."
+    },
+    "paragraphs": {
+      "zh": [
+        "榕树的枝条伸得远，影子却聚得很密。福州街边的一把竹椅放进树荫里，椅背上的细纹便不再晃眼。气根垂在高处，风穿过时只动很小的幅度；树下的人抬起茶杯，又把它放回原来那个位置。",
+        "潮湿让声音也有了近处和远处。巷口的车声隔着叶子，显得低一些；杯盖碰到杯沿，却很清楚。经过的人不必知道这棵树的年纪，只需在树荫里站一会儿，就能感觉到脚下和街面上不同的温度。",
+        "一小片阳光从枝叶的缝隙里移过，先照到椅脚，再照到地上的落叶。竹椅空下来以后，椅面仍微微向下弯着，像是把刚才坐在这里的那一点重量，多留了片刻。"
+      ],
+      "en": [
+        "Banyan branches reach far, while their shadows gather densely. Once a bamboo chair beside a Fuzhou street is moved into the shade, the fine grain on its back no longer catches the glare. Aerial roots hang above and barely stir as the wind passes. Beneath the tree, someone lifts a teacup and returns it to exactly the same place.",
+        "Humidity seems to give sound its own near and far. Traffic at the mouth of the lane is quieter through the leaves, while a cup lid touching the rim is clear. A passer-by need not know the tree's age. A short pause in its shade is enough to feel the difference in temperature between the ground here and the street beyond.",
+        "A small patch of sunlight moves through a gap in the branches, reaching first the chair leg and then the fallen leaves. After the chair is empty, its seat still curves slightly downward, as though holding on a moment longer to the small weight that rested there."
+      ]
+    }
   },
   {
-    "slug": "nanjing",
-    "city": "南京",
-    "title": "树影移过旧砖",
-    "dek": "把一段路走到光线改变。",
-    "paragraphs": [
-      "南京的梧桐叶宽大，落在路面上的影子却很碎。风一来，细小的亮处便从鞋尖滑到车轮边。行道树把街道的上半部连在一起，底下照旧有公交车进站，有人拎着刚买的菜，等最后几秒红灯。",
-      "旧砖会把午后的热留得久一点。手靠近墙面，先感觉到温度，再看清砖缝里颜色较深的灰。那些小小的缺口并不急着解释年代，倒是墙边一辆自行车，让眼前的尺寸变得容易理解。车把恰好碰到一片树影。",
-      "等太阳移开，墙面渐渐失去明暗的层次，叶子的轮廓还在晃动。路过这里的人各有各的去处；同一段树荫，足够容下买菜、赶路，以及毫无目的地多走一会儿。"
-    ]
+    "id": "nanjing",
+    "name": {
+      "zh": "南京",
+      "en": "Nanjing"
+    },
+    "title": {
+      "zh": "树影移过旧砖",
+      "en": "Tree Shadows Cross Old Brick"
+    },
+    "dek": {
+      "zh": "把一段路走到光线改变。",
+      "en": "Walk a stretch of road until the light changes."
+    },
+    "paragraphs": {
+      "zh": [
+        "南京的梧桐叶宽大，落在路面上的影子却很碎。风一来，细小的亮处便从鞋尖滑到车轮边。行道树把街道的上半部连在一起，底下照旧有公交车进站，有人拎着刚买的菜，等最后几秒红灯。",
+        "旧砖会把午后的热留得久一点。手靠近墙面，先感觉到温度，再看清砖缝里颜色较深的灰。那些小小的缺口并不急着解释年代，倒是墙边一辆自行车，让眼前的尺寸变得容易理解。车把恰好碰到一片树影。",
+        "等太阳移开，墙面渐渐失去明暗的层次，叶子的轮廓还在晃动。路过这里的人各有各的去处；同一段树荫，足够容下买菜、赶路，以及毫无目的地多走一会儿。"
+      ],
+      "en": [
+        "Nanjing's plane-tree leaves are broad, but their shadows break into small pieces on the road. When the wind comes, little patches of light slip from the toes of shoes toward the wheels of passing vehicles. The street trees join the upper half of the street together. Below, buses still pull into stops, and someone carrying freshly bought vegetables waits out the last seconds of a red light.",
+        "Old brick holds the afternoon's heat a little longer. Bring a hand near the wall and the warmth is felt before the darker mortar in the joints becomes clear. Small chips in the surface are in no hurry to explain their age. A bicycle leaning against the wall makes the scale in front of us easier to understand. Its handlebar just touches a patch of tree shadow.",
+        "As the sun moves away, the contrasts on the wall gradually soften, though the outlines of leaves keep swaying. Those who pass each have somewhere to go. The same stretch of shade has room for shopping, hurrying, and walking a little farther without any destination at all."
+      ]
+    }
   },
   {
-    "slug": "shanghai",
-    "city": "上海",
-    "title": "渡轮离岸以后",
-    "dek": "江面把两种速度放在一起。",
-    "paragraphs": [
-      "从岸上看，黄浦江像城市中间留出的一道空白。到了船上，水才显出重量：一道浪抬起另一道浪，船尾留下的白沫慢慢展开。玻璃幕墙里的楼影被拆成细条，随着水面起伏，始终拼不成岸上的样子。",
-      "渡轮靠岸时，行人先把目光移向出口。车轮轻碰甲板，手机收进口袋，有人将衣领往上拢一点。刚才还可以眺望的城市，此刻又成了需要赶到的某一扇门、某一张桌子。江上的几分钟有了清楚的边界。",
-      "船重新离岸，栏杆上握过的地方还带着一点温度。对岸的窗一扇扇亮起来，水里却没有整齐的灯。那些长短不一的光，跟着下一道浪，又换了一次位置。"
-    ]
+    "id": "shanghai",
+    "name": {
+      "zh": "上海",
+      "en": "Shanghai"
+    },
+    "title": {
+      "zh": "渡轮离岸以后",
+      "en": "After the Ferry Leaves the Shore"
+    },
+    "dek": {
+      "zh": "江面把两种速度放在一起。",
+      "en": "The river holds two different speeds together."
+    },
+    "paragraphs": {
+      "zh": [
+        "从岸上看，黄浦江像城市中间留出的一道空白。到了船上，水才显出重量：一道浪抬起另一道浪，船尾留下的白沫慢慢展开。玻璃幕墙里的楼影被拆成细条，随着水面起伏，始终拼不成岸上的样子。",
+        "渡轮靠岸时，行人先把目光移向出口。车轮轻碰甲板，手机收进口袋，有人将衣领往上拢一点。刚才还可以眺望的城市，此刻又成了需要赶到的某一扇门、某一张桌子。江上的几分钟有了清楚的边界。",
+        "船重新离岸，栏杆上握过的地方还带着一点温度。对岸的窗一扇扇亮起来，水里却没有整齐的灯。那些长短不一的光，跟着下一道浪，又换了一次位置。"
+      ],
+      "en": [
+        "From the shore, the Huangpu River looks like a space left blank in the middle of the city. Aboard a boat, the water reveals its weight: one wave lifts another, and the white foam behind the stern slowly opens out. Reflected towers of glass are broken into narrow strips. Rising and falling with the water, they never quite reassemble into the shapes onshore.",
+        "As the ferry approaches its landing, passengers turn their eyes toward the exit. Wheels lightly touch the deck. Phones go into pockets, and someone pulls a collar a little higher. The city that could be gazed at a moment ago becomes a particular door or desk that must be reached. Those few minutes on the river acquire a clear boundary.",
+        "The boat pulls away again. The places where hands held the railing retain a little warmth. Windows on the opposite shore light up one after another, but there are no orderly lights in the water. Long and short reflections follow the next wave and change position once again."
+      ]
+    }
   },
   {
-    "slug": "beijing",
-    "city": "北京",
-    "title": "门环响过以后",
-    "dek": "胡同把一天折成窄窄的一页。",
-    "paragraphs": [
-      "胡同里的声音有远近。自行车铃先从转角传来，车轮才绕过墙根；院门合上，门环又轻轻碰了一下。灰砖吸住午后的光，树叶的影子却不停，在墙上换着位置。晾衣绳横过一小块天空，衬衫的袖口偶尔抬起来。",
-      "门槛旁放着矮凳，凳面磨得发亮。有人把买回来的菜搁在脚边，腾出手找钥匙，塑料袋里的葱叶碰到门框。这样一桩小事，很难写进一座城市的介绍，却能让一条巷子从地图上的细线变得有宽度。",
-      "到了傍晚，街口的灯先亮，院子深处还留着一点天色。风顺着墙走，把一张旧纸推到门下。门再次打开，纸被捡起，晚饭的气味也跟着出来，停在那两声门环之间。"
-    ]
+    "id": "beijing",
+    "name": {
+      "zh": "北京",
+      "en": "Beijing"
+    },
+    "title": {
+      "zh": "门环响过以后",
+      "en": "After the Door Knocker Sounds"
+    },
+    "dek": {
+      "zh": "胡同把一天折成窄窄的一页。",
+      "en": "An alley folds the day into a narrow page."
+    },
+    "paragraphs": {
+      "zh": [
+        "胡同里的声音有远近。自行车铃先从转角传来，车轮才绕过墙根；院门合上，门环又轻轻碰了一下。灰砖吸住午后的光，树叶的影子却不停，在墙上换着位置。晾衣绳横过一小块天空，衬衫的袖口偶尔抬起来。",
+        "门槛旁放着矮凳，凳面磨得发亮。有人把买回来的菜搁在脚边，腾出手找钥匙，塑料袋里的葱叶碰到门框。这样一桩小事，很难写进一座城市的介绍，却能让一条巷子从地图上的细线变得有宽度。",
+        "到了傍晚，街口的灯先亮，院子深处还留着一点天色。风顺着墙走，把一张旧纸推到门下。门再次打开，纸被捡起，晚饭的气味也跟着出来，停在那两声门环之间。"
+      ],
+      "en": [
+        "Sounds in an alley come from near and far. A bicycle bell reaches the corner before its wheels round the wall. A courtyard gate closes, and the door knocker taps once more. Grey bricks absorb the afternoon light, while leaf shadows keep changing position across the wall. A washing line crosses a small patch of sky, and a shirt cuff lifts now and then.",
+        "A low stool stands beside the threshold, its seat worn shiny. Someone sets groceries by their feet to free a hand for the keys. Spring-onion leaves in the plastic bag brush the doorframe. Such a small event rarely makes its way into an introduction to a city, yet it can give width to a lane that is only a thin line on a map.",
+        "Toward evening, the light at the mouth of the alley comes on first, while a little daylight remains deep inside the courtyard. Wind follows the wall and pushes an old sheet of paper under the gate. The gate opens again, the paper is picked up, and the smell of dinner comes out with it, lingering between those two sounds of the knocker."
+      ]
+    }
   },
   {
-    "slug": "zhonghuan-return",
-    "city": "中环",
-    "title": "再到中环",
-    "dek": "翻过几页，街道又回到眼前。",
-    "paragraphs": [
-      "翻到最后一页，中环又出现了。街名没有改变，前面的文字却让目光有了别的落点：玻璃上移动的云、檐下让出的半步、雨停后还没有干透的伞。几座城市留下的细节并排放着，各自带着原来那一页的光。",
-      "电车驶过街口，过路的人在灯前停下。有人把手里的袋子换到另一边，低头看了一眼鞋尖；楼上的窗映着天色，行人转过街角，影子便从玻璃里消失。先前匆匆读过的动作，此刻可以多看一会儿。",
-      "把纸页合上以前，留下一小段空白。下一次重读，也许会在同一个词旁边添一道短线。中环仍在前面，也在这里；两页之间的距离，刚好放下那些已经写过、还没有看完的街景。"
-    ]
+    "id": "central-return",
+    "name": {
+      "zh": "中环",
+      "en": "Central"
+    },
+    "title": {
+      "zh": "再到中环",
+      "en": "Back in Central"
+    },
+    "dek": {
+      "zh": "翻过几页，街道又回到眼前。",
+      "en": "A few pages later, the street returns to view."
+    },
+    "paragraphs": {
+      "zh": [
+        "翻到最后一页，中环又出现了。街名没有改变，前面的文字却让目光有了别的落点：玻璃上移动的云、檐下让出的半步、雨停后还没有干透的伞。几座城市留下的细节并排放着，各自带着原来那一页的光。",
+        "电车驶过街口，过路的人在灯前停下。有人把手里的袋子换到另一边，低头看了一眼鞋尖；楼上的窗映着天色，行人转过街角，影子便从玻璃里消失。先前匆匆读过的动作，此刻可以多看一会儿。",
+        "把纸页合上以前，留下一小段空白。下一次重读，也许会在同一个词旁边添一道短线。中环仍在前面，也在这里；两页之间的距离，刚好放下那些已经写过、还没有看完的街景。"
+      ],
+      "en": [
+        "Turn to the last page, and Central appears again. The street names have not changed, but the preceding words have given the eye other places to settle: clouds moving across glass, half a step yielded beneath an eave, umbrellas not yet dry after the rain. Details left by several cities sit side by side, each carrying the light of its own page.",
+        "A tram passes the junction, and pedestrians stop at the lights. Someone shifts a bag to the other hand and glances down at a shoe. Upstairs windows reflect the sky. A person turns the corner, and their shadow disappears from the glass. Gestures that were read in a hurry before can now be watched a little longer.",
+        "Before closing the pages, leave a small space blank. On the next reading, perhaps a short line will be added beside the same word. Central is still there earlier in the journal, and here as well. The distance between the two pages has just enough room for the streets already written about, but not yet fully seen."
+      ]
+    }
   }
 ]

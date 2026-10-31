@@ -1,55 +1,72 @@
 <p align="center"><a href="README.md">English</a> · <a href="README_ZH.md">简体中文</a></p>
 <h1 align="center">FuyaoJournal</h1>
-<p align="center">从柴湾写起，再回到中环的静态中文沿途随记。</p>
+<p align="center">向右出发，停下来读一页。固定一屏的双语夜行小游戏。</p>
 <p align="center"><a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0--only-blue.svg" alt="许可证：AGPL-3.0-only"></a></p>
 
-站点按指定的《飞车》地名顺序收录 23 篇原创生成随笔，涉及 22 个不同地点。中环出现两次，末篇另文收尾。文章是文学想象，不是亲历游记或交通指南；站点不发布歌曲歌词与音频。
+Journal 将横向驾驶场景与 23 篇地点随笔放在同一屏幕中，涉及 22 个不同地点。最后一篇中环另文收尾。文章为生成的文学想象，不是亲历游记或交通指南。
 
 ## 已实现功能
 
-- 首页连续阅读全部篇章，各篇也有独立地址。
-- 沿途目录、地点字幕和车辆行进标记共同显示当前阅读位置。
-- 支持前后篇链接、键盘导航及可展开的手机目录。
-- 关闭 JavaScript 仍可阅读全文和使用链接；动效遵循系统的减少动态效果偏好。
-- 支持的浏览器可使用同源跨页过渡，其他浏览器正常跳转。
-- 全部资源同源，使用系统字体，不包含统计脚本或第三方请求。
+- 固定视口，网页不滚动；阅读和地点选择均通过分页完成。
+- 车辆从左向右前进，到下一站自动停靠，可暂停、继续及按住加速。
+- 支持键盘和触屏；页面失焦或进入后台时暂停动画。
+- 默认简体中文，提供完整英文界面及全部 23 篇随笔译文；语言切换保留地点与阅读段落。
+- 地点标识使用通行英文名称，如 North Point、Causeway Bay、Admiralty、Central 和 Taipei。
+- 原创分层夜景与透明车辆素材；减少动态效果时保留进度，减少空间运动。
+- 素材与字体同源，不含统计脚本、音频或远程运行依赖。
+- 关于面板提供完整双语文本下载与 AGPL 对应源码包。
 
 ## 构建与预览
 
-需要 Python 3.10 或更新版本，无需安装 Python 包或 JavaScript 依赖。
+使用 Python 3.10 或更新版本构建，无需额外 Python 包；Node.js 18 或更新版本可运行逻辑测试。
 
 ```sh
 python3 scripts/build.py
+node --test tests/*.test.mjs
 python3 -m http.server 8000 --directory public
 ```
 
-构建会在 `public/` 生成 26 个 HTML 页面以及带内容哈希的 CSS、JavaScript。打开 `http://localhost:8000` 可预览，按 `Ctrl+C` 结束预览服务。生成目录可删除后重新构建；缺少地点、slug 重复或正文段落不完整时，构建会报错。
+构建会在 `public/` 生成应用、错误页、带哈希的资源、完整双语文本及 `source.zip`。打开 `http://localhost:8000` 预览，按 `Ctrl+C` 停止服务。生成目录可以删除后重建。缺少翻译、段落不完整或地点标识不匹配时，构建会报错。
 
-JavaScript 语法检查使用 `node --check src/site.js`，成功时没有错误输出。语法检查不能替代浏览器运行验证。
+## 操作方式
+
+| 操作 | 控件 |
+| --- | --- |
+| 前往下一站 | 前进按钮或右方向键 |
+| 暂停或继续 | 前进按钮或空格键 |
+| 行驶中加速 | 按住加速按钮或 Shift |
+| 返回上一站 | 停靠时使用上一站按钮或左方向键 |
+| 阅读或选择地点 | 随笔与地点按钮 |
+| 阅读翻页 | 翻页按钮，或阅读面板内的左右方向键 |
+| 关闭面板 | 关闭按钮或 Escape |
+
+驾驶与交互分页需要 JavaScript。关闭脚本时，仍可下载完整的中英双语随笔文本。
 
 ## 项目结构
 
 ```text
-content/             三组原创地点随笔
-src/site.css         字体、配色、布局与渐进式过渡
-src/site.js          阅读定位和导航增强
-scripts/build.py     路线定义、HTML 模板与静态构建
-public/              生成的部署产物，不纳入 Git
-PRODUCT.md           已确认范围与内容约束
-DESIGN.md            依据实现整理的设计系统
+content/                 双语地名、标题与完整正文
+assets/                  原创美术、本地字体及许可证
+src/app.mjs              界面、语言、面板与位置保存
+src/drive-engine.mjs     驾驶状态模型与 Canvas 渲染
+src/pagination.mjs      文本分页与阅读位置映射
+src/i18n.mjs             界面翻译
+src/site.css             固定视口布局与视觉系统
+scripts/build.py        有序路线、HTML、资源与源码包构建
+public/                  生成的部署文件，不纳入 Git
 ```
 
-`scripts/build.py` 中的 `ROUTE` 定义精确顺序。地点名允许重复，文章 slug 必须唯一；末尾中环使用 `zhonghuan-return`。
+`ROUTE` 定义地点顺序。ID 使用通行英文地名，末尾中环采用 `central-return`。香港地名参考[港铁官方英文站名](https://www.mtr.com.hk/en/customer/services/system_map.html)。
 
-## 部署与验证
+## 验证与部署
 
-只将 `public/` 发布到静态网页后端。产品说明、原始内容、凭据和运维记录不进入网站根目录。既有 relay 继续作为公开入口，本项目仅提供普通访问时的网页内容。
+逻辑测试覆盖前进、暂停、加速、路线边界、后台暂停、回退调度、文本完整性和双语阅读位置映射；源码检查覆盖 DOM 标识、翻译键、产物链接与源码包允许列表。上述检查不能证明视觉质量或设备帧率，浏览器与视觉验收仍由人工完成。
 
-源码检查覆盖完整路线、本地链接与锚点、文字对比度计算及公开产物边界。部署时执行 HTTP 检查和既有协议探针。浏览器渲染、动效流畅度及视觉验收仍需人工完成。
+仅发布 `public/`。源码包包含重建所需的代码、内容、美术和许可证，不包含私有部署记录、凭据、项目工作约定或设计过程文件。部署时保留上一版本以便回滚。
 
-跨页过渡参考 [MDN View Transitions 文档](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@view-transition)，作为可降级的增强功能。
+## 素材与许可证
 
-## 许可证
+夜景与车辆为生成的原创游戏素材。Barlow Condensed 按 SIL Open Font License 在本地提供，许可文本见 `assets/fonts/OFL.txt`；其他文字采用系统字体。
 
 本项目采用 GNU Affero General Public License v3.0 许可证（SPDX：`AGPL-3.0-only`），完整条款见 [LICENSE](LICENSE)。
 

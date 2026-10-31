@@ -1,68 +1,164 @@
 [
   {
-    "slug": "chaiwan",
-    "city": "柴湾",
-    "title": "货梯门合上之前",
-    "dek": "纸箱与楼层，叠起另一种街景。",
-    "paragraphs": [
-      "柴湾的工业楼宇把许多事情叠在同一个地址里。路边卸下一车纸箱，推车轮子越过门槛，声音随即转进楼内。货梯门还开着，搬运的人侧身让出一点位置，用鞋尖抵住车轮，再把最上面的箱子扶正。",
-      "楼层按钮依次亮起，磨旧的金属门映不清面孔，只留下衣服的颜色。纸箱上贴着不同的标签，胶带起翘的地方被重新按平。门一开，里面还有走廊、工作台和另一扇门，一项工作要经过这些转折，才抵达下一双手。",
-      "出了大厦，住宅的窗格把视线往高处带。公交车靠站，人提着买好的菜往前走，推车则沿墙边返回。它比来时轻，轮子响得更脆；一截透明胶带挂在车沿上，迎着光闪了一下。"
-    ]
+    "id": "chai-wan",
+    "name": {
+      "zh": "柴湾",
+      "en": "Chai Wan"
+    },
+    "title": {
+      "zh": "货梯门合上之前",
+      "en": "Before the Goods Lift Closes"
+    },
+    "dek": {
+      "zh": "纸箱与楼层，叠起另一种街景。",
+      "en": "Boxes and floors stack up another kind of streetscape."
+    },
+    "paragraphs": {
+      "zh": [
+        "柴湾的工业楼宇把许多事情叠在同一个地址里。路边卸下一车纸箱，推车轮子越过门槛，声音随即转进楼内。货梯门还开着，搬运的人侧身让出一点位置，用鞋尖抵住车轮，再把最上面的箱子扶正。",
+        "楼层按钮依次亮起，磨旧的金属门映不清面孔，只留下衣服的颜色。纸箱上贴着不同的标签，胶带起翘的地方被重新按平。门一开，里面还有走廊、工作台和另一扇门，一项工作要经过这些转折，才抵达下一双手。",
+        "出了大厦，住宅的窗格把视线往高处带。公交车靠站，人提着买好的菜往前走，推车则沿墙边返回。它比来时轻，轮子响得更脆；一截透明胶带挂在车沿上，迎着光闪了一下。"
+      ],
+      "en": [
+        "Chai Wan's industrial buildings stack many kinds of work at a single address. A load of cardboard boxes comes off a vehicle at the kerb. Trolley wheels cross the threshold, and their sound turns into the building. The goods lift is still open. A worker shifts sideways to make room, holds a wheel with the toe of a shoe, and straightens the box at the top.",
+        "The floor buttons light up one after another. Worn metal doors no longer reflect faces clearly, only the colours of clothes. Different labels cover the boxes, and loose edges of tape are pressed flat again. When the doors open, there is still a corridor, a workbench, and another door. A piece of work passes through all these turns before reaching the next pair of hands.",
+        "Outside, the rows of residential windows draw the eye upward. A bus pulls into its stop. People carrying groceries walk on, while the trolley returns along the wall. It is lighter now, and its wheels sound sharper. A strip of clear tape hangs from its edge and catches the light for a moment."
+      ]
+    }
   },
   {
-    "slug": "beijiao",
-    "city": "北角",
-    "title": "电车铃落在菜篮旁",
-    "dek": "轨道与摊档，各自接着下一段日常。",
-    "paragraphs": [
-      "北角的电车铃声有自己的穿行方式。车身还在视线外，声音先越过店招和人群；等它驶近，上层车窗里的人影才逐格出现。街边提着菜的人换了只手，袋中的叶子晃一晃，仍露在袋口之外。",
-      "摊档把日常的重量摆得很清楚。果子按颜色堆放，菜叶留着湿润的光，秤上的数字跳过几次才停下。找零时，顾客用手指撑开袋口，店主补进最后一件东西。几句短话说完，身后的人便往前挪出半步。",
-      "车轮经过轨道接缝，节奏从脚边推向街的另一端。有人抬头看车，有人继续挑选晚饭要用的菜。篮子靠上手臂，摊前空出一小块地方，下一只手已经伸向那堆还带着水珠的青绿。"
-    ]
+    "id": "north-point",
+    "name": {
+      "zh": "北角",
+      "en": "North Point"
+    },
+    "title": {
+      "zh": "电车铃落在菜篮旁",
+      "en": "A Tram Bell Beside the Shopping Basket"
+    },
+    "dek": {
+      "zh": "轨道与摊档，各自接着下一段日常。",
+      "en": "Tracks and market stalls carry on with the next part of the day."
+    },
+    "paragraphs": {
+      "zh": [
+        "北角的电车铃声有自己的穿行方式。车身还在视线外，声音先越过店招和人群；等它驶近，上层车窗里的人影才逐格出现。街边提着菜的人换了只手，袋中的叶子晃一晃，仍露在袋口之外。",
+        "摊档把日常的重量摆得很清楚。果子按颜色堆放，菜叶留着湿润的光，秤上的数字跳过几次才停下。找零时，顾客用手指撑开袋口，店主补进最后一件东西。几句短话说完，身后的人便往前挪出半步。",
+        "车轮经过轨道接缝，节奏从脚边推向街的另一端。有人抬头看车，有人继续挑选晚饭要用的菜。篮子靠上手臂，摊前空出一小块地方，下一只手已经伸向那堆还带着水珠的青绿。"
+      ],
+      "en": [
+        "The tram bell in North Point has its own way through the street. Before the tram comes into view, its sound travels past shop signs and the crowd. As it draws closer, figures appear one by one in the upstairs windows. Someone carrying vegetables changes hands. Leaves sway in the bag, still sticking out above its opening.",
+        "The stalls make the weight of daily life quite plain. Fruit is piled by colour, vegetable leaves hold a damp shine, and the numbers on the scales jump a few times before settling. While change is counted, a customer holds the bag open with two fingers and the stallholder adds the last item. A few brief words are exchanged, and the person behind moves half a step forward.",
+        "Wheels pass over a joint in the rails, sending their rhythm from underfoot toward the far end of the street. Some people look up at the tram; others keep choosing vegetables for dinner. A basket settles against an arm, a little space opens at the stall, and the next hand is already reaching for the greens still beaded with water."
+      ]
+    }
   },
   {
-    "slug": "tongluowan",
-    "city": "铜锣湾",
-    "title": "橱窗照着反方向",
-    "dek": "人往前走，倒影在玻璃里交错。",
-    "paragraphs": [
-      "铜锣湾的橱窗同时装着店内和街上。模特站得很稳，行人的倒影却从它肩上穿过去；屏幕换了画面，玻璃里的衣服也跟着变色。路口亮起红灯，刚刚散开的脚步重新聚在一起，购物袋碰着购物袋。",
-      "等候的几十秒里，每个人都有一桩小事。有人把手机举近，核对集合的地点；有人把滑到指根的纸袋换到手腕上，另一只手整理耳边的头发。绿灯亮时，这些动作还没做完，人群已经接着往前走了。",
-      "穿过路口，商场入口的冷气迎面过来，街上的声音被门框切掉一半。收据在口袋里折出新的角，电梯前又排起一列人。楼层数字向上跳，橱窗里那道倒影，早已被后来的人接替。"
-    ]
+    "id": "causeway-bay",
+    "name": {
+      "zh": "铜锣湾",
+      "en": "Causeway Bay"
+    },
+    "title": {
+      "zh": "橱窗照着反方向",
+      "en": "The Shop Window Looks the Other Way"
+    },
+    "dek": {
+      "zh": "人往前走，倒影在玻璃里交错。",
+      "en": "People walk forward as their reflections cross in the glass."
+    },
+    "paragraphs": {
+      "zh": [
+        "铜锣湾的橱窗同时装着店内和街上。模特站得很稳，行人的倒影却从它肩上穿过去；屏幕换了画面，玻璃里的衣服也跟着变色。路口亮起红灯，刚刚散开的脚步重新聚在一起，购物袋碰着购物袋。",
+        "等候的几十秒里，每个人都有一桩小事。有人把手机举近，核对集合的地点；有人把滑到指根的纸袋换到手腕上，另一只手整理耳边的头发。绿灯亮时，这些动作还没做完，人群已经接着往前走了。",
+        "穿过路口，商场入口的冷气迎面过来，街上的声音被门框切掉一半。收据在口袋里折出新的角，电梯前又排起一列人。楼层数字向上跳，橱窗里那道倒影，早已被后来的人接替。"
+      ],
+      "en": [
+        "A shop window in Causeway Bay holds the shop and the street at once. The mannequin stands perfectly still, while reflections of pedestrians pass across its shoulders. A screen changes pictures, and the clothes in the glass change colour with it. The traffic light turns red. Footsteps that had spread apart gather again, shopping bags brushing against shopping bags.",
+        "During those few dozen seconds of waiting, everyone has a small task. Someone brings a phone closer to check a meeting place. Someone else shifts a paper bag from the base of the fingers to the wrist, using the free hand to tuck back a strand of hair. When the light turns green, these gestures are still unfinished, but the crowd is already moving on.",
+        "Across the junction, cool air meets the pedestrians at a shopping-centre entrance. The doorframe cuts the street's noise in half. A receipt acquires a new fold inside a pocket, and another queue forms by the lifts. The floor numbers climb. That reflection in the shop window has long since been replaced by someone else."
+      ]
+    }
   },
   {
-    "slug": "wanzai",
-    "city": "湾仔",
-    "title": "两块招牌之间",
-    "dek": "抬头是楼，转身还有一段楼梯。",
-    "paragraphs": [
-      "湾仔的街景要抬头看，也要侧过身看。高楼的玻璃收进一整片天色，旧楼门口却只容下一段窄窄的楼梯。两块招牌之间，墙上的漆露出较浅的一层，电线沿墙拐弯，到了看不见的地方，仍继续向上。",
-      "楼梯旁的信箱有不同的开口，有的贴着新纸，有的字迹已经淡了。送信的人分好一叠信封，推入其中一格；门外有人提着午饭经过，纸杯的盖子扣得很紧。再抬头，玻璃幕墙上的云已经挪过几扇窗。",
-      "一条街可以同时容纳许多尺度。整栋楼的轮廓、一块招牌的长度、一封信露出的边角，都各占着位置。门里的脚步逐层响起，信箱盖轻轻合拢，街上接着传来推车经过地砖的声音。"
-    ]
+    "id": "wan-chai",
+    "name": {
+      "zh": "湾仔",
+      "en": "Wan Chai"
+    },
+    "title": {
+      "zh": "两块招牌之间",
+      "en": "Between Two Shop Signs"
+    },
+    "dek": {
+      "zh": "抬头是楼，转身还有一段楼梯。",
+      "en": "Look up at the buildings; turn aside to find another staircase."
+    },
+    "paragraphs": {
+      "zh": [
+        "湾仔的街景要抬头看，也要侧过身看。高楼的玻璃收进一整片天色，旧楼门口却只容下一段窄窄的楼梯。两块招牌之间，墙上的漆露出较浅的一层，电线沿墙拐弯，到了看不见的地方，仍继续向上。",
+        "楼梯旁的信箱有不同的开口，有的贴着新纸，有的字迹已经淡了。送信的人分好一叠信封，推入其中一格；门外有人提着午饭经过，纸杯的盖子扣得很紧。再抬头，玻璃幕墙上的云已经挪过几扇窗。",
+        "一条街可以同时容纳许多尺度。整栋楼的轮廓、一块招牌的长度、一封信露出的边角，都各占着位置。门里的脚步逐层响起，信箱盖轻轻合拢，街上接着传来推车经过地砖的声音。"
+      ],
+      "en": [
+        "Wan Chai's streets ask to be seen by looking up and by turning sideways. The glass of a tall building takes in a whole stretch of sky, while the entrance to an older building has room for only a narrow staircase. Between two shop signs, a paler coat shows through the paint. Wires turn along the wall and continue upward beyond sight.",
+        "The letterboxes beside the stairs have different openings. Some carry fresh labels; on others, the writing has faded. A postal worker sorts a stack of envelopes and pushes one into a slot. Outside, someone passes carrying lunch, the lid pressed firmly onto a paper cup. Looking up again, the clouds in the glass facade have moved past several windows.",
+        "A single street can hold many scales at once: the outline of a whole building, the length of a shop sign, the corner of an envelope sticking out. Each takes its place. Footsteps sound on successive floors inside the doorway. A letterbox flap closes softly, and a trolley can be heard crossing the paving outside."
+      ]
+    }
   },
   {
-    "slug": "zhonghuan",
-    "city": "中环",
-    "title": "同一座城的不同楼层",
-    "dek": "坡道、扶梯和大堂，换着观看的高度。",
-    "paragraphs": [
-      "中环的路不全铺在同一个平面上。坡道抬高脚步，石阶把距离分成一格一格，扶梯又让两旁的店面从身边依次退去。站在不同的高度看街，一辆车可能先露出车顶，行人的脸反而被招牌挡住。",
-      "写字楼的大堂有另一套尺度。地面平整，门扇宽，刷卡声和电梯提示音之间只隔几步。走进来的人收起伞，抖一抖衣角，把外面的雨留在门边。电梯门打开，刚才还各自看手机的人同时抬起头。",
-      "从楼里出来，脚下又接回斜坡。店门前有一张小桌，杯碟挨着玻璃，桌脚用薄片垫平。高处的窗格排列得严整，低处的这一点倾斜仍需有人照看。杯子放下，杯中的水轻轻晃过一圈。"
-    ]
+    "id": "central",
+    "name": {
+      "zh": "中环",
+      "en": "Central"
+    },
+    "title": {
+      "zh": "同一座城的不同楼层",
+      "en": "Different Levels of the Same City"
+    },
+    "dek": {
+      "zh": "坡道、扶梯和大堂，换着观看的高度。",
+      "en": "Slopes, escalators, and lobbies change the height of the view."
+    },
+    "paragraphs": {
+      "zh": [
+        "中环的路不全铺在同一个平面上。坡道抬高脚步，石阶把距离分成一格一格，扶梯又让两旁的店面从身边依次退去。站在不同的高度看街，一辆车可能先露出车顶，行人的脸反而被招牌挡住。",
+        "写字楼的大堂有另一套尺度。地面平整，门扇宽，刷卡声和电梯提示音之间只隔几步。走进来的人收起伞，抖一抖衣角，把外面的雨留在门边。电梯门打开，刚才还各自看手机的人同时抬起头。",
+        "从楼里出来，脚下又接回斜坡。店门前有一张小桌，杯碟挨着玻璃，桌脚用薄片垫平。高处的窗格排列得严整，低处的这一点倾斜仍需有人照看。杯子放下，杯中的水轻轻晃过一圈。"
+      ],
+      "en": [
+        "Not all of Central's streets lie on the same plane. Slopes lift the feet, stone steps divide distance into separate units, and escalators let the shops on either side slip past in sequence. From one height, a car's roof may appear first, while a pedestrian's face is hidden behind a sign.",
+        "An office lobby has another scale altogether. The floor is level, the doors are wide, and only a few steps separate the beep of an access card from the lift's chime. People coming in fold their umbrellas, shake the hems of their clothes, and leave the rain by the door. When the lift opens, those who were each looking at a phone raise their heads together.",
+        "Outside the building, the pavement joins the slope again. A small table stands by a shop entrance, cups and saucers close to the glass, a thin shim under one leg to keep it level. High above, the windows form precise rows. Down here, this small incline still needs someone's care. A cup is set down, and the water inside makes one gentle circle."
+      ]
+    }
   },
   {
-    "slug": "jinzhong",
-    "city": "金锺",
-    "title": "玻璃楼旁的一片树荫",
-    "dek": "换乘之后，目光也可以换个方向。",
-    "paragraphs": [
-      "金锺的地下通道里，指示牌把许多目的地排在一起。箭头向前，向左，或指向下一组扶梯；人群在分岔处短暂靠拢，又分开。走到地面，抬头看见楼与楼之间的天空，目光才从牌子上的字移到更远处。",
-      "玻璃楼旁也有树荫。风吹动枝叶，光斑落在石阶上，边缘不断变换。有人在长椅边坐下，把文件袋放到膝头，拧开水瓶。远处的车流还在，近处一片叶子落下，翻了个面，停在鞋尖旁边。",
-      "休息只占行程里很小的一段。瓶盖拧好，袋子提起，衣角压出的折痕顺手抚平。再次走向通道入口时，指示牌仍在原处，脚步却已经选定方向。树影留在石阶上，接着移动到空下来的位置。"
-    ]
+    "id": "admiralty",
+    "name": {
+      "zh": "金钟",
+      "en": "Admiralty"
+    },
+    "title": {
+      "zh": "玻璃楼旁的一片树荫",
+      "en": "A Patch of Shade Beside the Glass Towers"
+    },
+    "dek": {
+      "zh": "换乘之后，目光也可以换个方向。",
+      "en": "After a change of trains, the eye can change direction too."
+    },
+    "paragraphs": {
+      "zh": [
+        "金钟的地下通道里，指示牌把许多目的地排在一起。箭头向前，向左，或指向下一组扶梯；人群在分岔处短暂靠拢，又分开。走到地面，抬头看见楼与楼之间的天空，目光才从牌子上的字移到更远处。",
+        "玻璃楼旁也有树荫。风吹动枝叶，光斑落在石阶上，边缘不断变换。有人在长椅边坐下，把文件袋放到膝头，拧开水瓶。远处的车流还在，近处一片叶子落下，翻了个面，停在鞋尖旁边。",
+        "休息只占行程里很小的一段。瓶盖拧好，袋子提起，衣角压出的折痕顺手抚平。再次走向通道入口时，指示牌仍在原处，脚步却已经选定方向。树影留在石阶上，接着移动到空下来的位置。"
+      ],
+      "en": [
+        "In Admiralty's underground passages, signs gather many destinations together. Arrows point ahead, to the left, or toward another set of escalators. Crowds briefly draw together at a fork and then separate. Back at ground level, the sky appears between the buildings, and the eye finally leaves the words on the signs for something farther away.",
+        "There is tree shade beside the glass towers too. Wind stirs the branches, and patches of light fall across the steps, their edges constantly changing. Someone sits by a bench, rests a document folder on their knees, and opens a water bottle. Traffic continues in the distance. Nearby, a leaf drops, turns over, and comes to rest beside a shoe.",
+        "The rest takes up only a small part of the journey. The cap goes back on, the bag is lifted, and a crease in a hem is smoothed out by hand. On returning to the passage entrance, the signs are still where they were, but the footsteps have chosen a direction. The tree shadows remain on the steps and move into the place just left empty."
+      ]
+    }
   }
 ]

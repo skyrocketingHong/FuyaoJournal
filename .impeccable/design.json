@@ -1,224 +1,344 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-31T01:38:19Z",
-  "title": "Design System: Journal 沿途随记",
+  "generatedAt": "2026-10-31T08:26:25Z",
+  "title": "Design System: Journal 沿途夜行",
   "extensions": {
     "colorMeta": {
-      "paper": {
-        "role": "neutral",
-        "displayName": "浅色书页"
-      },
-      "white": {
-        "role": "neutral",
-        "displayName": "纯白"
-      },
       "night": {
         "role": "primary",
-        "displayName": "夜行松绿"
+        "displayName": "深海夜蓝"
+      },
+      "night-soft": {
+        "role": "neutral",
+        "displayName": "柔和夜蓝"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "浅暖纸页"
       },
       "ink": {
         "role": "neutral",
-        "displayName": "正文松墨"
+        "displayName": "深蓝墨色"
       },
       "muted": {
         "role": "neutral",
-        "displayName": "辅助灰绿"
+        "displayName": "夜色辅助字"
+      },
+      "muted-ink": {
+        "role": "neutral",
+        "displayName": "纸页辅助字"
       },
       "signal": {
         "role": "primary",
-        "displayName": "车灯黄"
+        "displayName": "车灯金"
       },
-      "signal-ink": {
-        "role": "neutral",
-        "displayName": "黄底深字"
+      "coral": {
+        "role": "secondary",
+        "displayName": "珊瑚橙"
       },
       "line": {
         "role": "neutral",
-        "displayName": "页间细线"
+        "displayName": "深色分隔"
       },
-      "night-muted": {
+      "line-light": {
         "role": "neutral",
-        "displayName": "夜行浅灰绿"
+        "displayName": "浅色分隔"
       },
-      "route-hover": {
+      "scene-caption": {
         "role": "neutral",
-        "displayName": "目录浅灰绿"
+        "displayName": "场景浅灰字"
       },
-      "control-disabled": {
+      "scene-base": {
         "role": "neutral",
-        "displayName": "禁用灰绿"
+        "displayName": "场景基础蓝"
+      },
+      "drive-hover": {
+        "role": "neutral",
+        "displayName": "驾驶悬停蓝"
+      },
+      "paper-hover": {
+        "role": "neutral",
+        "displayName": "纸页悬停灰"
+      },
+      "progress-track": {
+        "role": "neutral",
+        "displayName": "进度槽灰"
+      },
+      "scene-shade-top": {
+        "role": "neutral",
+        "displayName": "场景上方遮罩"
+      },
+      "scene-shade-bottom": {
+        "role": "neutral",
+        "displayName": "场景下方遮罩"
+      },
+      "modal-backdrop": {
+        "role": "neutral",
+        "displayName": "模态背景幕"
+      },
+      "shadow-soft": {
+        "role": "neutral",
+        "displayName": "轻投影黑"
+      },
+      "shadow-deep": {
+        "role": "neutral",
+        "displayName": "深投影黑"
+      },
+      "shadow-hint": {
+        "role": "neutral",
+        "displayName": "提示文字投影黑"
       }
     },
     "typographyMeta": {
       "wordmark": {
-        "displayName": "Journal 刊名",
-        "purpose": "Georgia 只用于英文刊名；48rem 以下 2.25rem，24rem 以下 2rem。"
+        "displayName": "Journal 字标",
+        "purpose": "本地 Barlow Condensed ExtraBold Italic；CSS 别名 Road Sign，800 斜体。"
       },
-      "display": {
-        "displayName": "地点字幕",
-        "purpose": "开篇当前位置；48rem 以下为 4.25rem。"
+      "scene-zh": {
+        "displayName": "中文地点",
+        "purpose": "系统无衬线的大字地点；随视口宽高收缩。"
       },
-      "headline": {
-        "displayName": "开篇标题",
-        "purpose": "沿途随记；48rem 以下为 2.5rem。"
+      "scene-en": {
+        "displayName": "英文地点",
+        "purpose": "Road Sign 800 斜体；与中文共用地点和驾驶状态。"
       },
-      "title": {
-        "displayName": "文章地点",
-        "purpose": "独立文章的地点标题；48rem 以下为 2.25rem。"
+      "station": {
+        "displayName": "站点序号",
+        "purpose": "Road Sign 800 斜体，使用 tabular-nums。"
       },
-      "story": {
-        "displayName": "篇章标题",
-        "purpose": "首页文章标题；48rem 以下为 1.625rem。"
+      "modal-heading": {
+        "displayName": "面板标题",
+        "purpose": "宋体标题，用于阅读和地点菜单。"
       },
-      "body": {
-        "displayName": "阅读正文",
-        "purpose": "最大 42rem 的宋体散文；48rem 以下为 1.125rem，行高保持 1.95。"
+      "body-zh": {
+        "displayName": "中文正文",
+        "purpose": "宋体正文，按实测容器高度分页。"
+      },
+      "body-en": {
+        "displayName": "英文正文",
+        "purpose": "Georgia 正文，独立测量分页并映射阅读位置。"
+      },
+      "control": {
+        "displayName": "驾驶操作",
+        "purpose": "系统无衬线 600 字重的操作标签。"
       },
       "label": {
-        "displayName": "导航与状态",
-        "purpose": "系统无衬线；序号使用 tabular-nums。"
+        "displayName": "辅助信息",
+        "purpose": "系统无衬线的说明与状态。"
       },
-      "action": {
-        "displayName": "起读入口",
-        "purpose": "黄色入口的文字。"
+      "scene-subtitle": {
+        "displayName": "场景辅文",
+        "purpose": "地点英文辅名或英文摘要；1rem 来自现有 place-subtitle。"
+      },
+      "journey-label": {
+        "displayName": "行程辅助标签",
+        "purpose": "默认行程统计；说明下载链接和窄屏状态使用同一字号。"
+      },
+      "footer": {
+        "displayName": "版权页尾",
+        "purpose": "默认页尾字号；键盘提示、窄屏页码和行程统计也采用 0.75rem，各自行高沿用源码。"
+      },
+      "mobile-hint": {
+        "displayName": "手机提示",
+        "purpose": "48rem 以下的手机驾驶提示；窄屏页尾同字号，页尾行高保持 1.6。"
+      },
+      "arrival-heading": {
+        "displayName": "到站卡片标题",
+        "purpose": "场景内随笔入口标题；地点菜单序号同字号但使用 Road Sign 800 斜体。"
+      },
+      "no-script-heading": {
+        "displayName": "无脚本标题",
+        "purpose": "无脚本下载说明的已有标题字号；字重使用浏览器 h2 默认值，未补造显式字重。"
+      },
+      "wordmark-mobile": {
+        "displayName": "窄屏字标",
+        "purpose": "48rem 以下的 JOURNAL，保留斜体。"
+      },
+      "wordmark-short": {
+        "displayName": "短屏字标",
+        "purpose": "高度不超过 540px 时的 JOURNAL，保留斜体。"
+      },
+      "scene-zh-mobile": {
+        "displayName": "窄屏中文地点",
+        "purpose": "48rem 以下的中文地点标题。"
+      },
+      "scene-en-mobile": {
+        "displayName": "窄屏英文地点",
+        "purpose": "48rem 以下的英文地点标题，保留斜体。"
+      },
+      "scene-zh-narrow": {
+        "displayName": "极窄屏中文地点",
+        "purpose": "25rem 以下的中文地点标题。"
+      },
+      "modal-heading-mobile": {
+        "displayName": "窄屏面板标题",
+        "purpose": "48rem 以下的面板标题；站点序号同字号但保留 Road Sign 字体角色。"
+      },
+      "body-zh-mobile": {
+        "displayName": "窄屏中文正文",
+        "purpose": "48rem 以下的中文正文；到站卡片标题同字号，仍保留其 600 字重和 1.6 行高。"
+      },
+      "body-en-mobile": {
+        "displayName": "窄屏英文正文",
+        "purpose": "48rem 以下的英文正文。"
       }
     },
+    "shadows": [
+      {
+        "name": "arrival-note",
+        "value": "0 10px 28px rgb(0 0 0 / 18%)",
+        "purpose": "场景内的到站随笔卡片。"
+      },
+      {
+        "name": "modal",
+        "value": "0 20px 80px rgb(0 0 0 / 30%)",
+        "purpose": "阅读、地点和说明三个互斥原生 dialog 共用的一层阴影；每次仅打开一个，并保留 1px 边框。"
+      },
+      {
+        "name": "scene-heading-text",
+        "value": "0 2px 18px rgb(0 0 0 / 30%)",
+        "purpose": "场景大字的 text-shadow，不是容器投影。"
+      },
+      {
+        "name": "keyboard-hint-text",
+        "value": "0 1px 5px rgb(0 0 0 / 70%)",
+        "purpose": "键盘操作提示的中性黑 text-shadow；不是彩色光晕或容器投影。"
+      }
+    ],
     "motion": [
       {
-        "name": "ease-out",
+        "name": "ease",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "源码 --ease-out；字幕、道路、页面入场与共享标题。"
+        "purpose": "到站反馈和面板入场的已有曲线。"
       },
       {
-        "name": "control-color",
-        "value": "140ms ease-out",
-        "purpose": "未要求减少动态效果时的链接与按钮颜色变化。"
+        "name": "control-feedback",
+        "value": "130ms ease-out",
+        "purpose": "仅未减少动态效果时启用按钮与链接颜色过渡。"
       },
       {
-        "name": "caption",
-        "value": "240ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "地点改变时从 translateY(0.15em)、opacity 0.65 回到原位。"
+        "name": "arrival-title",
+        "value": "400ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "到站标题轻微横向收束；减少动态效果时停用。"
       },
       {
-        "name": "route-progress",
-        "value": "280ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "阅读位置变化时的道路填充和车辆标记；减少动态效果时停用。"
+        "name": "arrival-note",
+        "value": "450ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "到站卡片上移 0.5rem 与 1deg 旋转归位；减少动态效果时停用。"
       },
       {
-        "name": "page-out",
-        "value": "180ms ease-out",
-        "purpose": "根页淡出并左移 0.5rem；仅支持 API 且未减少动态效果时。"
-      },
-      {
-        "name": "page-in",
-        "value": "260ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "根页淡入，从右侧 0.75rem 进入。"
-      },
-      {
-        "name": "shared-place-title",
-        "value": "320ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "首页进入单篇及单篇前后篇共享地点标题；返回首页仅根页过渡。"
+        "name": "panel-enter",
+        "value": "180ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "模态面板上移显现；仅未减少动态效果时启用。"
       }
     ],
     "breakpoints": [
       {
-        "name": "compact-reading",
-        "value": "67rem"
+        "name": "compact-console-max-width",
+        "value": "68rem"
       },
       {
-        "name": "single-column",
+        "name": "mobile-max-width",
         "value": "48rem"
       },
       {
-        "name": "narrow-phone",
-        "value": "24rem"
+        "name": "short-viewport-max-height",
+        "value": "540px"
+      },
+      {
+        "name": "narrow-phone-max-width",
+        "value": "25rem"
+      },
+      {
+        "name": "short-viewport-wide-console-min-width",
+        "value": "48.01rem"
       }
     ]
   },
   "components": [
     {
-      "name": "起读入口",
+      "name": "驾驶按钮",
       "kind": "button",
-      "refersTo": "begin-link",
-      "description": "提取自当前源码的静态组件样例；保留原有状态样式，不代表浏览器验收。",
-      "html": "<div class=\"ds-preview-begin-link\"><a class=\"ds-begin-link\" href=\"#chaiwan\" data-route-link>从柴湾读起 <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg></a></div>",
-      "css": ".ds-preview-begin-link{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);background:var(--night, #17382f);color:var(--paper, #f5f4ee)}.ds-preview-begin-link a:focus-visible,.ds-preview-begin-link button:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-preview-begin-link button{font:inherit;cursor:pointer}.ds-preview-begin-link button:disabled{cursor:default}\n.ds-begin-link { display: inline-flex; align-items: center; gap: 1rem; min-height: 3rem; padding: 0.6rem 1rem; margin-top: 1.75rem; background: var(--signal, #f0cb72); color: var(--night, #17382f); text-decoration: none; font-size: 0.9375rem; font-weight: 600; }\n.ds-begin-link svg { width: 1.25rem; height: 1.25rem; }\n.ds-begin-link:hover { background: var(--paper, #f5f4ee); }\n\n@media(prefers-reduced-motion:no-preference){.ds-begin-link{transition:color 140ms ease-out,background-color 140ms ease-out}}"
+      "refersTo": "drive-button",
+      "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
+      "html": "<div class=\"ds-preview-drive-button\"><button type=\"button\" class=\"ds-drive-button\" aria-pressed=\"false\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg><span>向右出发</span></button></div>",
+      "css": ".ds-preview-drive-button{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-drive-button button{font:inherit;cursor:pointer}.ds-preview-drive-button button:disabled{cursor:default;opacity:.45}.ds-preview-drive-button button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-drive-button svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-drive-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; min-height: 3.25rem; border-radius: 2px; padding: 0.65rem 1rem; border: 1px solid var(--ink, #122d38); color: var(--ink, #122d38); background: transparent; font-size: 0.9375rem; font-weight: 600; }\n.ds-drive-button { min-width: 9.5rem; border-color: var(--ink, #122d38); background: var(--ink, #122d38); color: var(--paper, #f6f1e4); }\n.ds-drive-button:hover { background: #294954; }\n.ds-drive-button[aria-pressed=\"true\"] { background: var(--signal, #f2cb75); color: var(--ink, #122d38); }\n"
     },
     {
-      "name": "路线前后按钮",
+      "name": "按住加速",
       "kind": "button",
-      "refersTo": "route-control",
-      "description": "提取自当前源码的静态组件样例；保留原有状态样式，不代表浏览器验收。",
-      "html": "<div class=\"ds-preview-route-control\"><div class=\"ds-route-controls\"><button type=\"button\" aria-label=\"读上一处\" disabled><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><path d=\"M20 12H5m6-6-6 6 6 6\"/></svg></button><button type=\"button\" aria-label=\"读下一处\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg></button></div></div>",
-      "css": ".ds-preview-route-control{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);background:var(--night, #17382f);color:var(--paper, #f5f4ee)}.ds-preview-route-control a:focus-visible,.ds-preview-route-control button:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-preview-route-control button{font:inherit;cursor:pointer}.ds-preview-route-control button:disabled{cursor:default}\n.ds-route-controls { display: flex; gap: 0.5rem; }\n.ds-route-controls button { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid var(--night-muted, #c1d0c6); color: var(--paper, #f5f4ee); background: transparent; }\n.ds-route-controls button:hover:enabled { background: var(--paper, #f5f4ee); color: var(--night, #17382f); }\n.ds-route-controls button:disabled { color: #789389; border-color: #789389; }\n.ds-route-controls svg { width: 1.25rem; height: 1.25rem; }\n\n@media(prefers-reduced-motion:no-preference){.ds-route-controls button{transition:color 140ms ease-out,background-color 140ms ease-out}}"
+      "refersTo": "boost-button",
+      "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
+      "html": "<div class=\"ds-preview-boost-button\"><button type=\"button\" class=\"ds-boost-button\" aria-pressed=\"false\" aria-label=\"行驶时按住加速\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m4 5 7 7-7 7m8-14 7 7-7 7\"/></svg><span>按住加速</span></button></div>",
+      "css": ".ds-preview-boost-button{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-boost-button button{font:inherit;cursor:pointer}.ds-preview-boost-button button:disabled{cursor:default;opacity:.45}.ds-preview-boost-button button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-boost-button svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-boost-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; min-height: 3.25rem; border-radius: 2px; padding: 0.65rem 1rem; border: 1px solid var(--ink, #122d38); color: var(--ink, #122d38); background: transparent; font-size: 0.9375rem; font-weight: 600; }\n.ds-boost-button { min-width: 7.5rem; background: var(--signal, #f2cb75); }\n.ds-boost-button[aria-pressed=\"true\"] { background: var(--coral, #f27b53); }\n"
     },
     {
-      "name": "沿途目录",
+      "name": "当前地点选项",
       "kind": "nav",
-      "refersTo": "route-link-current",
-      "description": "提取自当前源码的静态组件样例；保留原有状态样式，不代表浏览器验收。",
-      "html": "<div class=\"ds-preview-route-link-current\"><nav aria-label=\"地点目录样例\"><ol class=\"ds-route-list\"><li><a href=\"#chaiwan\" data-route-link aria-current=\"location\" aria-label=\"01 · 柴湾\"><span class=\"ds-route-number\" aria-hidden=\"true\">01</span><span class=\"ds-route-label\">柴湾</span></a></li><li><a href=\"#beijiao\" data-route-link aria-label=\"02 · 北角\"><span class=\"ds-route-number\" aria-hidden=\"true\">02</span><span class=\"ds-route-label\">北角</span></a></li><li><a href=\"#tongluowan\" data-route-link aria-label=\"03 · 铜锣湾\"><span class=\"ds-route-number\" aria-hidden=\"true\">03</span><span class=\"ds-route-label\">铜锣湾</span></a></li></ol></nav></div>",
-      "css": ".ds-preview-route-link-current{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);background:var(--paper, #f5f4ee);color:var(--ink, #20392f)}.ds-preview-route-link-current a:focus-visible,.ds-preview-route-link-current button:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-preview-route-link-current button{font:inherit;cursor:pointer}.ds-preview-route-link-current button:disabled{cursor:default}\n.ds-route-list { display: grid; }\n.ds-route-list a { position: relative; display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 0.5rem; align-items: center; min-height: 2.75rem; padding-inline: 0.5rem; text-decoration: none; border-radius: 0; }\n.ds-route-number { color: var(--muted, #56645c); font-size: var(--type-meta, 0.875rem); font-variant-numeric: tabular-nums; }\n.ds-route-label { font-size: 1rem; }\n.ds-route-list a:hover { background: #e4e8dc; }\n.ds-route-list a[aria-current=\"location\"] { background: var(--signal, #f0cb72); color: var(--night, #17382f); font-weight: 600; }\n.ds-route-list a[aria-current=\"location\"] .ds-route-label { text-decoration: underline; text-underline-offset: 0.25em; }\n.ds-route-list a[aria-current=\"location\"] .ds-route-number { color: var(--signal-ink, #57441c); }\n.ds-route-list{list-style:none;padding:0;margin:0}.ds-route-list a{color:inherit}\n.ds-route-list a[aria-current=\"location\"]{color:var(--night,#17382f)}"
+      "refersTo": "stop-option",
+      "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
+      "html": "<div class=\"ds-preview-stop-option\"><button type=\"button\" class=\"ds-stop-option ds-is-visited\" aria-current=\"location\" aria-label=\"01 · 前往 柴湾\"><span class=\"ds-stop-number\">01</span><span>柴湾</span></button></div>",
+      "css": ".ds-preview-stop-option{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-stop-option button{font:inherit;cursor:pointer}.ds-preview-stop-option button:disabled{cursor:default;opacity:.45}.ds-preview-stop-option button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-stop-option svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-stop-option { display: flex; gap: 0.65rem; align-items: center; min-width: 0; min-height: 2.75rem; padding: 0.6rem 0.75rem; border: 1px solid var(--line-light, #c9d1cd); color: var(--ink, #122d38); background: transparent; text-align: left; font-size: 0.9375rem; line-height: 1.35; }\n.ds-stop-option .ds-stop-number { flex-shrink: 0; color: var(--muted-ink, #51616a); font: italic 800 1.25rem var(--display, \"Road Sign\", \"Arial Narrow\", sans-serif); }\n.ds-stop-option[aria-current=\"location\"] { background: var(--signal, #f2cb75); border-color: var(--ink, #122d38); font-weight: 600; }\n.ds-stop-option:hover { border-color: var(--ink, #122d38); }\n"
     },
     {
-      "name": "地点字幕与道路",
-      "kind": "custom",
-      "refersTo": "destination",
-      "description": "提取自当前源码的静态组件样例；保留原有状态样式，不代表浏览器验收。",
-      "html": "<div class=\"ds-preview-destination\"><div class=\"ds-route-window\"><div class=\"ds-window-head\"><span>正在读的地方</span><span>01 / 23</span></div><div class=\"ds-destination\"><span class=\"ds-destination-name\">柴湾</span></div><div class=\"ds-road\" aria-hidden=\"true\"><span class=\"ds-road-fill\"></span><span class=\"ds-road-marker\"><svg viewBox=\"0 0 32 32\" fill=\"none\" aria-hidden=\"true\"><rect x=\"5\" y=\"10\" width=\"22\" height=\"13\" rx=\"4\" fill=\"currentColor\"/><path d=\"m11 6-3 4h16l-3-4z\" fill=\"currentColor\"/><path d=\"M11 13h10\" stroke=\"#17382f\" stroke-width=\"2\"/><path d=\"M8 20h3m10 0h3\" stroke=\"#17382f\" stroke-width=\"2\"/><circle cx=\"10\" cy=\"24\" r=\"2\" fill=\"#17382f\"/><circle cx=\"22\" cy=\"24\" r=\"2\" fill=\"#17382f\"/></svg></span></div><div class=\"ds-road-endpoints\"><span>柴湾</span><span>再到中环</span></div></div></div>",
-      "css": ".ds-preview-destination{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);background:var(--night, #17382f);color:var(--paper, #f5f4ee)}.ds-preview-destination a:focus-visible,.ds-preview-destination button:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-preview-destination button{font:inherit;cursor:pointer}.ds-preview-destination button:disabled{cursor:default}\n.ds-route-window { min-width: 0; padding-top: 0.5rem; }\n.ds-window-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: var(--night-muted, #c1d0c6); font-size: var(--type-meta, 0.875rem); }\n.ds-window-head [data-current-position] { font-variant-numeric: tabular-nums; }\n.ds-destination { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding-block: 1.25rem; }\n.ds-destination-name { display: inline-block; color: var(--signal, #f0cb72); font: 600 var(--type-display, 4.75rem)/1.25 var(--serif, \"Songti SC\", \"STSong\", \"SimSun\", Georgia, serif); letter-spacing: 0.02em; }\n.ds-road { position: relative; height: 2.5rem; margin-top: 0.25rem; --route-progress: 0; }\n.ds-road::before { content: \"\"; position: absolute; top: 1rem; inset-inline: 0; border-top: 1px dashed var(--night-muted, #c1d0c6); }\n.ds-road-fill { position: absolute; top: 1rem; inset-inline: 0; height: 2px; background: var(--signal, #f0cb72); transform-origin: left; transform: scaleX(var(--route-progress, 0)); transition: transform 280ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }\n.ds-road-marker { position: absolute; top: 0; left: 0; width: 2rem; height: 2rem; color: var(--signal, #f0cb72); background: var(--night, #17382f); transition: transform 280ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }\n.ds-road-endpoints { display: flex; justify-content: space-between; color: var(--night-muted, #c1d0c6); font-size: var(--type-meta, 0.875rem); }\n\n@media(prefers-reduced-motion:reduce){.ds-road-marker,.ds-road-fill{transition:none}}"
+      "name": "到站随笔入口",
+      "kind": "card",
+      "refersTo": "arrival-note",
+      "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
+      "html": "<div class=\"ds-preview-arrival-note\"><aside class=\"ds-arrival-note\"><h3>货梯门合上之前</h3><button type=\"button\" class=\"ds-text-button\">读这篇随笔</button></aside></div>",
+      "css": ".ds-preview-arrival-note{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-arrival-note button{font:inherit;cursor:pointer}.ds-preview-arrival-note button:disabled{cursor:default;opacity:.45}.ds-preview-arrival-note button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-arrival-note svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-arrival-note { position: absolute; top: 43%; right: 2.5rem; width: min(18rem, 34%); padding: 1.25rem 1.5rem; z-index: 1; color: var(--ink, #122d38); background: var(--paper, #f6f1e4); border-radius: 2px; box-shadow: 0 10px 28px rgb(0 0 0 / 18%); }\n.ds-arrival-note h3 { font: 600 1.25rem/1.6 var(--serif, \"Songti SC\", \"STSong\", Georgia, serif); margin-bottom: 0.85rem; }\n.ds-text-button { background: transparent; border: 0; border-bottom: 1px solid currentColor; padding: 0.4rem 0; min-height: 2.75rem; color: inherit; font-size: 0.875rem; }\n.ds-arrival-note{position:relative;top:auto;right:auto;width:min(18rem,100%)}"
     },
     {
-      "name": "阅读正文",
+      "name": "阅读翻页栏",
       "kind": "custom",
-      "refersTo": "prose",
-      "description": "提取自当前源码的静态组件样例；保留原有状态样式，不代表浏览器验收。",
-      "html": "<div class=\"ds-preview-prose\"><div class=\"ds-prose\"><p>柴湾的工业楼宇把许多事情叠在同一个地址里。路边卸下一车纸箱，推车轮子越过门槛，声音随即转进楼内。货梯门还开着，搬运的人侧身让出一点位置，用鞋尖抵住车轮，再把最上面的箱子扶正。</p>\n<p>楼层按钮依次亮起，磨旧的金属门映不清面孔，只留下衣服的颜色。纸箱上贴着不同的标签，胶带起翘的地方被重新按平。门一开，里面还有走廊、工作台和另一扇门，一项工作要经过这些转折，才抵达下一双手。</p>\n<p>出了大厦，住宅的窗格把视线往高处带。公交车靠站，人提着买好的菜往前走，推车则沿墙边返回。它比来时轻，轮子响得更脆；一截透明胶带挂在车沿上，迎着光闪了一下。</p></div></div>",
-      "css": ".ds-preview-prose{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);background:var(--paper, #f5f4ee);color:var(--ink, #20392f)}.ds-preview-prose a:focus-visible,.ds-preview-prose button:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-preview-prose button{font:inherit;cursor:pointer}.ds-preview-prose button:disabled{cursor:default}\n.ds-prose { max-width: 42rem; padding-top: 1.75rem; font: 400 var(--type-body, 1.25rem)/1.95 var(--serif, \"Songti SC\", \"STSong\", \"SimSun\", Georgia, serif); }\n.ds-prose p + p { margin-top: 1.1em; }\n.ds-prose p{margin:0;text-wrap:pretty;overflow-wrap:break-word}\n@media(max-width:48rem){.ds-prose{font-size:1.125rem;padding-top:1.5rem}}"
+      "refersTo": "modal",
+      "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
+      "html": "<div class=\"ds-preview-modal\"><footer class=\"ds-modal-footer\"><div class=\"ds-page-controls\"><button type=\"button\" aria-label=\"上一页\" disabled><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 12H5m6-6-6 6 6 6\"/></svg></button><span class=\"ds-page-count\">第 1 / 3 页</span><button type=\"button\" aria-label=\"下一页\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg></button></div><button type=\"button\" class=\"ds-reader-close\">继续上路</button></footer></div>",
+      "css": ".ds-preview-modal{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-modal button{font:inherit;cursor:pointer}.ds-preview-modal button:disabled{cursor:default;opacity:.45}.ds-preview-modal button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-modal svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-modal-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-width: 0; }\n.ds-page-controls { display: flex; align-items: center; gap: 0.5rem; }\n.ds-page-controls button { width: 2.75rem; min-height: 2.75rem; display: grid; place-items: center; background: transparent; color: var(--ink, #122d38); border: 1px solid var(--ink, #122d38); }\n.ds-page-controls button:hover:enabled { background: var(--signal, #f2cb75); }\n.ds-page-count { color: var(--muted-ink, #51616a); font-size: 0.875rem; font-variant-numeric: tabular-nums; }\n.ds-reader-close { border: 0; background: none; color: var(--ink, #122d38); padding: 0.5rem 0; min-height: 2.75rem; font-size: 0.875rem; text-decoration: underline; text-underline-offset: 0.2em; }\n"
     }
   ],
   "narrative": {
-    "northStar": "夜行路线上的书页",
-    "overview": "Journal 以“沿途随记”为中文辅名，把地点、篇章和阅读位置放在同一条线上。深松绿承接刊头与开篇，车灯黄标识当前地点和开始阅读的入口，浅色正文保留纸页般的安静。宋体承担中文地点和散文，无衬线承担导航与状态，Georgia 只承担 Journal 刊名。\n\n本记录对应表面简报中的 Read 模式，依据现有源码提取，未提出新的视觉方向。首页按用户指定的《飞车》灵感序列展开 23 篇短随笔，涵盖 22 个不同地点；两篇中环以独立 slug 区分，末篇另文收尾。“路线”表达阅读顺序，不能解释为真实交通线路。\n\n文档范围为首页、独立文章、关于页和 404 页。实现依据为 `src/site.css`、`src/site.js`、`scripts/build.py` 与 `content/`，方向依据为 `PRODUCT.md` 和 `.impeccable/surfaces/public-index-html.md`。本文记录基于源码与内容结构核对；未启动浏览器，未截图，未完成视觉、交互或跨浏览器验收。视觉验收由用户自行完成。",
+    "northStar": "一屏夜港，停靠成页",
+    "overview": "Journal 的当前表面为 Experience 模式：在固定一屏内向右驾驶、到站停车、打开一页随笔。画面由夜港全景、珊瑚橙双门车和道路运动承担；深海蓝界面框定舞台，浅色控制台与阅读卡片提供停靠后的操作和阅读空间。车灯金色标示当前地点、驾驶状态和加速操作。\n\n默认语言为简体中文，英文覆盖地点、操作、说明、标题与全部正文。23 篇随笔对应 22 个不同地点，两篇中环以 `central` 和 `central-return` 区分；金钟使用 `admiralty`。地点标识采用通行英文名，顺序由构建脚本的 `ROUTE` 维护。场景是原创游戏美术，文章为地点主题的文学想象，路线只表达体验顺序。\n\n本记录提取自 `src/site.css`、`src/app.mjs`、`src/drive-engine.mjs`、`src/pagination.mjs`、`src/i18n.mjs`、`scripts/build.py`、`content/` 与 `assets/`，并遵循当前 `PRODUCT.md` 和表面简报。文档描述源码行为与资源事实；浏览器、画面、设备手感和帧率未验，不据此宣称视觉通过。用户自行完成视觉验收。",
     "keyCharacteristics": [
-      "深松绿刊头、车灯黄阅读状态和浅色正文形成三层分工。",
-      "正文优先：首页直接输出全部段落，独立文章可直接访问。",
-      "路线轴、地点字幕与道路标记共享阅读位置，仅在交互或阅读位置变化时响应。",
-      "系统字体、同源资源、平面分隔，不依赖照片、视频或音频。",
-      "动效属于渐进增强；无 JavaScript 与减少动态效果时仍可完整阅读。"
+      "一个固定视口：场景、控制台和版权页尾同屏，阅读与菜单用分页呈现。",
+      "原创夜港全景和带透明通道的珊瑚橙车辆共同构成横向驾驶舞台。",
+      "本地许可斜体字标负责街机感；系统无衬线承担操作，宋体和 Georgia 承担双语正文。",
+      "驾驶由主动操作触发，到站自动停车；暂停、失焦和打开面板会停止行驶。",
+      "完整中英内容切换保留驾驶状态，阅读位置按段落与相对字符位置迁移。"
     ],
     "rules": [
       {
-        "name": "The Reading Signal Rule",
-        "body": "车灯黄承担当前地点、路线选中、起读入口与文字选择反馈；正文保持深墨色，黄色不铺满阅读列。",
+        "name": "The State Signal Rule",
+        "body": "金色与珊瑚橙表达已存在的操作或状态；主按钮文字、`aria-pressed`、当前地点属性和状态文字同步表达含义，不能只依赖颜色。",
         "section": "colors"
       },
       {
-        "name": "The Type Roles Rule",
-        "body": "中文标题和正文使用宋体栈，导航与状态使用系统无衬线，Georgia 用于 Journal 刊名；不加载远程字体。",
+        "name": "The Local Display Rule",
+        "body": "保留本地 Barlow Condensed 字体文件与 Road Sign 别名的对应关系；界面和正文继续使用各自字体角色，不以通用系统字体替换字标，也不加载远程字体。",
         "section": "typography"
       },
       {
-        "name": "The Flat Page Rule",
-        "body": "页面以底色、留白和细分隔线组织层次；当前界面不使用阴影、浮起卡片或模糊玻璃。",
+        "name": "The Stage Depth Rule",
+        "body": "深度来自现有场景图、文字遮罩、车辆透明合成和两级纸页面板；不把装饰性阴影扩散到全部按钮和进度条。",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do 保留浅色阅读正文、深松绿刊头与车灯黄状态的职责分工。",
-      "Do 保持系统字体栈、可见键盘焦点、原生链接和手机原生 details 目录。",
-      "Do 让地点字幕、阅读序号、目录选中和道路标记从同一阅读位置更新。",
-      "Do 将完整正文和所有独立文章链接保留在构建后的 HTML 中。",
-      "Do 保留“金锺”的写法、末尾第二篇中环及其不同 slug；以构建脚本的 ROUTE 为唯一顺序来源。",
-      "Do 将新验证写明为源码、构建或实际浏览器证据；视觉未验时保持未验状态。"
+      "Do 保持固定一屏结构，让菜单、正文与说明通过分页完整呈现。",
+      "Do 使用现有夜港 WebP 与透明车辆素材，保留许可字体和来源记录。",
+      "Do 将 Road Sign 别名、本地字体文件及其字重和斜体用途一起维护。",
+      "Do 同步维护简体中文和完整英文界面、地点、标题及正文，使用通行英文地点 ID。",
+      "Do 保留到站停车、打开面板暂停、后台暂停和主动继续的控制语义。",
+      "Do 明确区分源码参数、逻辑验证与未完成的视觉、设备和帧率验收。"
     ],
     "donts": [
-      "Don't 引入持续自动滚动、循环播放、自动翻篇或歌曲音频。",
-      "Don't 用动画或 JavaScript 初始化隐藏默认正文。",
-      "Don't 把阅读序列改写为精确交通路线、距离或车速，也不恢复已被替代的 40 城方案。",
-      "Don't 将生成散文标为亲历游记，或补入未经提供的歌词、照片、作者身份与发布日期。",
-      "Don't 将标题共享过渡描述成全部往返方向都已接通；返回首页当前只有根页过渡。",
-      "Don't 从 sidecar 推导不存在的输入框、卡片、色阶或阴影 token；以后扩展须以实际实现更新。"
+      "Don't 恢复纵向长页、滚动菜单、独立文章页或自动滚动的阅读结构。",
+      "Don't 让关闭面板、语言切换或切回页面自动启动驾驶。",
+      "Don't 添加声音、持续闲置动画、闪烁或外部作品归属文案。",
+      "Don't 将原创场景写成纪实照片，将随笔写成亲历游记或现实交通指南。",
+      "Don't 用系统字体替代已确认的字标定制，也不通过忽略检测规则掩盖文档漂移。",
+      "Don't 在 sidecar 重复基础 token、合成未采用的色阶或增加不存在的控件。"
     ]
   }
 }

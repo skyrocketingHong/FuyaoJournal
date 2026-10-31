@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "tool": "image_gen built-in",
+  "usage": "Original artwork for a side-scrolling night-drive journal. Development provenance; do not publish this JSON.",
+  "assets": [
+    {
+      "name": "harbour-night",
+      "source": "harbour-night.png",
+      "delivery": "harbour-night.webp",
+      "width": 2172,
+      "height": 724,
+      "alpha": false,
+      "deliveryBytes": 272634,
+      "optimization": "cwebp -q 84 -m 6",
+      "prompt": "Use case: stylized-concept. Asset type: production background panorama for an original 2D side-scrolling driving game. Create a very wide roughly 3:1 landscape, richly painted arcade concept art at polished game-asset quality. A dense Hong Kong-like waterfront city at night: layered midnight-blue and deep-teal towers, narrow older buildings with nuanced architecture, an elevated pedestrian footbridge, distant mountains and a quiet strip of harbour. Sparse coral-orange window light and creamy-gold street lamps punctuate the cool city. Exact side-on stage composition with a stable horizontal ground plane; the bottom quarter is a simple unobstructed dark roadway area where a separate moving car sprite will be composited. Upper sky is comparatively calm so interface text can sit above it. Detailed coherent lighting and material texture, bold confident shapes, atmospheric depth, no glossy 3D render and no simple box diagram. Edges should continue naturally for horizontal panning. No readable lettering, no logos, no watermarks, no interface, no prominent people, no vehicles. Do not use isometric perspective or a driver's point of view."
+    },
+    {
+      "name": "night-coupe",
+      "source": "night-coupe.png",
+      "delivery": "night-coupe.webp",
+      "width": 1774,
+      "height": 887,
+      "alpha": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        12,
+        33,
+        1773,
+        867
+      ],
+      "transparentPixels": 895095,
+      "deliveryBytes": 147040,
+      "optimization": "cwebp -q 88 -alpha_q 100 -m 6",
+      "prompt": "Use case: stylized-concept. Asset type: a single isolated production vehicle sprite for an original 2D side-scrolling driving game. A complete fictional 1980s angular compact sport-touring coupe in EXACT orthographic side profile, front and hood pointing to the RIGHT. The car has a confident coral-orange body with a restrained cream-white lower accent, dark teal glass, finely drawn black rubber tyres and metallic wheel details. Rich but controlled painted arcade-game illustration, crisp precise silhouette, nuanced small highlights; matching a midnight teal urban game world. One single car only, large in the frame, with modest transparent margin around the complete body and both wheels. Genuine transparent alpha background. No road, no ground plane, no cast shadow, no scenery, no person or driver, no text, no badges or brand logos. Original design, not an identifiable real vehicle. Keep the entire car in frame; wheels unobscured and centered on a level horizontal axle line. Do not show a three-quarter angle."
+    }
+  ]
+}

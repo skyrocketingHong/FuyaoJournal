@@ -1,55 +1,72 @@
 <p align="center"><a href="README.md">English</a> · <a href="README_ZH.md">简体中文</a></p>
 <h1 align="center">FuyaoJournal</h1>
-<p align="center">A static Chinese literary journal, following a sequence of places from Chai Wan back to Central.</p>
+<p align="center">Drive right, stop for a story. A one-screen bilingual night journey.</p>
 <p align="center"><a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0--only-blue.svg" alt="License: AGPL-3.0-only"></a></p>
 
-The site contains 23 original generated essays about 22 places, in the specified order inspired by Luo Dayou’s *飞车*. Central appears twice, with a separate closing essay. These pieces are literary imaginings, not firsthand travel reporting or transport advice. No song lyrics or audio are distributed.
+Journal combines a side-scrolling driving scene with 23 literary notes about 22 places. The final Central entry is a separate closing piece. The essays are generated literary imaginings, not firsthand travel reports or transport advice.
 
 ## Features
 
-- Read the entire sequence on the homepage or open each essay at its own URL.
-- Follow the current place through the reading index, destination display, and vehicle progress marker.
-- Use previous and next links, keyboard navigation, or the mobile contents disclosure.
-- Keep all text and navigation available without JavaScript. Motion respects the system’s reduced-motion preference.
-- Use progressive same-origin page transitions where the browser supports them, with ordinary navigation elsewhere.
-- Load only local assets and system fonts, without analytics or third-party requests.
+- A fixed viewport with no document scrolling. Reading and stop selection use pages rather than scrollable panels.
+- Drive to the right and stop automatically at the next place; pause, resume, or hold the boost control.
+- Keyboard and touch controls; the animation pauses when the page loses focus or becomes hidden.
+- Simplified Chinese by default, with complete English UI and all 23 essays translated. Language changes retain the current place and reading paragraph.
+- Standard English place identifiers, including North Point, Causeway Bay, Admiralty, Central, and Taipei.
+- Original layered night scenery and a transparent vehicle sprite. Reduced-motion settings preserve progress with less spatial movement.
+- Local assets and fonts, without analytics, audio, or remote runtime dependencies.
+- Bilingual text download and an AGPL corresponding-source archive available from the About panel.
 
 ## Build and preview
 
-Python 3.10 or newer is sufficient; no Python packages or JavaScript dependencies are required.
+Python 3.10 or newer builds the site without additional packages. Node.js 18 or newer runs the logic tests.
 
 ```sh
 python3 scripts/build.py
+node --test tests/*.test.mjs
 python3 -m http.server 8000 --directory public
 ```
 
-The build writes 26 HTML pages plus hashed CSS and JavaScript assets to `public/`. Open `http://localhost:8000` to preview, and press `Ctrl+C` to stop the preview server. The generated directory may be deleted and rebuilt. Build validation rejects missing places, duplicate slugs, and incomplete paragraphs.
+The build creates the app, an error page, hashed assets, the complete bilingual journal, and `source.zip` in `public/`. Preview at `http://localhost:8000`; press `Ctrl+C` to stop the server. The generated output can be removed and rebuilt. Missing translations, incomplete paragraphs, and mismatched place identifiers stop the build.
 
-For a JavaScript syntax check, run `node --check src/site.js`; successful execution prints no error. This does not verify browser behavior.
+## Controls
+
+| Action | Control |
+| --- | --- |
+| Travel to the next stop | Drive button or Right Arrow |
+| Pause or resume | Drive button or Space |
+| Boost while driving | Hold the boost button or Shift |
+| Return to the previous stop | Previous button or Left Arrow while parked |
+| Read or choose a place | Book and route buttons |
+| Turn a reading page | Page buttons or Left/Right Arrow in the reader |
+| Close a panel | Close button or Escape |
+
+JavaScript is required for driving and interactive paging. If it is disabled, the complete bilingual journal remains available as a text download.
 
 ## Structure
 
 ```text
-content/             Three ordered groups of original essays
-src/site.css         Typography, color, layout, and progressive transitions
-src/site.js          Reading position and navigation enhancements
-scripts/build.py     Route definition, HTML templates, and static builder
-public/              Generated deployment output, ignored by Git
-PRODUCT.md           Confirmed scope and content constraints
-DESIGN.md            Design system recorded from the implementation
+content/                 Bilingual place names, titles, and complete essays
+assets/                  Original artwork, local font, and licenses
+src/app.mjs              Interface, language, dialogs, and saved position
+src/drive-engine.mjs     Driving state model and Canvas renderer
+src/pagination.mjs      Text pagination and reading-position mapping
+src/i18n.mjs             Interface translations
+src/site.css             Fixed-viewport layout and visual system
+scripts/build.py        Ordered route, HTML, resources, and source archive
+public/                  Generated deployment files, ignored by Git
 ```
 
-The `ROUTE` list in `scripts/build.py` defines the exact order. Place names may repeat; article slugs must remain unique. The final Central essay uses `zhonghuan-return`.
+The `ROUTE` list defines the order. IDs use conventional English place names; the final Central piece uses `central-return`. Hong Kong names follow the [MTR English station names](https://www.mtr.com.hk/en/customer/services/system_map.html).
 
-## Deployment and verification
+## Verification and deployment
 
-Publish only `public/` to the static website backend. Keep product documents, source content, credentials, and operational records outside the web root. The existing relay remains the public gateway; this project supplies only its ordinary website content.
+Logic tests cover travel, pause, boost, route boundaries, hidden-page behavior, fallback scheduling, text preservation, and bilingual reading-position mapping. Source checks also verify DOM identifiers, translation keys, output links, and the source archive allowlist. These checks do not establish visual quality or device frame rates; browser and visual acceptance remain manual.
 
-Source checks cover the complete route, local links and anchors, text contrast calculations, and the public output boundary. HTTP checks and the existing protocol probe are run during deployment. Browser rendering, motion smoothness, and visual acceptance remain manual.
+Publish only `public/`. The source archive includes the code, content, artwork, and licenses needed to rebuild the app; it excludes private deployment records, credentials, project instructions, and design-process files. Keep previous deployment releases for rollback.
 
-Cross-document transitions follow the [MDN View Transitions guidance](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@view-transition) and are optional enhancements.
+## Assets and license
 
-## License
+The city scene and vehicle are original generated game assets. Barlow Condensed is self-hosted under the SIL Open Font License; its license is in `assets/fonts/OFL.txt`. Other text uses system fonts.
 
 This project is licensed under the GNU Affero General Public License v3.0 (SPDX: `AGPL-3.0-only`). See [LICENSE](LICENSE) for the full terms.
 

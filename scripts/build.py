@@ -1,206 +1,195 @@
 #!/usr/bin/env python3
-"""Build the ordered journal with the Python standard library."""
+"""Build the single-screen journal and its public source archive."""
 
 from __future__ import annotations
 
+from datetime import datetime
 import hashlib
 import html
 import json
-from datetime import datetime
 from pathlib import Path
 import re
 import shutil
+import zipfile
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public"
 ORIGIN = "https://journal.fuyaoskyrocket.ing"
-BUILD_YEAR = datetime.now(ZoneInfo("Asia/Shanghai")).year
+YEAR = datetime.now(ZoneInfo("Asia/Shanghai")).year
 ROUTE = [
-    ("chaiwan", "柴湾"), ("beijiao", "北角"), ("tongluowan", "铜锣湾"),
-    ("wanzai", "湾仔"), ("zhonghuan", "中环"), ("jinzhong", "金锺"),
-    ("jianshazui", "尖沙咀"), ("youmadi", "油麻地"), ("wangjiao", "旺角"),
-    ("taizi", "太子"), ("jiulongtang", "九龙塘"), ("shatian", "沙田"),
-    ("shangshui", "上水"), ("luohu", "罗湖"), ("shenzhen", "深圳"),
-    ("guangzhou", "广州"), ("xiamen", "厦门"), ("taibei", "台北"),
-    ("fuzhou", "福州"), ("nanjing", "南京"), ("shanghai", "上海"),
-    ("beijing", "北京"), ("zhonghuan-return", "中环"),
+    ("chai-wan", "柴湾", "Chai Wan"), ("north-point", "北角", "North Point"),
+    ("causeway-bay", "铜锣湾", "Causeway Bay"), ("wan-chai", "湾仔", "Wan Chai"),
+    ("central", "中环", "Central"), ("admiralty", "金钟", "Admiralty"),
+    ("tsim-sha-tsui", "尖沙咀", "Tsim Sha Tsui"), ("yau-ma-tei", "油麻地", "Yau Ma Tei"),
+    ("mong-kok", "旺角", "Mong Kok"), ("prince-edward", "太子", "Prince Edward"),
+    ("kowloon-tong", "九龙塘", "Kowloon Tong"), ("sha-tin", "沙田", "Sha Tin"),
+    ("sheung-shui", "上水", "Sheung Shui"), ("lo-wu", "罗湖", "Lo Wu"),
+    ("shenzhen", "深圳", "Shenzhen"), ("guangzhou", "广州", "Guangzhou"),
+    ("xiamen", "厦门", "Xiamen"), ("taipei", "台北", "Taipei"),
+    ("fuzhou", "福州", "Fuzhou"), ("nanjing", "南京", "Nanjing"),
+    ("shanghai", "上海", "Shanghai"), ("beijing", "北京", "Beijing"),
+    ("central-return", "中环", "Central"),
 ]
-ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg>'
-CAR = '<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="5" y="10" width="22" height="13" rx="4" fill="currentColor"/><path d="m11 6-3 4h16l-3-4z" fill="currentColor"/><path d="M11 13h10" stroke="#17382f" stroke-width="2"/><path d="M8 20h3m10 0h3" stroke="#17382f" stroke-width="2"/><circle cx="10" cy="24" r="2" fill="#17382f"/><circle cx="22" cy="24" r="2" fill="#17382f"/></svg>'
 
 
 def e(value: str) -> str:
     return html.escape(value, quote=True)
 
 
-def load_entries() -> list[dict]:
-    entries: dict[str, dict] = {}
+def entries() -> list[dict]:
+    by_id = {}
     for name in ("island.json", "kowloon-north.json", "beyond.json"):
-        batch = json.loads((ROOT / "content" / name).read_text(encoding="utf-8"))
-        if not isinstance(batch, list):
-            raise ValueError(f"{name}: expected a list of essays")
-        for entry in batch:
-            slug = entry["slug"]
-            if slug in entries or not re.fullmatch(r"[a-z]+(?:-[a-z]+)*", slug):
-                raise ValueError(f"Duplicate or invalid slug: {slug}")
-            if not entry["title"] or not entry["dek"]:
-                raise ValueError(f"Missing title or introduction: {slug}")
-            paragraphs = entry["paragraphs"]
-            if not isinstance(paragraphs, list) or len(paragraphs) != 3 or not all(isinstance(p, str) and p.strip() for p in paragraphs):
-                raise ValueError(f"Expected three complete paragraphs: {slug}")
-            entries[slug] = entry
-    if set(entries) != {slug for slug, _ in ROUTE}:
-        raise ValueError("Content does not match the requested route")
-    for slug, city in ROUTE:
-        if entries[slug]["city"] != city:
-            raise ValueError(f"Place label differs from the requested spelling: {slug}")
-    return [entries[slug] for slug, _ in ROUTE]
+        for entry in json.loads((ROOT / "content" / name).read_text(encoding="utf-8")):
+            identity = entry["id"]
+            if identity in by_id or not re.fullmatch(r"[a-z]+(?:-[a-z]+)*", identity):
+                raise ValueError(f"Duplicate or invalid place identifier: {identity}")
+            for key in ("name", "title", "dek"):
+                if set(entry[key]) != {"zh", "en"} or not all(entry[key].values()):
+                    raise ValueError(f"Missing bilingual {key}: {identity}")
+            for language in ("zh", "en"):
+                paragraphs = entry["paragraphs"][language]
+                if len(paragraphs) != 3 or not all(isinstance(p, str) and p.strip() for p in paragraphs):
+                    raise ValueError(f"Incomplete {language} prose: {identity}")
+            by_id[identity] = entry
+    if set(by_id) != {identity for identity, _, _ in ROUTE}:
+        raise ValueError("Content differs from the agreed route")
+    for identity, zh, en in ROUTE:
+        if by_id[identity]["name"] != {"zh": zh, "en": en}:
+            raise ValueError(f"Unexpected place spelling: {identity}")
+    return [by_id[identity] for identity, _, _ in ROUTE]
 
 
-def url(entry: dict) -> str:
-    return f'/places/{entry["slug"]}/'
+def asset(data: bytes, name: str) -> str:
+    source = Path(name)
+    filename = f"{source.stem}.{hashlib.sha256(data).hexdigest()[:12]}{source.suffix}"
+    (OUT / "assets" / filename).write_bytes(data)
+    return "/assets/" + filename
 
 
-def document(title: str, description: str, body: str, path: str, assets: dict, position: tuple[str, str] = ("柴湾", "01 / 23")) -> str:
-    place, progress = position
+def icon(name: str) -> str:
+    paths = {
+        "right": '<path d="M4 12h15m-6-6 6 6-6 6"/>',
+        "left": '<path d="M20 12H5m6-6-6 6 6 6"/>',
+        "close": '<path d="m6 6 12 12M6 18 18 6"/>',
+        "boost": '<path d="m4 5 7 7-7 7m8-14 7 7-7 7"/>',
+        "route": '<circle cx="5" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 5h9a4 4 0 0 1 0 8H8a4 4 0 0 0 0 6h9"/>',
+        "book": '<path d="M12 5v15M3 4h4c3 0 5 2 5 2s2-2 5-2h4v15h-4c-3 0-5 2-5 2s-2-2-5-2H3z"/>',
+        "info": '<circle cx="12" cy="12" r="9"/><path d="M12 10v7m0-11v1"/>',
+    }
+    return f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{paths[name]}</svg>'
+
+
+def page_controls(prefix: str, count: str) -> str:
+    return f'''<div class="page-controls"><button type="button" id="{prefix}-prev" data-action="{prefix}-prev" data-i18n-label="prevPage" aria-label="上一页">{icon('left')}</button><span class="page-count" id="{prefix}-count">{count}</span><button type="button" id="{prefix}-next" data-action="{prefix}-next" data-i18n-label="nextPage" aria-label="下一页">{icon('right')}</button></div>'''
+
+
+def close_button() -> str:
+    return f'<button type="button" class="close-button" data-action="close" data-i18n-label="close" aria-label="关闭">{icon("close")}</button>'
+
+
+def document(data: list[dict], assets: dict) -> str:
+    payload = json.dumps({"entries": data, "assets": assets}, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+    first = data[0]
     return f'''<!doctype html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#17382f">
-  <meta name="description" content="{e(description)}">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#081d29">
+  <meta name="description" content="从柴湾出发，沿二十三个停靠点向右前进。Journal 单屏夜行小游戏，收录完整中英双语地点随笔。">
   <meta name="referrer" content="same-origin">
-  <title>{e(title)} · Journal 沿途随记</title>
-  <link rel="canonical" href="{ORIGIN}{e(path)}">
+  <title>Journal · 沿途夜行</title>
+  <link rel="canonical" href="{ORIGIN}/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="{assets['background']}" as="image">
   <link rel="stylesheet" href="{assets['css']}">
-  <script src="{assets['js']}" defer></script>
+  <script type="module" src="{assets['app']}"></script>
 </head>
-<body id="top">
-  <a class="skip-link" href="#main">跳到正文</a>
-  <header class="masthead">
-    <div class="wrap masthead-inner">
-      <a class="wordmark" href="/" aria-label="Journal 沿途随记首页">Journal</a>
-      <div class="top-position" aria-label="阅读位置"><span data-current-place>{e(place)}</span><span data-current-position>{e(progress)}</span></div>
-      <nav class="site-nav" aria-label="主导航"><a href="/#route">沿途目录</a><a href="/about/">关于文字</a></nav>
-    </div>
-  </header>
-  {body}
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <a class="footer-signature" href="/">Journal</a>
-      <nav class="footer-nav" aria-label="页尾导航"><a href="/about/">关于文字</a><a href="#top">回到页首</a></nav>
-    </div>
-    <div class="wrap footer-meta">
-      <p>© 2016 - {BUILD_YEAR} <a href="https://fuyaoskyrocket.ing/">扶摇skyrocketing</a></p>
-      <p><a href="https://status.fuyaoskyrocket.ing/">服务状态</a> · 部署于阿里云</p>
-    </div>
-  </footer>
+<body>
+  <div class="viewport-app" id="game-shell">
+    <header class="topbar">
+      <div class="identity"><a class="wordmark" href="/" aria-label="Journal">JOURNAL</a><h1 data-i18n="appTitle">沿途夜行</h1></div>
+      <nav class="top-actions" data-i18n-label="pageActions" aria-label="页面操作"><button type="button" class="quiet-button about-button" data-action="about"><span data-i18n="about">关于</span></button><button type="button" class="quiet-button language-button" data-action="language" data-i18n-label="languageLabel" aria-label="切换为英文"><span data-i18n="language">English</span></button></nav>
+    </header>
+    <main class="game-stage" id="game-stage" data-i18n-label="stageLabel" aria-label="从左向右行驶的城市夜景">
+      <img class="scene-background" src="{assets['background']}" alt="" aria-hidden="true">
+      <canvas class="road-canvas" id="road-canvas" width="1400" height="700" aria-hidden="true"></canvas>
+      <div class="scene-shade" aria-hidden="true"></div>
+      <div class="scene-heading"><h2 id="current-place">柴湾</h2><p class="place-subtitle" id="place-subtitle">Chai Wan</p><div class="scene-status"><span class="status-dot" aria-hidden="true"></span><span id="drive-status">停靠中</span></div></div>
+      <div class="station-position" id="station-position" data-i18n-label="currentStop" aria-label="当前站点">01 / 23</div>
+      <div class="next-sign"><span id="next-label">下一站</span><strong id="next-place">北角</strong></div>
+      <aside class="arrival-note"><h3 id="note-title">{e(first['title']['zh'])}</h3><button type="button" class="text-button" data-action="read" data-needs-game disabled><span data-i18n="read">读这篇随笔</span></button></aside>
+      <p class="keyboard-hint" data-i18n="keyboard">方向键前进 · 空格暂停 · Shift 加速</p><p class="mobile-hint" data-i18n="mobileHint">点击前进，到下一站自动停车</p>
+      <p class="startup-message" id="startup-message" hidden></p>
+      <noscript><section class="no-script"><h2>沿途的文字仍在</h2><p>驾驶和翻页需要 JavaScript。你也可以下载完整的中英双语随笔。</p><a href="/journal-bilingual.txt" download>下载双语随笔 · Download the journal</a></section></noscript>
+    </main>
+    <section class="drive-console" data-i18n-label="controls" aria-label="驾驶操作">
+      <div class="transport"><button type="button" class="icon-button" id="previous-stop" data-action="previous-stop" data-i18n-label="previousStop" aria-label="上一站" data-needs-game disabled>{icon('left')}</button><button type="button" class="drive-button" id="drive-button" data-action="drive" data-needs-game disabled aria-pressed="false">{icon('right')}<span id="drive-label">向右出发</span></button><button type="button" class="boost-button" id="boost-button" data-i18n-label="boostLabel" aria-label="行驶时按住加速" data-needs-game disabled aria-pressed="false">{icon('boost')}<span data-i18n="boost">按住加速</span></button></div>
+      <div class="journey-info"><div class="journey-label"><span data-i18n="progress">旅程进度</span><span id="visited-count">已到访 1 / 23</span></div><progress id="journey-progress" max="22" value="0" data-i18n-label="progress" aria-label="旅程进度"></progress></div>
+      <div class="secondary-actions"><button type="button" class="secondary-button" data-action="route" data-i18n-label="route" aria-label="沿途地点" data-needs-game disabled>{icon('route')}<span class="button-copy" data-i18n="route">沿途地点</span></button><button type="button" class="secondary-button" data-action="read" data-i18n-label="read" aria-label="读这篇随笔" data-needs-game disabled>{icon('book')}<span class="button-copy" data-i18n="reader">随笔</span></button><button type="button" class="secondary-button console-about" data-action="about" data-i18n-label="about" aria-label="关于">{icon('info')}</button></div>
+    </section>
+    <footer class="site-footer"><p>© 2016 - {YEAR} <a href="https://fuyaoskyrocket.ing/">扶摇skyrocketing</a></p><p><a href="https://status.fuyaoskyrocket.ing/" data-i18n="serviceStatus">服务状态</a> · <span data-i18n="hosting">部署于阿里云</span></p></footer>
+  </div>
+
+  <dialog id="reader-dialog" aria-labelledby="reader-title" aria-describedby="reader-text">
+    <div class="modal-panel"><header><div class="modal-topline"><p class="reader-place" id="reader-place">柴湾</p><div class="modal-actions"><button type="button" class="quiet-button" data-action="language" data-i18n-label="languageLabel" aria-label="切换为英文"><span data-i18n="language">English</span></button>{close_button()}</div></div><h2 class="modal-heading" id="reader-title">{e(first['title']['zh'])}</h2></header><div class="reader-body" id="reader-body"><p class="reader-text" id="reader-text"></p></div><footer class="modal-footer">{page_controls('reader','第 1 / 3 页')}<button type="button" class="reader-close" data-action="close" data-i18n="continue">继续上路</button></footer></div>
+  </dialog>
+  <dialog id="route-dialog" aria-labelledby="route-title">
+    <div class="modal-panel route-panel"><header class="modal-topline"><h2 class="modal-heading" id="route-title" data-i18n="routeTitle">想从哪里开始？</h2>{close_button()}</header><p class="route-intro" data-i18n="routeDescription">按顺序走，也可以选择一处停靠。</p><div class="route-grid" id="route-grid"></div><footer class="modal-footer">{page_controls('route','地点页 1 / 3')}</footer></div>
+  </dialog>
+  <dialog id="about-dialog" aria-labelledby="about-title">
+    <div class="modal-panel"><header><div class="modal-topline"><h2 class="modal-heading" id="about-title" data-i18n="aboutTitle">一段路，二十三页</h2>{close_button()}</div><div class="about-links"><a href="/journal-bilingual.txt" download data-i18n="textDownload">下载双语随笔</a><a href="/source.zip" download data-i18n="source" data-i18n-label="sourceLabel" aria-label="下载本站对应的公开源码和许可证">下载源码</a></div></header><div class="reader-body" id="about-body"><p class="reader-text" id="about-text"></p></div><footer class="modal-footer">{page_controls('about','说明 1 / 3')}</footer></div>
+  </dialog>
+  <p class="visually-hidden" id="announcer" role="status" aria-live="polite"></p>
+  <script id="journal-data" type="application/json">{payload}</script>
 </body>
 </html>
 '''
 
 
-def route_list(entries: list[dict]) -> str:
-    links = []
-    for index, entry in enumerate(entries, 1):
-        name = entry["city"]
-        label = f'{index:02d} · {name}' + ("，再到中环" if index == len(entries) else "")
-        links.append(f'<li><a href="#{entry["slug"]}" data-route-link aria-label="{e(label)}"><span class="route-number" aria-hidden="true">{index:02d}</span><span class="route-label">{e(name)}</span></a></li>')
-    return '<ol class="route-list">' + "".join(links) + '</ol>'
-
-
-def prose(entry: dict) -> str:
-    return "\n".join(f'<p>{e(p)}</p>' for p in entry["paragraphs"])
-
-
-def homepage(entries: list[dict]) -> str:
-    index = route_list(entries)
-    chapters = []
-    for i, entry in enumerate(entries):
-        chapters.append(f'''<article class="chapter" id="{entry['slug']}" data-stop data-stop-index="{i}" data-stop-label="{e(entry['city'])}" tabindex="-1" aria-labelledby="title-{entry['slug']}">
-          <h2 class="chapter-heading" id="title-{entry['slug']}"><span class="chapter-place"><span class="chapter-number">{i+1:02d}</span><span class="place-name">{e(entry['city'])}</span></span><span class="chapter-title">{e(entry['title'])}</span></h2>
-          <div class="chapter-content"><p class="chapter-dek">{e(entry['dek'])}</p><div class="prose">{prose(entry)}</div><a class="chapter-link" data-article-link href="{url(entry)}">单独阅读这篇</a></div>
-        </article>''')
-    return f'''<main id="main">
-    <section class="cover" aria-labelledby="page-title"><div class="wrap cover-grid">
-      <div class="cover-copy"><h1 id="page-title">沿途随记</h1><p>从柴湾出发，在中环收笔。<br>让地名带路，把经过的地方读成一页。<br>二十三篇短文，沿着《飞车》的名字往前。</p><a class="begin-link" href="#chaiwan" data-route-link>从柴湾读起 {ARROW}</a></div>
-      <div class="route-window" aria-label="沿途阅读字幕">
-        <div class="window-head"><span>正在读的地方</span><span data-current-position>01 / 23</span></div>
-        <div class="destination"><span class="destination-name" data-current-place>柴湾</span><div class="route-controls" data-route-controls hidden><button type="button" data-route-prev aria-label="读上一处" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 12H5m6-6-6 6 6 6"/></svg></button><button type="button" data-route-next aria-label="读下一处">{ARROW}</button></div></div>
-        <div class="road" data-road aria-hidden="true"><span class="road-fill"></span><span class="road-marker" data-road-marker>{CAR}</span></div>
-        <div class="road-endpoints"><span>柴湾</span><span>再到中环</span></div>
-        <p class="visually-hidden" data-route-status role="status" aria-live="polite"></p>
-      </div>
-    </div></section>
-    <div class="wrap journal-layout" id="route">
-      <aside class="itinerary" aria-labelledby="itinerary-title"><h2 id="itinerary-title">沿途目录</h2><nav aria-label="全部地点">{index}</nav></aside>
-      <details class="mobile-index"><summary>展开沿途目录 · 23 篇</summary><nav aria-label="手机地点目录">{index}</nav></details>
-      <div class="chapters">{"".join(chapters)}<div class="reading-close"><p>又到中环。字句停在这里，街上的灯还亮着。</p><a href="#chaiwan" data-route-link>回到柴湾，再读一遍</a></div></div>
-    </div>
-  </main>'''
-
-
-def article(entry: dict, index: int, entries: list[dict]) -> str:
-    neighbors = []
-    if index > 0:
-        previous = entries[index-1]
-        neighbors.append(f'<a href="{url(previous)}" rel="prev"><small>上一篇 · {e(previous["city"])}</small><span>{e(previous["title"])}</span></a>')
-    else:
-        neighbors.append('<a href="/#route"><small>从这里出发</small><span>打开沿途目录</span></a>')
-    if index+1 < len(entries):
-        following = entries[index+1]
-        neighbors.append(f'<a href="{url(following)}" rel="next"><small>下一篇 · {e(following["city"])}</small><span>{e(following["title"])}</span></a>')
-    else:
-        neighbors.append(f'<a href="{url(entries[0])}"><small>这一程读完了</small><span>回到起点 · 柴湾</span></a>')
-    return f'''<main id="main" class="wrap">
-      <nav class="breadcrumbs" aria-label="当前位置"><ol><li><a href="/#{entry['slug']}">回到沿途阅读</a></li><li aria-current="page">{index+1:02d} / 23 · {e(entry['city'])}</li></ol></nav>
-      <article class="reading-page">
-        <h1 class="article-heading"><span class="place-name">{e(entry['city'])}</span><span class="story-title">{e(entry['title'])}</span></h1>
-        <p class="dek">{e(entry['dek'])}</p><div class="prose">{prose(entry)}</div>
-        <div class="article-end"><a href="/#{entry['slug']}">回到这一页在路线中的位置</a><nav class="neighbor-links" aria-label="前后篇随记">{"".join(neighbors)}</nav></div>
-      </article>
-    </main>'''
-
-
-def write_page(path: str, text: str) -> None:
-    target = OUT / path
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(text, encoding="utf-8")
+def source_archive() -> None:
+    allowed = [ROOT / "LICENSE", ROOT / "README.md", ROOT / "README_ZH.md"]
+    for folder in ("src", "content", "tests", "scripts"):
+        allowed.extend(p for p in (ROOT / folder).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc")
+    allowed.extend(ROOT / "assets" / name for name in ("harbour-night.webp", "night-coupe.webp", "harbour-night.png", "night-coupe.png"))
+    allowed.extend((ROOT / "assets/fonts").glob("*"))
+    with zipfile.ZipFile(OUT / "source.zip", "w", zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(set(allowed)):
+            if path.is_file() and not path.is_symlink():
+                archive.write(path, Path("FuyaoJournal") / path.relative_to(ROOT))
 
 
 def main() -> None:
-    entries = load_entries()
+    data = entries()
     if OUT.is_symlink():
-        raise ValueError("Refusing to replace a symlinked build directory")
+        raise ValueError("Refusing to replace a symlinked output directory")
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "assets").mkdir(parents=True)
-    assets = {}
-    for ext in ("css", "js"):
-        data = (ROOT / f"src/site.{ext}").read_bytes()
-        path = f'/assets/site.{hashlib.sha256(data).hexdigest()[:12]}.{ext}'
-        (OUT / path.lstrip("/")).write_bytes(data)
-        assets[ext] = path
-    write_page("assets/favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="8" fill="#17382f"/><text x="24" y="35" text-anchor="middle" font-family="Georgia,serif" font-size="37" fill="#f0cb72">J</text></svg>\n')
-    write_page("index.html", document("沿途随记", "从柴湾到中环，23 篇地点短随笔。以罗大佑《飞车》里的地名为灵感，沿街区与城市慢慢读下去。", homepage(entries), "/", assets))
-    for index, entry in enumerate(entries):
-        write_page(f'places/{entry["slug"]}/index.html', document(f'{entry["city"]} · {entry["title"]}', entry["dek"], article(entry, index, entries), url(entry), assets, (entry["city"], f'{index+1:02d} / {len(entries)}')))
-    about = '''<main id="main" class="wrap standalone"><h1>关于这些文字</h1><div class="prose">
-      <p>Journal 的这一组随记，以罗大佑《飞车》中的地名为灵感。从柴湾、北角、铜锣湾写起，经过街区与城市，最后再回到中环。这里的顺序是一条阅读线索，不是交通线路。</p>
-      <p>二十三篇短文，落在二十二个不同的地方。中环出现两次，末尾的一篇另作收笔。同一个名字，可以容得下另一页。</p>
-      <p>随笔由生成式工具创作并整理，属于城市与街区主题的文学想象，不是亲历游记、现场采访或出行指南。本站不播放歌曲，也不转载歌词。</p>
-      <p>可以从头往下读，也可以在目录里选一个地点。每篇都有独立页面，读到哪里，就从哪里接着翻。</p>
-    </div><a class="text-link" href="/#chaiwan">从柴湾读起</a></main>'''
-    write_page("about/index.html", document("关于这些文字", "Journal 沿途随记的灵感、内容说明与阅读方式。", about, "/about/", assets, ("关于文字", "")))
-    missing = '''<main id="main" class="wrap standalone"><h1>这一页不在沿途</h1><div class="prose"><p>地址可能有误，或者这一页已经移走。沿途目录里的二十三篇随记仍在原处。</p></div><a class="text-link" href="/#route">返回沿途目录</a></main>'''
-    write_page("404.html", document("页面未找到", "回到 Journal 沿途目录，继续阅读。", missing, "/404.html", assets, ("页面未找到", "")))
-    pages = list(OUT.rglob("*.html"))
-    size = sum(p.stat().st_size for p in OUT.rglob("*") if p.is_file())
-    print(f"Built {len(entries)} essays in the requested order; {len(pages)} HTML pages, {size:,} bytes.")
+    assets = {
+        "background": asset((ROOT / "assets/harbour-night.webp").read_bytes(), "harbour-night.webp"),
+        "car": asset((ROOT / "assets/night-coupe.webp").read_bytes(), "night-coupe.webp"),
+    }
+    font = asset((ROOT / "assets/fonts/BarlowCondensed-ExtraBoldItalic.ttf").read_bytes(), "road-sign.ttf")
+    assets["css"] = asset((ROOT / "src/site.css").read_text().replace("__FONT_URL__", font).encode(), "site.css")
+    dependencies = {}
+    for name in ("drive-engine.mjs", "i18n.mjs", "pagination.mjs"):
+        dependencies[name] = asset((ROOT / "src" / name).read_bytes(), name)
+    app = (ROOT / "src/app.mjs").read_text()
+    for name, path in dependencies.items():
+        app = app.replace(f'"./{name}"', f'"./{Path(path).name}"')
+    assets["app"] = asset(app.encode(), "app.mjs")
+    (OUT / "index.html").write_text(document(data, assets), encoding="utf-8")
+    (OUT / "assets/favicon.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="6" fill="#081d29"/><path d="M15 12h18v16c0 8-5 11-11 11-6 0-10-3-10-9h7c0 2 1 3 3 3 3 0 4-2 4-5V18H15z" fill="#f2cb75"/></svg>\n')
+    (OUT / "assets/OFL.txt").write_bytes((ROOT / "assets/fonts/OFL.txt").read_bytes())
+    journal = ["Journal · 沿途夜行 / Along the Way", ""]
+    for index, entry in enumerate(data, 1):
+        journal.extend([f'{index:02d} · {entry["name"]["zh"]} / {entry["name"]["en"]}', entry["title"]["zh"], "", *entry["paragraphs"]["zh"], "", entry["title"]["en"], "", *entry["paragraphs"]["en"], "", ""])
+    (OUT / "journal-bilingual.txt").write_text("\n\n".join(journal), encoding="utf-8")
+    (OUT / "404.html").write_text(f'''<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>返回 Journal / Return to Journal</title><link rel="stylesheet" href="{assets['css']}"></head><body><main class="no-script"><h1>这一页不在沿途</h1><p>This page is not on the route.</p><a href="/">返回 Journal · Return to Journal</a></main></body></html>''', encoding="utf-8")
+    source_archive()
+    print(f"Built one-screen app: {len(data)} bilingual notes, {len(set(x['name']['en'] for x in data))} places, {sum(1 for p in OUT.rglob('*') if p.is_file())} public files.")
 
 
 if __name__ == "__main__":

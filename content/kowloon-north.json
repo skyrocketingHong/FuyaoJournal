@@ -1,90 +1,218 @@
 [
   {
-    "slug": "jianshazui",
-    "city": "尖沙咀",
-    "title": "玻璃里的另一岸",
-    "dek": "水面把整齐的楼影拆开。",
-    "paragraphs": [
-      "到了尖沙咀的海边，目光很容易越过近处的栏杆，停在对岸。楼与楼挨得紧，窗户细得像没有写完的方格。风从水上过来，吹动衣角，提醒人眼前还有一段真实的距离，不能用一张照片轻轻合拢。",
-      "橱窗里的另一岸却近得多。转过身，天际线便叠在玻璃后面的物件上，行人的倒影从中穿过，又被下一位路人遮住。水面的反光在脚边晃，远处的船改变了位置，玻璃里的城市也跟着换了一次排列。",
-      "等天暗下来，整面的窗光被波纹拉长，刚才分得清的楼层渐渐接成一片。栏杆边有人放下手机，继续看了一会儿。海面没有停止变化，留下来的那张照片却已经安静了。"
-    ]
+    "id": "tsim-sha-tsui",
+    "name": {
+      "zh": "尖沙咀",
+      "en": "Tsim Sha Tsui"
+    },
+    "title": {
+      "zh": "玻璃里的另一岸",
+      "en": "The Other Shore in the Glass"
+    },
+    "dek": {
+      "zh": "水面把整齐的楼影拆开。",
+      "en": "The water breaks apart the orderly reflections of the buildings."
+    },
+    "paragraphs": {
+      "zh": [
+        "到了尖沙咀的海边，目光很容易越过近处的栏杆，停在对岸。楼与楼挨得紧，窗户细得像没有写完的方格。风从水上过来，吹动衣角，提醒人眼前还有一段真实的距离，不能用一张照片轻轻合拢。",
+        "橱窗里的另一岸却近得多。转过身，天际线便叠在玻璃后面的物件上，行人的倒影从中穿过，又被下一位路人遮住。水面的反光在脚边晃，远处的船改变了位置，玻璃里的城市也跟着换了一次排列。",
+        "等天暗下来，整面的窗光被波纹拉长，刚才分得清的楼层渐渐接成一片。栏杆边有人放下手机，继续看了一会儿。海面没有停止变化，留下来的那张照片却已经安静了。"
+      ],
+      "en": [
+        "At the waterfront in Tsim Sha Tsui, the eye easily passes over the nearby railing and comes to rest on the opposite shore. Buildings stand close together, their windows as fine as a grid left unfinished. Wind comes off the water and lifts the edge of a coat, a reminder that a real distance remains in front of us, one that a photograph cannot simply fold shut.",
+        "The other shore in a shop window is much closer. Turn around and the skyline lies over the objects behind the glass. Reflections of pedestrians pass through it, then disappear behind the next person. Reflected waterlight trembles near the feet. A distant boat changes position, and the city in the glass rearranges itself as well.",
+        "As darkness falls, ripples stretch the light from whole walls of windows. Floors that were once distinct gradually merge. Someone by the railing lowers a phone and keeps looking for a while. The sea has not stopped changing, but the photograph left behind is already still."
+      ]
+    }
   },
   {
-    "slug": "youmadi",
-    "city": "油麻地",
-    "title": "纸箱折起来的声音",
-    "dek": "街边的细节带着手的温度。",
-    "paragraphs": [
-      "油麻地街边的纸箱摞在一起，字有大有小，边角被搬运磨软了。掀开纸板，里面的果实露出不同的颜色；绳结解开以后，又收拢在手心。店里的人把空箱压平，折痕发出干脆的声响，盖过路口的一小段车声。",
-      "一条街的尺寸，也可以用这些动作来量。手推车转弯时留出多少地方，行人怎样侧身让过，买东西的人把袋子换到哪只手上。目光落低一些，就会发现地面上的水痕、门框掉漆的地方，以及货物暂时停靠的那一小块阴凉。",
-      "箱子扁下来，原来占据的空间重新交还给脚步。旁边的一张纸被风掀起，又被随手压住。纸上的字还要继续有用，直到下一次清点、搬动，或有人问起某样东西放在哪里。"
-    ]
+    "id": "yau-ma-tei",
+    "name": {
+      "zh": "油麻地",
+      "en": "Yau Ma Tei"
+    },
+    "title": {
+      "zh": "纸箱折起来的声音",
+      "en": "The Sound of Folding a Cardboard Box"
+    },
+    "dek": {
+      "zh": "街边的细节带着手的温度。",
+      "en": "Details along the street retain the warmth of hands."
+    },
+    "paragraphs": {
+      "zh": [
+        "油麻地街边的纸箱摞在一起，字有大有小，边角被搬运磨软了。掀开纸板，里面的果实露出不同的颜色；绳结解开以后，又收拢在手心。店里的人把空箱压平，折痕发出干脆的声响，盖过路口的一小段车声。",
+        "一条街的尺寸，也可以用这些动作来量。手推车转弯时留出多少地方，行人怎样侧身让过，买东西的人把袋子换到哪只手上。目光落低一些，就会发现地面上的水痕、门框掉漆的地方，以及货物暂时停靠的那一小块阴凉。",
+        "箱子扁下来，原来占据的空间重新交还给脚步。旁边的一张纸被风掀起，又被随手压住。纸上的字还要继续有用，直到下一次清点、搬动，或有人问起某样东西放在哪里。"
+      ],
+      "en": [
+        "Cardboard boxes are stacked along the streets of Yau Ma Tei. Their lettering comes in different sizes, and handling has softened their corners. A flap lifts to reveal fruit in several colours. A knot is untied, and the cord is gathered into a palm. Someone in the shop flattens an empty box. Its creases make a crisp sound that briefly rises above the traffic at the junction.",
+        "The dimensions of a street can also be measured through these gestures: how much room a trolley needs to turn, how pedestrians twist aside to let it pass, which hand a shopper moves a bag to. Lower the gaze a little and water marks appear on the ground, along with chipped paint on a doorframe and the small patch of shade where goods have stopped for the moment.",
+        "Once the box is flat, the space it occupied is returned to passing feet. The wind lifts a nearby sheet of paper, and a hand presses it down again. Its words still have work to do, until the next stock check, the next move, or the next person asking where something has been put."
+      ]
+    }
   },
   {
-    "slug": "wangjiao",
-    "city": "旺角",
-    "title": "先把声音听清",
-    "dek": "在人声里辨认一条街。",
-    "paragraphs": [
-      "旺角的声音很少只从一个方向过来。店里的音乐跟着开门的动作涌出，过路的人说着话，车轮压过路面的接缝。初听是一整片，站住片刻，才分得出近处纸袋的摩擦声，以及有人问价时略微抬高的尾音。",
-      "招牌在视线里上下交错，走路的人却先看脚下。有人让开半步，有人收拢手里的伞，几股脚步在狭处相遇，又各自找到可以继续走的位置。街道没有因此变宽，但留给彼此的那一点空隙，总会在临近时出现。",
-      "转进稍静的地方，耳朵还留着刚才的热闹。冰块碰杯的声音忽然清楚起来，连吸管拆开包装的轻响也听得见。停下喝几口，再把这座密密的城市接回自己的步速。"
-    ]
+    "id": "mong-kok",
+    "name": {
+      "zh": "旺角",
+      "en": "Mong Kok"
+    },
+    "title": {
+      "zh": "先把声音听清",
+      "en": "First, Listen Closely"
+    },
+    "dek": {
+      "zh": "在人声里辨认一条街。",
+      "en": "Find the shape of a street in its voices."
+    },
+    "paragraphs": {
+      "zh": [
+        "旺角的声音很少只从一个方向过来。店里的音乐跟着开门的动作涌出，过路的人说着话，车轮压过路面的接缝。初听是一整片，站住片刻，才分得出近处纸袋的摩擦声，以及有人问价时略微抬高的尾音。",
+        "招牌在视线里上下交错，走路的人却先看脚下。有人让开半步，有人收拢手里的伞，几股脚步在狭处相遇，又各自找到可以继续走的位置。街道没有因此变宽，但留给彼此的那一点空隙，总会在临近时出现。",
+        "转进稍静的地方，耳朵还留着刚才的热闹。冰块碰杯的声音忽然清楚起来，连吸管拆开包装的轻响也听得见。停下喝几口，再把这座密密的城市接回自己的步速。"
+      ],
+      "en": [
+        "Sound in Mong Kok rarely comes from just one direction. Music spills out as a shop door opens. People passing by talk, and wheels cross the joints in the road. At first it is one continuous mass. Stand still for a moment and the rustle of a nearby paper bag becomes distinct, along with the slightly raised ending of someone's question about a price.",
+        "Shop signs overlap at different heights, but the people walking look first at the ground. Someone steps aside; someone folds an umbrella closer. Several streams of footsteps meet in a narrow space, then each finds room to continue. The street has not grown wider, yet a little gap for one another appears as they approach.",
+        "Turn into a quieter spot, and the bustle still lingers in the ears. Ice against a glass suddenly sounds clear. Even the soft noise of a straw wrapper being opened can be heard. Stop for a few sips, then bring this densely packed city back into the rhythm of your own walk."
+      ]
+    }
   },
   {
-    "slug": "taizi",
-    "city": "太子",
-    "title": "还没有拆开的花",
-    "dek": "花束离开水桶，带走一阵清香。",
-    "paragraphs": [
-      "太子一带的花店，把许多颜色放到了街边。还没拆开的花束靠在桶里，透明包装上凝着细水。花瓣挨得很紧，茎秆却整齐地向下伸，仿佛上面那些自由的形状，都需要在水里找到一个稳妥的位置。",
-      "挑花的人有时先看颜色，有时低头找一片没有折痕的叶子。剪刀合拢，长短被重新调整，纸从下面托住花头。绳子绕过几圈，手里的东西便从一把散开的枝叶，变成了可以带走、可以递给另一个人的形状。",
-      "花束经过路口时，与周围的衣服和招牌短暂地并排。走远一些，包装纸仍轻轻作响。那些花还没有进门，没有找到花瓶，也没有被摆在桌上，此刻只由一双手小心地护着。"
-    ]
+    "id": "prince-edward",
+    "name": {
+      "zh": "太子",
+      "en": "Prince Edward"
+    },
+    "title": {
+      "zh": "还没有拆开的花",
+      "en": "Flowers Still in Their Wrapping"
+    },
+    "dek": {
+      "zh": "花束离开水桶，带走一阵清香。",
+      "en": "A bouquet leaves its bucket, taking a trace of fragrance with it."
+    },
+    "paragraphs": {
+      "zh": [
+        "太子一带的花店，把许多颜色放到了街边。还没拆开的花束靠在桶里，透明包装上凝着细水。花瓣挨得很紧，茎秆却整齐地向下伸，仿佛上面那些自由的形状，都需要在水里找到一个稳妥的位置。",
+        "挑花的人有时先看颜色，有时低头找一片没有折痕的叶子。剪刀合拢，长短被重新调整，纸从下面托住花头。绳子绕过几圈，手里的东西便从一把散开的枝叶，变成了可以带走、可以递给另一个人的形状。",
+        "花束经过路口时，与周围的衣服和招牌短暂地并排。走远一些，包装纸仍轻轻作响。那些花还没有进门，没有找到花瓶，也没有被摆在桌上，此刻只由一双手小心地护着。"
+      ],
+      "en": [
+        "Flower shops around Prince Edward bring their colours out to the street. Bouquets still in their wrapping lean in buckets, tiny beads of water gathering on the clear plastic. Petals press close together while the stems reach neatly downward, as though all those free shapes above need a secure place in the water below.",
+        "People choosing flowers sometimes look first at colour, sometimes bend to find an uncreased leaf. Scissors close, lengths are adjusted, and paper supports the flower heads from beneath. Cord goes around a few times, and what was a loose handful of branches and leaves becomes something that can be carried away and handed to someone else.",
+        "At the junction, the bouquet briefly takes its place beside the surrounding clothes and shop signs. Farther down the road, its paper still rustles softly. The flowers have not yet crossed a doorway, found a vase, or been set on a table. For now, one pair of hands holds them carefully."
+      ]
+    }
   },
   {
-    "slug": "jiulongtang",
-    "city": "九龙塘",
-    "title": "树影之间",
-    "dek": "一段路，可以有不同的音量。",
-    "paragraphs": [
-      "九龙塘的树影落到行人路上，形状随着枝叶慢慢移动。从较忙的地方拐进支路，耳边的车声渐渐薄了。鞋底仍按原来的节奏落下，听起来却比刚才清楚，连衣服擦过背包的声音，也从背景里显出来。",
-      "围墙、院门和树木，把视线分成一段一段。墙外看不见的地方，会有鸟叫，也会有水管放水的声音。一扇门打开，里面的光短暂地落到路上；门合上以后，树叶的影子又完整地接了回来。",
-      "走到下一处路口，车辆和说话声重新聚拢。身后那段安静没有消失，只是被几棵树和一个转角遮住了。不同的音量挨得这样近，留意的人才会在换一条路时，顺便换掉呼吸的节拍。"
-    ]
+    "id": "kowloon-tong",
+    "name": {
+      "zh": "九龙塘",
+      "en": "Kowloon Tong"
+    },
+    "title": {
+      "zh": "树影之间",
+      "en": "Between the Tree Shadows"
+    },
+    "dek": {
+      "zh": "一段路，可以有不同的音量。",
+      "en": "One stretch of road can hold several different volumes."
+    },
+    "paragraphs": {
+      "zh": [
+        "九龙塘的树影落到行人路上，形状随着枝叶慢慢移动。从较忙的地方拐进支路，耳边的车声渐渐薄了。鞋底仍按原来的节奏落下，听起来却比刚才清楚，连衣服擦过背包的声音，也从背景里显出来。",
+        "围墙、院门和树木，把视线分成一段一段。墙外看不见的地方，会有鸟叫，也会有水管放水的声音。一扇门打开，里面的光短暂地落到路上；门合上以后，树叶的影子又完整地接了回来。",
+        "走到下一处路口，车辆和说话声重新聚拢。身后那段安静没有消失，只是被几棵树和一个转角遮住了。不同的音量挨得这样近，留意的人才会在换一条路时，顺便换掉呼吸的节拍。"
+      ],
+      "en": [
+        "Tree shadows fall on the pavements of Kowloon Tong, their shapes moving slowly with the branches. Turn from a busier place into a side street, and the traffic noise begins to thin. Shoes keep their earlier rhythm, but their sound is clearer now. Even the brushing of clothes against a backpack emerges from the background.",
+        "Walls, gates, and trees divide the view into separate stretches. Beyond the walls, where the eye cannot reach, there may be birdsong or the sound of water running through a pipe. A gate opens, and light from inside briefly falls onto the road. When it closes, the shadows of the leaves join up again.",
+        "At the next junction, vehicles and voices gather once more. The quiet stretch behind has not vanished; a few trees and a corner have merely hidden it. Different volumes sit so close together that an attentive walker, by taking another road, may also find a different rhythm for breathing."
+      ]
+    }
   },
   {
-    "slug": "shatian",
-    "city": "沙田",
-    "title": "河岸上的长句",
-    "dek": "沿着水走，脚步不必急着转弯。",
-    "paragraphs": [
-      "沙田的河岸给步行留出一段舒展的线。站在水边，楼的倒影比楼本身更松散，风吹过就断开，平下来又接好。跑步的人从身旁经过，呼吸声先靠近，再慢慢远去，一段路因此有了可以听见的长度。",
-      "长椅上放着一只水瓶，瓶壁的水珠往下聚。有人低头系紧鞋带，有人把衣袖卷起来，坐着的人望向河面，各自休息，未必需要交谈。对岸的颜色随着光线改变，水上偶尔起的细波，比时间的数字更容易让人留心。",
-      "走累了就折返，同一段河岸会显出不同的东西：刚才迎着光的叶子，现在能看见背面的纹理。路并没有多出一截，重新经过时，目光却有了第一次匆匆走过没有留下的余地。"
-    ]
+    "id": "sha-tin",
+    "name": {
+      "zh": "沙田",
+      "en": "Sha Tin"
+    },
+    "title": {
+      "zh": "河岸上的长句",
+      "en": "A Long Sentence Along the River"
+    },
+    "dek": {
+      "zh": "沿着水走，脚步不必急着转弯。",
+      "en": "Beside the water, footsteps need not hurry toward a turn."
+    },
+    "paragraphs": {
+      "zh": [
+        "沙田的河岸给步行留出一段舒展的线。站在水边，楼的倒影比楼本身更松散，风吹过就断开，平下来又接好。跑步的人从身旁经过，呼吸声先靠近，再慢慢远去，一段路因此有了可以听见的长度。",
+        "长椅上放着一只水瓶，瓶壁的水珠往下聚。有人低头系紧鞋带，有人把衣袖卷起来，坐着的人望向河面，各自休息，未必需要交谈。对岸的颜色随着光线改变，水上偶尔起的细波，比时间的数字更容易让人留心。",
+        "走累了就折返，同一段河岸会显出不同的东西：刚才迎着光的叶子，现在能看见背面的纹理。路并没有多出一截，重新经过时，目光却有了第一次匆匆走过没有留下的余地。"
+      ],
+      "en": [
+        "Sha Tin's riverbank gives walking a long, unhurried line. From the water's edge, the reflections of buildings are looser than the buildings themselves. A breeze breaks them apart; calm water joins them again. A runner passes nearby. The sound of breathing draws close and then slowly recedes, giving a stretch of path a length that can be heard.",
+        "A water bottle rests on a bench, droplets gathering down its sides. Someone bends to tighten a shoelace; someone rolls up a sleeve. Those sitting look toward the river, each resting without necessarily needing to talk. Colours across the water change with the light. The occasional small ripple is easier to notice than a number marking the time.",
+        "Turn back when the walk becomes tiring, and the same riverbank reveals different things. Leaves that faced the light on the way out now show the patterns on their undersides. The path has not gained another section, but passing along it again gives the eye room that the first, hurried walk did not leave."
+      ]
+    }
   },
   {
-    "slug": "shangshui",
-    "city": "上水",
-    "title": "买完菜，再走一段",
-    "dek": "一只袋子装着接下来的日常。",
-    "paragraphs": [
-      "上水街边的生活，可以从一只购物袋看起。菜叶露在外面，装得较重的东西沉在袋底，提手被手指勒出细褶。买完东西的人重新站到街上，先换一次手，再望一眼前面，决定沿哪边继续走。",
-      "店门打开，室内的冷气碰到街上的热；门口的纸箱靠着墙，留出经过的位置。小推车的轮子在地面上响，一边是赶路的脚步，一边是停下来再看一眼价签的人。很短的一段街，也容得下几种不同的着急。",
-      "袋子最终要被放到桌上，菜要洗，盒子要拆，买回来的东西一件件找到地方。想到这些，街边的来往便有了另一层意思：许多看似相同的脚步，正分别走向还没开始的一顿饭。"
-    ]
+    "id": "sheung-shui",
+    "name": {
+      "zh": "上水",
+      "en": "Sheung Shui"
+    },
+    "title": {
+      "zh": "买完菜，再走一段",
+      "en": "After the Groceries, a Little Farther"
+    },
+    "dek": {
+      "zh": "一只袋子装着接下来的日常。",
+      "en": "One shopping bag holds the next part of the day."
+    },
+    "paragraphs": {
+      "zh": [
+        "上水街边的生活，可以从一只购物袋看起。菜叶露在外面，装得较重的东西沉在袋底，提手被手指勒出细褶。买完东西的人重新站到街上，先换一次手，再望一眼前面，决定沿哪边继续走。",
+        "店门打开，室内的冷气碰到街上的热；门口的纸箱靠着墙，留出经过的位置。小推车的轮子在地面上响，一边是赶路的脚步，一边是停下来再看一眼价签的人。很短的一段街，也容得下几种不同的着急。",
+        "袋子最终要被放到桌上，菜要洗，盒子要拆，买回来的东西一件件找到地方。想到这些，街边的来往便有了另一层意思：许多看似相同的脚步，正分别走向还没开始的一顿饭。"
+      ],
+      "en": [
+        "Street life in Sheung Shui can be approached through a shopping bag. Vegetable leaves stick out at the top, heavier things settle at the bottom, and fingers pull fine creases into the handles. Finished shopping, someone steps back into the street, changes hands, and looks ahead to decide which way to continue.",
+        "A shop door opens, and the cool air inside meets the heat outside. Cardboard boxes lean against the wall by the entrance, leaving room to pass. Small trolley wheels sound against the ground. On one side, footsteps are in a hurry; on the other, someone stops for another look at a price tag. Even a short piece of street has room for several kinds of urgency.",
+        "Eventually the bag will be set on a table. Vegetables will be washed, boxes opened, and each purchase given a place. Seen this way, the movement along the street takes on another meaning: so many seemingly similar footsteps are heading toward separate meals that have not yet begun."
+      ]
+    }
   },
   {
-    "slug": "luohu",
-    "city": "罗湖",
-    "title": "先把拉链拉好",
-    "dek": "边界让出发与抵达靠得很近。",
-    "paragraphs": [
-      "罗湖这个地名，常常落在一段行程的中间。抵达的人还在整理背包，准备出发的人低头看一眼手里的卡片。拉链拉开又合上，东西换到更容易取出的位置，行李轮子从身旁滚过，声音短促而清楚。",
-      "边界让一些平常的动作变得郑重。把纸收平，确认口袋没有敞着，给等待的人回一句话。地图上的距离可以很短，人的心思却未必同时到达：有的已经想着见面，有的还在回忆刚才忘了说完的那句话。",
-      "行程继续以后，包又恢复了原来的重量。卡片放回夹层，手机收好，双手终于能空出一只。出发与抵达之间的那些小动作，很快会被别的事情覆盖，只剩拉链合拢时的一声轻响。"
-    ]
+    "id": "lo-wu",
+    "name": {
+      "zh": "罗湖",
+      "en": "Lo Wu"
+    },
+    "title": {
+      "zh": "先把拉链拉好",
+      "en": "First, Close the Zip"
+    },
+    "dek": {
+      "zh": "边界让出发与抵达靠得很近。",
+      "en": "A boundary brings departure and arrival close together."
+    },
+    "paragraphs": {
+      "zh": [
+        "罗湖这个地名，常常落在一段行程的中间。抵达的人还在整理背包，准备出发的人低头看一眼手里的卡片。拉链拉开又合上，东西换到更容易取出的位置，行李轮子从身旁滚过，声音短促而清楚。",
+        "边界让一些平常的动作变得郑重。把纸收平，确认口袋没有敞着，给等待的人回一句话。地图上的距离可以很短，人的心思却未必同时到达：有的已经想着见面，有的还在回忆刚才忘了说完的那句话。",
+        "行程继续以后，包又恢复了原来的重量。卡片放回夹层，手机收好，双手终于能空出一只。出发与抵达之间的那些小动作，很快会被别的事情覆盖，只剩拉链合拢时的一声轻响。"
+      ],
+      "en": [
+        "The name Lo Wu often falls in the middle of a journey. People arriving are still adjusting their backpacks; those about to leave look down at a card in their hands. Zips open and close. Things are moved where they can be reached more easily, while suitcase wheels roll past with a brief, distinct sound.",
+        "A boundary lends a certain care to ordinary gestures: smoothing a sheet of paper, checking that a pocket is closed, sending a short reply to someone waiting. The distance on a map may be small, but people's thoughts need not arrive together. Some are already imagining a meeting; others are still remembering the sentence they did not finish saying.",
+        "Once the journey continues, the bag returns to its familiar weight. The card goes back into its compartment, the phone is put away, and at last one hand is free. Those small movements between departure and arrival will soon be covered by other things, leaving only the soft sound of a zip being closed."
+      ]
+    }
   }
 ]
