@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the single-screen journal and its public source archive."""
+"""Build the single-screen journal and its place-specific scene strip."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 import re
 import shutil
-import zipfile
+import struct
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -88,6 +88,14 @@ def close_button() -> str:
     return f'<button type="button" class="close-button" data-action="close" data-i18n-label="close" aria-label="关闭">{icon("close")}</button>'
 
 
+def place_strip(data: list[dict]) -> str:
+    buttons = []
+    for index, entry in enumerate(data):
+        current = ' aria-current="location"' if index == 0 else ''
+        buttons.append(f'<button type="button" class="place-button" data-stop="{index}" data-needs-game disabled aria-label="{index + 1} / {len(data)} · {e(entry["name"]["zh"])}"{current}><span data-place-name>{e(entry["name"]["zh"])}</span></button>')
+    return '<nav class="place-strip" id="place-strip" data-i18n-label="allStops" aria-label="全部地点">' + ''.join(buttons) + '</nav>'
+
+
 def document(data: list[dict], assets: dict) -> str:
     payload = json.dumps({"entries": data, "assets": assets}, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     first = data[0]
@@ -110,10 +118,11 @@ def document(data: list[dict], assets: dict) -> str:
   <div class="viewport-app" id="game-shell">
     <header class="topbar">
       <div class="identity"><a class="wordmark" href="/" aria-label="Journal">JOURNAL</a><h1 data-i18n="appTitle">沿途夜行</h1></div>
-      <nav class="top-actions" data-i18n-label="pageActions" aria-label="页面操作"><button type="button" class="quiet-button about-button" data-action="about"><span data-i18n="about">关于</span></button><button type="button" class="quiet-button language-button" data-action="language" data-i18n-label="languageLabel" aria-label="切换为英文"><span data-i18n="language">English</span></button></nav>
+      <nav class="top-actions" data-i18n-label="pageActions" aria-label="页面操作"><button type="button" class="quiet-button about-button" data-action="about"><span data-i18n="about">关于</span></button><button type="button" class="quiet-button autoplay-button" id="autoplay-button" data-action="autoplay" data-needs-game disabled aria-pressed="false" aria-label="自动播放"><span id="autoplay-label">自动播放</span></button><button type="button" class="quiet-button language-button" data-action="language" data-i18n-label="languageLabel" aria-label="切换为英文"><span data-i18n="language">English</span></button></nav>
     </header>
+    {place_strip(data)}
     <main class="game-stage" id="game-stage" data-i18n-label="stageLabel" aria-label="从左向右行驶的城市夜景">
-      <img class="scene-background" src="{assets['background']}" alt="" aria-hidden="true">
+      <img class="scene-background" id="scene-background" src="{assets['background']}" alt="" aria-hidden="true">
       <canvas class="road-canvas" id="road-canvas" width="1400" height="700" aria-hidden="true"></canvas>
       <div class="scene-shade" aria-hidden="true"></div>
       <div class="scene-heading"><h2 id="current-place">柴湾</h2><p class="place-subtitle" id="place-subtitle">Chai Wan</p><div class="scene-status"><span class="status-dot" aria-hidden="true"></span><span id="drive-status">停靠中</span></div></div>
@@ -122,7 +131,7 @@ def document(data: list[dict], assets: dict) -> str:
       <aside class="arrival-note"><h3 id="note-title">{e(first['title']['zh'])}</h3><button type="button" class="text-button" data-action="read" data-needs-game disabled><span data-i18n="read">读这篇随笔</span></button></aside>
       <p class="keyboard-hint" data-i18n="keyboard">方向键前进 · 空格暂停 · Shift 加速</p><p class="mobile-hint" data-i18n="mobileHint">点击前进，到下一站自动停车</p>
       <p class="startup-message" id="startup-message" hidden></p>
-      <noscript><section class="no-script"><h2>沿途的文字仍在</h2><p>驾驶和翻页需要 JavaScript。你也可以下载完整的中英双语随笔。</p><a href="/journal-bilingual.txt" download>下载双语随笔 · Download the journal</a></section></noscript>
+      <noscript><section class="no-script"><h2>启用 JavaScript 继续</h2><p>驾驶、阅读和语言切换需要 JavaScript，请启用后重新打开此页。</p><p>Enable JavaScript and reload this page to drive and read.</p></section></noscript>
     </main>
     <section class="drive-console" data-i18n-label="controls" aria-label="驾驶操作">
       <div class="transport"><button type="button" class="icon-button" id="previous-stop" data-action="previous-stop" data-i18n-label="previousStop" aria-label="上一站" data-needs-game disabled>{icon('left')}</button><button type="button" class="drive-button" id="drive-button" data-action="drive" data-needs-game disabled aria-pressed="false">{icon('right')}<span id="drive-label">向右出发</span></button><button type="button" class="boost-button" id="boost-button" data-i18n-label="boostLabel" aria-label="行驶时按住加速" data-needs-game disabled aria-pressed="false">{icon('boost')}<span data-i18n="boost">按住加速</span></button></div>
@@ -139,7 +148,7 @@ def document(data: list[dict], assets: dict) -> str:
     <div class="modal-panel route-panel"><header class="modal-topline"><h2 class="modal-heading" id="route-title" data-i18n="routeTitle">想从哪里开始？</h2>{close_button()}</header><p class="route-intro" data-i18n="routeDescription">按顺序走，也可以选择一处停靠。</p><div class="route-grid" id="route-grid"></div><footer class="modal-footer">{page_controls('route','地点页 1 / 3')}</footer></div>
   </dialog>
   <dialog id="about-dialog" aria-labelledby="about-title">
-    <div class="modal-panel"><header><div class="modal-topline"><h2 class="modal-heading" id="about-title" data-i18n="aboutTitle">一段路，二十三页</h2>{close_button()}</div><div class="about-links"><a href="/journal-bilingual.txt" download data-i18n="textDownload">下载双语随笔</a><a href="/source.zip" download data-i18n="source" data-i18n-label="sourceLabel" aria-label="下载本站对应的公开源码和许可证">下载源码</a></div></header><div class="reader-body" id="about-body"><p class="reader-text" id="about-text"></p></div><footer class="modal-footer">{page_controls('about','说明 1 / 3')}</footer></div>
+    <div class="modal-panel"><header><div class="modal-topline"><h2 class="modal-heading" id="about-title" data-i18n="aboutTitle">一段路，二十三页</h2>{close_button()}</div></header><div class="reader-body" id="about-body"><p class="reader-text" id="about-text"></p></div><footer class="modal-footer">{page_controls('about','说明 1 / 3')}</footer></div>
   </dialog>
   <p class="visually-hidden" id="announcer" role="status" aria-live="polite"></p>
   <script id="journal-data" type="application/json">{payload}</script>
@@ -148,47 +157,61 @@ def document(data: list[dict], assets: dict) -> str:
 '''
 
 
-def source_archive() -> None:
-    allowed = [ROOT / "LICENSE", ROOT / "README.md", ROOT / "README_ZH.md"]
-    for folder in ("src", "content", "tests", "scripts"):
-        allowed.extend(p for p in (ROOT / folder).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc")
-    allowed.extend(ROOT / "assets" / name for name in ("harbour-night.webp", "night-coupe.webp", "harbour-night.png", "night-coupe.png"))
-    allowed.extend((ROOT / "assets/fonts").glob("*"))
-    with zipfile.ZipFile(OUT / "source.zip", "w", zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(set(allowed)):
-            if path.is_file() and not path.is_symlink():
-                archive.write(path, Path("FuyaoJournal") / path.relative_to(ROOT))
+def scene_catalog() -> dict[str, dict]:
+    result = {}
+    expected = {"central" if identity == "central-return" else identity for identity, _, _ in ROUTE}
+    for path in (ROOT / "assets/scenes").glob("*-provenance.json"):
+        for record in json.loads(path.read_text())["assets"]:
+            identity = record["id"]
+            if identity in result or identity not in expected:
+                raise ValueError(f"Duplicate or unexpected scene metadata: {identity}")
+            if record["source"] != f"{identity}.png" or record["delivery"] != f"{identity}.webp":
+                raise ValueError(f"Invalid scene filename: {identity}")
+            image = ROOT / "assets/scenes" / record["delivery"]
+            if not image.is_file() or record["height"] < 1024:
+                raise ValueError(f"Scene unavailable or insufficient native resolution: {identity}")
+            with (ROOT / "assets/scenes" / record["source"]).open("rb") as native:
+                header = native.read(24)
+            if header[:8] != b"\x89PNG\r\n\x1a\n" or struct.unpack(">II", header[16:24]) != (record["width"], record["height"]):
+                raise ValueError(f"Native image dimensions differ from metadata: {identity}")
+            ground = record.get("groundY")
+            if not isinstance(ground, (int, float)) or isinstance(ground, bool) or not 0 < ground < 1:
+                raise ValueError(f"Missing or invalid road anchor: {identity}")
+            result[identity] = record
+    missing = sorted(expected - result.keys())
+    if missing:
+        raise ValueError("Missing place scenes: " + ", ".join(missing))
+    return result
 
 
 def main() -> None:
     data = entries()
+    scenes = scene_catalog()
     if OUT.is_symlink():
         raise ValueError("Refusing to replace a symlinked output directory")
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "assets").mkdir(parents=True)
-    assets = {
-        "background": asset((ROOT / "assets/harbour-night.webp").read_bytes(), "harbour-night.webp"),
-        "car": asset((ROOT / "assets/night-coupe.webp").read_bytes(), "night-coupe.webp"),
-    }
+    scene_urls = {identity: asset((ROOT / "assets/scenes" / record["delivery"]).read_bytes(), record["delivery"]) for identity, record in scenes.items()}
+    backgrounds = []
+    for identity, _, _ in ROUTE:
+        scene_id = "central" if identity == "central-return" else identity
+        record = scenes[scene_id]
+        backgrounds.append({"id": identity, "url": scene_urls[scene_id], "width": record["width"], "height": record["height"], "groundY": record["groundY"]})
+    assets = {"background": backgrounds[0]["url"], "backgrounds": backgrounds, "car": asset((ROOT / "assets/night-coupe.webp").read_bytes(), "night-coupe.webp")}
     font = asset((ROOT / "assets/fonts/BarlowCondensed-ExtraBoldItalic.ttf").read_bytes(), "road-sign.ttf")
     assets["css"] = asset((ROOT / "src/site.css").read_text().replace("__FONT_URL__", font).encode(), "site.css")
     dependencies = {}
-    for name in ("drive-engine.mjs", "i18n.mjs", "pagination.mjs"):
-        dependencies[name] = asset((ROOT / "src" / name).read_bytes(), name)
-    app = (ROOT / "src/app.mjs").read_text()
-    for name, path in dependencies.items():
-        app = app.replace(f'"./{name}"', f'"./{Path(path).name}"')
-    assets["app"] = asset(app.encode(), "app.mjs")
+    for name in ("scene-strip.mjs", "drive-engine.mjs", "i18n.mjs", "pagination.mjs", "autoplay.mjs", "app.mjs"):
+        code = (ROOT / "src" / name).read_text()
+        for dependency, path in dependencies.items():
+            code = code.replace(f'"./{dependency}"', f'"./{Path(path).name}"')
+        dependencies[name] = asset(code.encode(), name)
+    assets["app"] = dependencies["app.mjs"]
     (OUT / "index.html").write_text(document(data, assets), encoding="utf-8")
     (OUT / "assets/favicon.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="6" fill="#081d29"/><path d="M15 12h18v16c0 8-5 11-11 11-6 0-10-3-10-9h7c0 2 1 3 3 3 3 0 4-2 4-5V18H15z" fill="#f2cb75"/></svg>\n')
     (OUT / "assets/OFL.txt").write_bytes((ROOT / "assets/fonts/OFL.txt").read_bytes())
-    journal = ["Journal · 沿途夜行 / Along the Way", ""]
-    for index, entry in enumerate(data, 1):
-        journal.extend([f'{index:02d} · {entry["name"]["zh"]} / {entry["name"]["en"]}', entry["title"]["zh"], "", *entry["paragraphs"]["zh"], "", entry["title"]["en"], "", *entry["paragraphs"]["en"], "", ""])
-    (OUT / "journal-bilingual.txt").write_text("\n\n".join(journal), encoding="utf-8")
     (OUT / "404.html").write_text(f'''<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>返回 Journal / Return to Journal</title><link rel="stylesheet" href="{assets['css']}"></head><body><main class="no-script"><h1>这一页不在沿途</h1><p>This page is not on the route.</p><a href="/">返回 Journal · Return to Journal</a></main></body></html>''', encoding="utf-8")
-    source_archive()
     print(f"Built one-screen app: {len(data)} bilingual notes, {len(set(x['name']['en'] for x in data))} places, {sum(1 for p in OUT.rglob('*') if p.is_file())} public files.")
 
 

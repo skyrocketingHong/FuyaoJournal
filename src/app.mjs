@@ -1,6 +1,7 @@
 import { DriveEngine } from "./drive-engine.mjs";
 import { translate } from "./i18n.mjs";
 import { paginateParagraphs, correspondingPage } from "./pagination.mjs";
+import { AutoplayController } from "./autoplay.mjs";
 
 const config = JSON.parse(document.getElementById("journal-data").textContent);
 const entries = config.entries;
@@ -14,6 +15,7 @@ const t = (key, values) => translate(locale, key, values);
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const dialogs = [$('reader-dialog'), $('route-dialog'), $('about-dialog')];
 let engine;
+let autoplay;
 let state;
 let activeDialog = null;
 let returnFocus = null;
@@ -77,6 +79,24 @@ function updateHUD(nextState, force = false) {
   $('boost-button').setAttribute("aria-pressed", String(Boolean(state.boost)));
   $('drive-button').setAttribute("aria-pressed", String(state.driving && !state.paused));
   document.body.dataset.driving = String(state.driving && !state.paused);
+  document.querySelectorAll("#place-strip button[data-stop]").forEach((button) => {
+    const position = Number(button.dataset.stop);
+    const place = entries[position];
+    button.querySelector("[data-place-name]").textContent = place.name[locale];
+    button.setAttribute("aria-label", `${position + 1} / ${entries.length} · ${place.name[locale]}`);
+    button.classList.toggle("is-visited", visited.has(place.id));
+    if (position === index) button.setAttribute("aria-current", "location");
+    else button.removeAttribute("aria-current");
+  });
+  const background = config.assets.backgrounds?.[index];
+  if (background && $('scene-background').getAttribute("src") !== background.url) $('scene-background').src = background.url;
+}
+
+function updateAutoplayUI() {
+  const active = Boolean(autoplay?.active);
+  $('autoplay-button').setAttribute("aria-pressed", String(active));
+  $('autoplay-button').setAttribute("aria-label", t(active ? "stopAutoplay" : "autoplay"));
+  $('autoplay-label').textContent = t(active ? "stopAutoplay" : "autoplay");
 }
 
 function applyLanguage() {
@@ -86,6 +106,7 @@ function applyLanguage() {
   document.querySelectorAll("[data-i18n-label]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.i18nLabel)); });
   document.querySelectorAll("[data-action='language']").forEach((node) => { node.setAttribute("lang", locale === "zh" ? "en" : "zh-Hans"); });
   storage.write("journal-language", locale);
+  updateAutoplayUI();
   if (state) updateHUD(state, true);
   if (activeDialog === $('reader-dialog')) paginateReader(true);
   if (activeDialog === $('route-dialog')) renderRoute();
@@ -96,6 +117,7 @@ function stopBoost() { engine?.setBoost(false); }
 
 function openDialog(dialog) {
   if (activeDialog) closeDialog();
+  autoplay?.stop();
   engine?.pause();
   stopBoost();
   returnFocus = document.activeElement;
@@ -208,6 +230,7 @@ function renderAbout() {
 
 function drive() {
   if (!engine || activeDialog) return;
+  autoplay?.stop({ pause: false });
   if (state.driving) state.paused ? engine.resume() : engine.pause();
   else if (state.index === entries.length - 1) { engine.seek(0); saveStop(0); updateHUD(engine.model.state, true); }
   else engine.startNext();
@@ -215,6 +238,7 @@ function drive() {
 
 function chooseStop(index) {
   if (!Number.isInteger(index) || !entries[index]) return;
+  autoplay?.stop();
   engine.seek(index);
   saveStop(index);
   updateHUD(engine.model.state, true);
@@ -227,6 +251,7 @@ document.addEventListener("click", (event) => {
   if (stopButton) return chooseStop(Number(stopButton.dataset.stop));
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "language") { locale = locale === "zh" ? "en" : "zh"; applyLanguage(); }
+  else if (action === "autoplay") { autoplay?.active ? autoplay.stop() : autoplay?.start(); }
   else if (action === "drive") drive();
   else if (action === "read") openReader();
   else if (action === "route") { openDialog($('route-dialog')); routePage = 0; renderRoute(); }
@@ -265,7 +290,8 @@ $('boost-button').addEventListener("keyup", (event) => {
 $('boost-button').addEventListener("blur", stopBoost);
 window.addEventListener("pointerup", stopBoost);
 window.addEventListener("pointercancel", stopBoost);
-window.addEventListener("blur", () => { stopBoost(); engine?.pause(); });
+window.addEventListener("blur", () => { autoplay?.stop(); stopBoost(); engine?.pause(); });
+document.addEventListener("visibilitychange", () => { if (document.hidden) autoplay?.stop(); });
 window.addEventListener("keydown", (event) => {
   if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
   if (activeDialog) {
@@ -302,7 +328,7 @@ reducedMotion.addEventListener("change", () => engine?.setReducedMotion(reducedM
 applyLanguage();
 try {
   engine = new DriveEngine({
-    canvas: $('road-canvas'), backgroundUrl: config.assets.background, carUrl: config.assets.car,
+    canvas: $('road-canvas'), backgroundUrl: config.assets.background, backgrounds: config.assets.backgrounds, carUrl: config.assets.car,
     count: entries.length, reducedMotion: reducedMotion.matches,
     onUpdate: updateHUD,
     onArrive: (arrived) => {
@@ -313,11 +339,21 @@ try {
       $('game-stage').classList.add("has-arrived");
       arrivalTimer = setTimeout(() => $('game-stage').classList.remove("has-arrived"), 650);
       announce(t("arrived", { place: entries[index].name[locale] }));
+      autoplay?.arrived();
     }
+  });
+  autoplay = new AutoplayController({
+    getState: () => engine.model.state,
+    advance: () => engine.startNext(),
+    resume: () => engine.resume(),
+    pause: () => engine.pause(),
+    rewind: () => { engine.seek(0); saveStop(0); },
+    onChange: updateAutoplayUI,
   });
   engine.seek(sourceIndex);
   saveStop(sourceIndex, false);
   updateHUD(engine.model.state, true);
+  updateAutoplayUI();
   document.body.classList.add("is-ready");
   document.querySelectorAll("[data-needs-game]").forEach((button) => { button.disabled = false; });
   updateHUD(engine.model.state, true);

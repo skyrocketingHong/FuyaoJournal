@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-31T08:26:25Z",
+  "generatedAt": "2026-10-31T09:41:09Z",
   "title": "Design System: Journal 沿途夜行",
   "extensions": {
     "colorMeta": {
@@ -132,7 +132,7 @@
       },
       "journey-label": {
         "displayName": "行程辅助标签",
-        "purpose": "默认行程统计；说明下载链接和窄屏状态使用同一字号。"
+        "purpose": "默认行程统计；窄屏状态使用同一字号。"
       },
       "footer": {
         "displayName": "版权页尾",
@@ -148,7 +148,7 @@
       },
       "no-script-heading": {
         "displayName": "无脚本标题",
-        "purpose": "无脚本下载说明的已有标题字号；字重使用浏览器 h2 默认值，未补造显式字重。"
+        "purpose": "无脚本启用提示的已有标题字号；字重使用浏览器 h2 默认值，未补造显式字重。"
       },
       "wordmark-mobile": {
         "displayName": "窄屏字标",
@@ -181,6 +181,30 @@
       "body-en-mobile": {
         "displayName": "窄屏英文正文",
         "purpose": "48rem 以下的英文正文。"
+      },
+      "place-strip-zh": {
+        "displayName": "顶部中文地点",
+        "purpose": "完整 23 地点条的中文标签，随网格换行。"
+      },
+      "place-strip-en": {
+        "displayName": "顶部英文地点",
+        "purpose": "完整地点条的 Road Sign 800 斜体标签；与中文共用地点状态。"
+      },
+      "scene-zh-compact": {
+        "displayName": "窄短屏中文地点",
+        "purpose": "宽度不超过 48rem 且高度不超过 46.25rem 时的中文场景标题；更窄的后续规则仍按源码层叠。"
+      },
+      "scene-en-compact": {
+        "displayName": "窄短屏英文地点",
+        "purpose": "宽度不超过 48rem 且高度不超过 46.25rem 时的英文场景标题，保留斜体。"
+      },
+      "dense-route": {
+        "displayName": "紧凑地点条",
+        "purpose": "宽高均不超过 37.5rem 时的中文地点按钮：12px、不换行，不压缩，按钮整体换行。"
+      },
+      "dense-route-en": {
+        "displayName": "紧凑英文地点条",
+        "purpose": "同一窄短屏条件下的英文地点按钮，12px 并保留 Road Sign 800 斜体。"
       }
     },
     "shadows": [
@@ -230,6 +254,11 @@
         "name": "panel-enter",
         "value": "180ms cubic-bezier(0.16, 1, 0.3, 1)",
         "purpose": "模态面板上移显现；仅未减少动态效果时启用。"
+      },
+      {
+        "name": "autoplay-dwell",
+        "value": "1600ms",
+        "purpose": "显式启动自动播放后的到站停留；终点、面板、手动前进或暂停、选站、失焦和隐藏时取消，不自行恢复。加速和语言切换保留自动播放状态。"
       }
     ],
     "breakpoints": [
@@ -252,6 +281,26 @@
       {
         "name": "short-viewport-wide-console-min-width",
         "value": "48.01rem"
+      },
+      {
+        "name": "place-strip-twelve-max-width",
+        "value": "100rem"
+      },
+      {
+        "name": "place-strip-eight-max-width",
+        "value": "56rem"
+      },
+      {
+        "name": "place-strip-six-max-width",
+        "value": "37.5rem"
+      },
+      {
+        "name": "compact-stage-max-height",
+        "value": "46.25rem"
+      },
+      {
+        "name": "dense-route-max-width-and-height",
+        "value": "37.5rem"
       }
     ]
   },
@@ -265,20 +314,20 @@
       "css": ".ds-preview-drive-button{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-drive-button button{font:inherit;cursor:pointer}.ds-preview-drive-button button:disabled{cursor:default;opacity:.45}.ds-preview-drive-button button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-drive-button svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-drive-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; min-height: 3.25rem; border-radius: 2px; padding: 0.65rem 1rem; border: 1px solid var(--ink, #122d38); color: var(--ink, #122d38); background: transparent; font-size: 0.9375rem; font-weight: 600; }\n.ds-drive-button { min-width: 9.5rem; border-color: var(--ink, #122d38); background: var(--ink, #122d38); color: var(--paper, #f6f1e4); }\n.ds-drive-button:hover { background: #294954; }\n.ds-drive-button[aria-pressed=\"true\"] { background: var(--signal, #f2cb75); color: var(--ink, #122d38); }\n"
     },
     {
-      "name": "按住加速",
+      "name": "显式自动播放",
       "kind": "button",
-      "refersTo": "boost-button",
-      "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
-      "html": "<div class=\"ds-preview-boost-button\"><button type=\"button\" class=\"ds-boost-button\" aria-pressed=\"false\" aria-label=\"行驶时按住加速\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m4 5 7 7-7 7m8-14 7 7-7 7\"/></svg><span>按住加速</span></button></div>",
-      "css": ".ds-preview-boost-button{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-boost-button button{font:inherit;cursor:pointer}.ds-preview-boost-button button:disabled{cursor:default;opacity:.45}.ds-preview-boost-button button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-boost-button svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-boost-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; min-height: 3.25rem; border-radius: 2px; padding: 0.65rem 1rem; border: 1px solid var(--ink, #122d38); color: var(--ink, #122d38); background: transparent; font-size: 0.9375rem; font-weight: 600; }\n.ds-boost-button { min-width: 7.5rem; background: var(--signal, #f2cb75); }\n.ds-boost-button[aria-pressed=\"true\"] { background: var(--coral, #f27b53); }\n"
+      "refersTo": "autoplay-button",
+      "description": "顶部现有自动播放按钮的静态状态样例；预览不启用计时或驾驶。",
+      "html": "<div class=\"ds-preview-autoplay\"><button type=\"button\" class=\"ds-quiet-button ds-autoplay-button\" aria-pressed=\"false\" aria-label=\"自动播放\">自动播放</button></div>",
+      "css": ".ds-preview-autoplay{font-family:var(--sans,-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--paper,#f6f1e4);background:var(--night,#081d29)}.ds-preview-autoplay button{font:inherit;cursor:pointer}.ds-preview-autoplay button:focus-visible{outline:2px solid currentColor;outline-offset:4px}\n.ds-quiet-button { min-height: 2.75rem; border: 0; padding: 0.5rem 0.75rem; color: inherit; background: transparent; font-size: 0.875rem; }\n.ds-quiet-button:hover { color: var(--signal, #f2cb75); }\n.ds-autoplay-button { border: 1px solid var(--signal, #f2cb75); color: var(--signal, #f2cb75); min-width: 5.5rem; }\n.ds-autoplay-button[aria-pressed=\"true\"] { background: var(--signal, #f2cb75); color: var(--ink, #122d38); }"
     },
     {
-      "name": "当前地点选项",
+      "name": "完整地点条",
       "kind": "nav",
-      "refersTo": "stop-option",
-      "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
-      "html": "<div class=\"ds-preview-stop-option\"><button type=\"button\" class=\"ds-stop-option ds-is-visited\" aria-current=\"location\" aria-label=\"01 · 前往 柴湾\"><span class=\"ds-stop-number\">01</span><span>柴湾</span></button></div>",
-      "css": ".ds-preview-stop-option{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-stop-option button{font:inherit;cursor:pointer}.ds-preview-stop-option button:disabled{cursor:default;opacity:.45}.ds-preview-stop-option button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-stop-option svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-stop-option { display: flex; gap: 0.65rem; align-items: center; min-width: 0; min-height: 2.75rem; padding: 0.6rem 0.75rem; border: 1px solid var(--line-light, #c9d1cd); color: var(--ink, #122d38); background: transparent; text-align: left; font-size: 0.9375rem; line-height: 1.35; }\n.ds-stop-option .ds-stop-number { flex-shrink: 0; color: var(--muted-ink, #51616a); font: italic 800 1.25rem var(--display, \"Road Sign\", \"Arial Narrow\", sans-serif); }\n.ds-stop-option[aria-current=\"location\"] { background: var(--signal, #f2cb75); border-color: var(--ink, #122d38); font-weight: 600; }\n.ds-stop-option:hover { border-color: var(--ink, #122d38); }\n"
+      "refersTo": "place-strip",
+      "description": "现有 23 地点按钮完整示例，通常按 23、12、8、6 列换行；宽高均不超过 37.5rem 时采用紧凑弹性换行，预览不启动驾驶或选站逻辑。",
+      "html": "<nav class=\"ds-place-strip\" data-i18n-label=\"allStops\" aria-label=\"全部地点\"><button type=\"button\" class=\"ds-place-button\" data-stop=\"0\" data-needs-game aria-label=\"1 / 23 · 柴湾\" aria-current=\"location\"><span data-place-name>柴湾</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"1\" data-needs-game aria-label=\"2 / 23 · 北角\"><span data-place-name>北角</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"2\" data-needs-game aria-label=\"3 / 23 · 铜锣湾\"><span data-place-name>铜锣湾</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"3\" data-needs-game aria-label=\"4 / 23 · 湾仔\"><span data-place-name>湾仔</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"4\" data-needs-game aria-label=\"5 / 23 · 中环\"><span data-place-name>中环</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"5\" data-needs-game aria-label=\"6 / 23 · 金钟\"><span data-place-name>金钟</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"6\" data-needs-game aria-label=\"7 / 23 · 尖沙咀\"><span data-place-name>尖沙咀</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"7\" data-needs-game aria-label=\"8 / 23 · 油麻地\"><span data-place-name>油麻地</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"8\" data-needs-game aria-label=\"9 / 23 · 旺角\"><span data-place-name>旺角</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"9\" data-needs-game aria-label=\"10 / 23 · 太子\"><span data-place-name>太子</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"10\" data-needs-game aria-label=\"11 / 23 · 九龙塘\"><span data-place-name>九龙塘</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"11\" data-needs-game aria-label=\"12 / 23 · 沙田\"><span data-place-name>沙田</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"12\" data-needs-game aria-label=\"13 / 23 · 上水\"><span data-place-name>上水</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"13\" data-needs-game aria-label=\"14 / 23 · 罗湖\"><span data-place-name>罗湖</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"14\" data-needs-game aria-label=\"15 / 23 · 深圳\"><span data-place-name>深圳</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"15\" data-needs-game aria-label=\"16 / 23 · 广州\"><span data-place-name>广州</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"16\" data-needs-game aria-label=\"17 / 23 · 厦门\"><span data-place-name>厦门</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"17\" data-needs-game aria-label=\"18 / 23 · 台北\"><span data-place-name>台北</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"18\" data-needs-game aria-label=\"19 / 23 · 福州\"><span data-place-name>福州</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"19\" data-needs-game aria-label=\"20 / 23 · 南京\"><span data-place-name>南京</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"20\" data-needs-game aria-label=\"21 / 23 · 上海\"><span data-place-name>上海</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"21\" data-needs-game aria-label=\"22 / 23 · 北京\"><span data-place-name>北京</span></button><button type=\"button\" class=\"ds-place-button\" data-stop=\"22\" data-needs-game aria-label=\"23 / 23 · 中环\"><span data-place-name>中环</span></button></nav>",
+      "css": ".ds-place-strip { display: grid; grid-template-columns: repeat(23, minmax(0, 1fr)); gap: 0.25rem; padding: 0.5rem 1.5rem; background: var(--night, #081d29); border-bottom: 1px solid var(--line, #3b5965); }\n.ds-place-button { min-width: 0; min-height: 1.75rem; padding: 0.25rem 0.15rem; border: 1px solid transparent; color: var(--muted, #a9c0c8); background: transparent; font: 500 0.75rem/1.25 var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif); overflow-wrap: anywhere; }\n.ds-place-button:hover { border-color: var(--line, #3b5965); color: var(--paper, #f6f1e4); }\n.ds-place-button[aria-current=\"location\"] { color: var(--ink, #122d38); background: var(--signal, #f2cb75); border-color: var(--signal, #f2cb75); text-decoration: none; font-weight: 700; }\n.ds-place-strip button{cursor:pointer}.ds-place-strip button:focus-visible{outline:2px solid currentColor;outline-offset:4px}@media(max-width:100rem){.ds-place-strip{grid-template-columns:repeat(12,minmax(0,1fr))}}@media(max-width:56rem){.ds-place-strip{grid-template-columns:repeat(8,minmax(0,1fr))}}@media(max-width:37.5rem){.ds-place-strip{grid-template-columns:repeat(6,minmax(0,1fr))}}\n@media(max-width:37.5rem) and (max-height:37.5rem){.ds-place-strip{display:flex;flex-wrap:wrap;gap:2px;padding:4px 12px}.ds-place-button,html[lang=\"en\"] .ds-place-button{flex:0 0 auto;min-width:24px;min-height:24px;padding:2px;font-size:12px;line-height:1.2;white-space:nowrap;overflow-wrap:normal}}"
     },
     {
       "name": "到站随笔入口",
@@ -299,12 +348,12 @@
   ],
   "narrative": {
     "northStar": "一屏夜港，停靠成页",
-    "overview": "Journal 的当前表面为 Experience 模式：在固定一屏内向右驾驶、到站停车、打开一页随笔。画面由夜港全景、珊瑚橙双门车和道路运动承担；深海蓝界面框定舞台，浅色控制台与阅读卡片提供停靠后的操作和阅读空间。车灯金色标示当前地点、驾驶状态和加速操作。\n\n默认语言为简体中文，英文覆盖地点、操作、说明、标题与全部正文。23 篇随笔对应 22 个不同地点，两篇中环以 `central` 和 `central-return` 区分；金钟使用 `admiralty`。地点标识采用通行英文名，顺序由构建脚本的 `ROUTE` 维护。场景是原创游戏美术，文章为地点主题的文学想象，路线只表达体验顺序。\n\n本记录提取自 `src/site.css`、`src/app.mjs`、`src/drive-engine.mjs`、`src/pagination.mjs`、`src/i18n.mjs`、`scripts/build.py`、`content/` 与 `assets/`，并遵循当前 `PRODUCT.md` 和表面简报。文档描述源码行为与资源事实；浏览器、画面、设备手感和帧率未验，不据此宣称视觉通过。用户自行完成视觉验收。",
+    "overview": "Journal 的当前表面为 Experience 模式：在固定一屏内向右驾驶、到站停车、打开一页随笔。画面由各地点的连续夜景、珊瑚橙双门车和道路运动承担；深海蓝界面框定舞台，浅色控制台与阅读卡片提供停靠后的操作和阅读空间。车灯金色标示当前地点、驾驶状态和加速操作。\n\n默认语言为简体中文，英文覆盖地点、操作、说明、标题与全部正文。23 篇随笔对应 22 个不同地点，两篇中环以 `central` 和 `central-return` 区分；金钟使用 `admiralty`。地点标识采用通行英文名，顺序由构建脚本的 `ROUTE` 维护。场景是原创游戏美术，文章为地点主题的文学想象，路线只表达体验顺序。\n\n本记录提取自 `src/site.css`、`src/app.mjs`、`src/drive-engine.mjs`、`src/scene-strip.mjs`、`src/autoplay.mjs`、`src/pagination.mjs`、`src/i18n.mjs`、`scripts/build.py`、`content/` 与 `assets/`，并遵循当前 `PRODUCT.md` 和表面简报。文档描述源码行为与资源事实；浏览器、画面、设备手感和帧率未验，不据此宣称视觉通过。用户自行完成视觉验收。",
     "keyCharacteristics": [
-      "一个固定视口：场景、控制台和版权页尾同屏，阅读与菜单用分页呈现。",
-      "原创夜港全景和带透明通道的珊瑚橙车辆共同构成横向驾驶舞台。",
+      "一个固定视口：完整地点条、场景、控制台和版权页尾同屏，阅读与菜单用分页呈现。",
+      "22 个不同地点的原生夜景按 23 站连续拼接，与透明珊瑚橙车辆共同构成横向驾驶舞台。",
       "本地许可斜体字标负责街机感；系统无衬线承担操作，宋体和 Georgia 承担双语正文。",
-      "驾驶由主动操作触发，到站自动停车；暂停、失焦和打开面板会停止行驶。",
+      "手动前进逐站停靠；自动播放需显式启动，到站停留后继续，终点及指定停止操作会结束自动播放。",
       "完整中英内容切换保留驾驶状态，阅读位置按段落与相对字符位置迁移。"
     ],
     "rules": [
@@ -326,10 +375,10 @@
     ],
     "dos": [
       "Do 保持固定一屏结构，让菜单、正文与说明通过分页完整呈现。",
-      "Do 使用现有夜港 WebP 与透明车辆素材，保留许可字体和来源记录。",
+      "Do 使用各地点原生场景 WebP 与透明车辆素材，保留每图道路锚点、许可字体和来源记录。",
       "Do 将 Road Sign 别名、本地字体文件及其字重和斜体用途一起维护。",
       "Do 同步维护简体中文和完整英文界面、地点、标题及正文，使用通行英文地点 ID。",
-      "Do 保留到站停车、打开面板暂停、后台暂停和主动继续的控制语义。",
+      "Do 保留手动逐站停车、显式自动播放、到站停留，以及面板、手动前进或暂停、选站和后台事件停止自动播放的控制语义；加速与语言切换保留当前自动播放状态。",
       "Do 明确区分源码参数、逻辑验证与未完成的视觉、设备和帧率验收。"
     ],
     "donts": [

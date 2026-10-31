@@ -1,3 +1,5 @@
+import { sceneTiles, scenePlacement, SceneImageCache } from "./scene-strip.mjs";
+
 const LEG_SECONDS = 2.5;
 const MAX_STEP_SECONDS = 0.05;
 const BOOST_MULTIPLIER = 1.85;
@@ -110,7 +112,7 @@ export class DriveModel {
 
 /** Canvas is optional: the model and its callbacks also work without a renderer. */
 export class DriveEngine {
-  constructor({ canvas, backgroundUrl, carUrl, count = 23, onUpdate, onArrive, reducedMotion = false } = {}) {
+  constructor({ canvas, backgroundUrl, backgrounds, carUrl, count = 23, onUpdate, onArrive, reducedMotion = false } = {}) {
     this.canvas = canvas;
     this.document = canvas?.ownerDocument ?? globalThis.document ?? null;
     this.view = this.document?.defaultView ?? globalThis.window ?? null;
@@ -122,6 +124,8 @@ export class DriveEngine {
     this.height = 1;
     this.dpr = 1;
     this.images = { background: null, car: null };
+    this.backgrounds = Array.isArray(backgrounds) ? Array.from({ length: count }, (_, index) => backgrounds[index] ?? null) : null;
+    this.sceneLayout = null;
     this.pendingImages = new Set();
     this.failedImages = new Set();
     this.imageRequests = [];
@@ -141,6 +145,11 @@ export class DriveEngine {
       onArrive: (state) => { if (!this.destroyed) onArrive?.(state); },
     });
     this.boundFrame = (timestamp) => this._frame(timestamp);
+    const ImageClass = this.view?.Image ?? globalThis.Image;
+    this.sceneCache = this.backgrounds ? new SceneImageCache({
+      createImage: ImageClass ? () => new ImageClass() : undefined,
+      onChange: () => { this._assetState(); this.requestFrame(); },
+    }) : null;
     this.boundResize = () => this.resize();
     this.boundVisibility = () => {
       if (this.document?.hidden) {
@@ -159,7 +168,7 @@ export class DriveEngine {
       this.resizeObserver = new Observer(this.boundResize);
       this.resizeObserver.observe(canvas.parentElement ?? canvas);
     }
-    this._loadImage("background", backgroundUrl);
+    if (!this.backgrounds) this._loadImage("background", backgroundUrl);
     this._loadImage("car", carUrl);
     this.resize();
   }
@@ -221,9 +230,16 @@ export class DriveEngine {
 
   _assetState() {
     if (!this.canvas?.dataset) return;
+    const scenes = this.sceneLayout?.tiles.map((tile) => {
+      const scene = this.backgrounds[tile.index];
+      return this._hasSceneGround(scene) ? this.sceneCache?.status(scene.url) : "invalid-metadata";
+    }) ?? [];
+    const sceneState = scenes.some((s) => s === "loading") ? "loading"
+      : scenes.some((s) => s !== "ready") ? "fallback" : "ready";
+    this.canvas.dataset.sceneState = this.backgrounds ? sceneState : "single";
     this.canvas.dataset.renderState = !this.ctx ? "unavailable"
-      : this.pendingImages.size ? "loading"
-      : this.failedImages.size ? "fallback" : "ready";
+      : this.pendingImages.size || sceneState === "loading" ? "loading"
+      : this.failedImages.size || sceneState === "fallback" ? "fallback" : "ready";
   }
 
   _visibleBounds(image) {
@@ -292,19 +308,26 @@ export class DriveEngine {
   }
 
   draw() {
-    if (!this.ctx || this.destroyed) return;
+    if (!this.ctx || this.destroyed || this.width < 2 || this.height < 2) return;
     const c = this.ctx, w = this.width, h = this.height;
     const state = this.model.state;
     const moving = state.driving && !state.paused && !this.reducedMotion;
     const distance = this.reducedMotion ? 0 : state.travelled;
-    const roadY = h * 0.75;
+    const roadY = h * 0.76;
+    const carWidth = Math.min(w * 0.36, clamp(w * 0.23, 128, 300));
+    const carX = this.reducedMotion ? w * 0.27 : w * (0.16 + 0.27 * (1 - Math.exp(-distance * 0.9)));
     c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     c.clearRect(0, 0, w, h);
     c.fillStyle = "#092c35";
     c.fillRect(0, 0, w, h);
-    this._drawBackground(distance);
+    if (this.backgrounds) {
+      this.sceneLayout = sceneTiles({ width: w, height: h, position: this.reducedMotion ? state.index : state.travelled, count: this.backgrounds.length, carX, carWidth });
+      this._drawSceneStrip();
+    } else {
+      this._drawBackground(distance);
+    }
 
-    if (!this.images.background) {
+    if (!this.images.background && !this.backgrounds) {
       c.fillStyle = "#112c31";
       c.fillRect(0, roadY, w, h - roadY);
     }
@@ -316,11 +339,34 @@ export class DriveEngine {
     c.fillStyle = "#8da4a0";
     for (let x = -roadOffset - 128; x < w + 128; x += 128) c.fillRect(x, roadY + (h - roadY) * 0.72, 60, 3);
 
-    const carWidth = Math.min(w * 0.36, clamp(w * 0.23, 128, 300));
-    const carX = this.reducedMotion ? w * 0.27 : w * (0.16 + 0.27 * (1 - Math.exp(-distance * 0.9)));
     if (moving) this._drawSpeedLines(distance, carX, roadY, state.boost);
     if (state.driving && !this.reducedMotion) this._drawCheckpoint(carX + carWidth * 0.55, state.progress, roadY);
     this._drawCar(carX, roadY + Math.min(28, h * 0.06), carWidth, moving ? Math.sin(distance * 43) * 1.1 : 0, moving && state.boost);
+  }
+
+  _drawSceneStrip() {
+    const { tiles, position, roadY } = this.sceneLayout;
+    const anchor = clamp(Math.floor(position + 0.45), 0, this.backgrounds.length - 1);
+    const visible = [...new Set(tiles.map((tile) => tile.index))].sort((a, b) => Math.abs(a - anchor) - Math.abs(b - anchor));
+    const indices = [...new Set([anchor, ...visible, anchor + 1, anchor - 1, anchor + 2, anchor - 2])]
+      .filter((index) => index >= 0 && index < this.backgrounds.length);
+    this.sceneCache.sync(indices.map((index) => this.backgrounds[index]));
+    const c = this.ctx;
+    for (const tile of tiles) {
+      const scene = this.backgrounds[tile.index];
+      const image = this.sceneCache.get(scene?.url);
+      if (!image || !this._hasSceneGround(scene)) continue;
+      const placement = scenePlacement({ sourceWidth: image.naturalWidth, sourceHeight: image.naturalHeight, groundY: scene.groundY, tileWidth: tile.width, stageHeight: this.height, roadY });
+      c.save();
+      c.beginPath(); c.rect(tile.x, 0, tile.width + 0.5, this.height); c.clip();
+      c.drawImage(image, tile.x + placement.x, placement.y, placement.width, placement.height);
+      c.restore();
+    }
+    this._assetState();
+  }
+
+  _hasSceneGround(scene) {
+    return scene && Number.isFinite(scene.groundY) && scene.groundY > 0 && scene.groundY < 1;
   }
 
   _drawBackground(distance) {
@@ -403,7 +449,14 @@ export class DriveEngine {
     this.document?.removeEventListener?.("visibilitychange", this.boundVisibility);
     this.view?.removeEventListener?.("resize", this.boundResize);
     this.resizeObserver?.disconnect();
-    for (const image of this.imageRequests) { image.onload = null; image.onerror = null; }
+    this.sceneCache?.destroy();
+    for (const image of this.imageRequests) {
+      image.onload = null; image.onerror = null;
+      try {
+        if (image.removeAttribute) image.removeAttribute("src");
+        else image.src = "";
+      } catch { /* The engine no longer retains the image. */ }
+    }
     this.imageRequests.length = 0;
     this.images = { background: null, car: null };
   }

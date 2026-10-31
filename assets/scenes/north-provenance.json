@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "usage": "Development provenance; do not publish this JSON.",
+  "assets": [
+    {
+      "id": "mong-kok",
+      "source": "mong-kok.png",
+      "delivery": "mong-kok.webp",
+      "width": 1536,
+      "height": 1024,
+      "nativeResolution": true,
+      "deliveryBytes": 412302,
+      "prompt": "Use case: stylized-concept. Production background tile for a premium 2D side-scrolling night driving game. Native high resolution, ideally 3072 x 2048 pixels, landscape 3:2. Create an ORIGINAL painterly night-street scene representing Mong Kok: dense older mid-rise commercial facades, layered awnings and shop windows, narrow side-street gaps, glowing but completely blank hanging sign panels, a rich warm amber and restrained coral rhythm against deep indigo and teal architecture. Not a harbour panorama and no financial district landmark skyline. Precise side-on stage composition, camera horizontal rather than looking down the road. The bottom 24 percent is unobstructed level dark asphalt spanning the full image width; the near curb and road's upper edge are exactly around y=76 percent and horizontal at both edges, suitable for joining to neighboring scene tiles. The city fills the middle, with some calm midnight sky above; sophisticated hand-painted game concept art, tactile architectural detail, subtle wet-road reflections, coherent warm window lighting. No people, vehicles, readable writing, letters, brands, logos, flags, watermarks, interface, frame, vignette, isometric view, or driver's view. Preserve natural detail at native resolution; do not make a low-resolution image enlarged.",
+      "tool": "image_gen built-in",
+      "groundY": 0.69,
+      "groundYSource": "Visual estimate of the upper roadway boundary in the native image."
+    },
+    {
+      "id": "prince-edward",
+      "source": "prince-edward.png",
+      "delivery": "prince-edward.webp",
+      "width": 1536,
+      "height": 1024,
+      "nativeResolution": true,
+      "deliveryBytes": 383974,
+      "prompt": "Use case: stylized-concept. ORIGINAL production background tile for a premium 2D side-scrolling driving game, landscape 3:2, highest native detail, ideally 3072 x 2048 pixels. Night scene inspired by Prince Edward's flower-market streets: a continuous row of low and mid-rise older urban shop facades, flower sellers' open-front spaces filled with buckets of foliage, pale blossoms, wrapped plant bundles and hanging greenery, muted awnings, warm lamps lighting the plants, restrained apartment balconies above. No harbour skyline or giant financial towers. A nuanced hand-painted arcade concept-art finish, midnight indigo and deep teal surroundings with soft amber and touches of coral light, matching a cinematic painted night-drive world. Straight side-on elevation across the storefronts, with no road vanishing point. Reserve exactly the bottom quarter as empty level asphalt for compositing a separate car; the curb is horizontal near 76 percent of image height and meets both image edges at the same height. Upper part has calm dark sky between buildings. Keep the whole roadway unobstructed. No people, vehicles, readable text, letters, shop names, brands, logos, flags, interface, frame, border, vignette or watermark. Native high resolution, never enlarged pixel art.",
+      "tool": "image_gen built-in",
+      "groundY": 0.66,
+      "groundYSource": "Visual estimate of the upper roadway boundary in the native image."
+    },
+    {
+      "id": "kowloon-tong",
+      "source": "kowloon-tong.png",
+      "delivery": "kowloon-tong.webp",
+      "width": 1536,
+      "height": 1024,
+      "nativeResolution": true,
+      "deliveryBytes": 261510,
+      "prompt": "Use case: stylized-concept. Create an ORIGINAL high-native-resolution landscape 3:2 game background tile, ideally 3072 x 2048. Subject: Kowloon Tong at night, expressed as a tranquil leafy low-density residential and school district: broad mature trees, garden walls, quiet low-rise villas and modest campus buildings with warm lit windows, a few distant mid-rise silhouettes behind deep green foliage, a mountain outline in the far distance. No commercial sign forest, no harbour, no central-business skyscrapers. Premium hand-painted 2D arcade environment art with rich architectural materials, atmospheric midnight indigo and teal, small warm amber pools of lamplight. Camera looks straight across the scene, exact side-on horizontal platform-game elevation, not a road receding toward a vanishing point. The bottom quarter only is unobstructed flat dark asphalt; place the curb/road boundary low near y=76 percent of the full height, perfectly horizontal with identical height at both image edges. No plants or objects intrude into the road. Calm night sky is visible above the tree canopy. No people, vehicles, readable text, letters, logos, brands, school emblems, flags, UI, border, vignette or watermark. Natural detailed painting, no isometric viewpoint or driver's perspective, do not upscale low resolution.",
+      "tool": "image_gen built-in",
+      "groundY": 0.68,
+      "groundYSource": "Visual estimate of the upper roadway boundary in the native image."
+    },
+    {
+      "id": "sha-tin",
+      "source": "sha-tin.png",
+      "delivery": "sha-tin.webp",
+      "width": 1536,
+      "height": 1024,
+      "nativeResolution": true,
+      "deliveryBytes": 212786,
+      "prompt": "Use case: stylized-concept. ORIGINAL production background tile for a premium 2D side-scrolling night driving game. Landscape 3:2, highest native detail, ideally 3072 x 2048 pixels; never enlarge a low-resolution image. Rich hand-painted arcade concept-art finish, atmospheric midnight indigo and deep teal with restrained warm amber window and street light. Camera faces straight across the scene, a horizontal side-on stage rather than a road vanishing point. Keep the bottom quarter as level empty dark asphalt, curb near y=76 percent with the same height at both image edges, unobstructed for a separate vehicle sprite. No people, vehicles, readable text, letters, brands, logos, flags, interface, frame, vignette, watermark, isometric view or driver's perspective. Subject: Sha Tin, a spacious Shing Mun River-side night environment. Behind the flat foreground road show a simple riverside railing, the broad calm river with short amber reflections, a pedestrian and cycle path on the far bank, mature trees, residential tower groups against dark wooded hills, and a modest pedestrian bridge. Distinct New Territories river-town setting, no harbour ships, no coastal skyline, no central-business landmarks. A calm expanse of night sky and hills gives the upper image breathing room.",
+      "tool": "image_gen built-in",
+      "groundY": 0.7,
+      "groundYSource": "Visual estimate of the upper roadway boundary in the native image."
+    },
+    {
+      "id": "sheung-shui",
+      "source": "sheung-shui.png",
+      "delivery": "sheung-shui.webp",
+      "width": 1536,
+      "height": 1024,
+      "nativeResolution": true,
+      "deliveryBytes": 228542,
+      "prompt": "Use case: stylized-concept. ORIGINAL production background tile for a premium 2D side-scrolling night driving game. Landscape 3:2, highest native detail, ideally 3072 x 2048 pixels; never enlarge a low-resolution image. Rich hand-painted arcade concept-art finish, atmospheric midnight indigo and deep teal with restrained warm amber window and street light. Camera faces straight across the scene, a horizontal side-on stage rather than a road vanishing point. Keep the bottom quarter as level empty dark asphalt, curb near y=76 percent with the same height at both image edges, unobstructed for a separate vehicle sprite. No people, vehicles, readable text, letters, brands, logos, flags, interface, frame, vignette, watermark, isometric view or driver's perspective. Subject: Sheung Shui, a northern new-town and market-street night environment. The middle band holds low and mid-rise neighborhood shops with blank awnings, older tiled façades, market baskets set safely behind the sidewalk edge, pockets of leafy vegetation, and distant northern hills with a few newer residential blocks. Use a modest town scale, open gaps and rural edges; no harbour, no skyline of financial towers and no neon metropolitan canyon. The tone is quieter and more open than dense Kowloon streets.",
+      "tool": "image_gen built-in",
+      "groundY": 0.66,
+      "groundYSource": "Visual estimate of the upper roadway boundary in the native image."
+    },
+    {
+      "id": "lo-wu",
+      "source": "lo-wu.png",
+      "delivery": "lo-wu.webp",
+      "width": 1536,
+      "height": 1024,
+      "nativeResolution": true,
+      "deliveryBytes": 179416,
+      "prompt": "Use case: stylized-concept. ORIGINAL production background tile for a premium 2D side-scrolling night driving game. Landscape 3:2, highest native detail, ideally 3072 x 2048 pixels; never enlarge a low-resolution image. Rich hand-painted arcade concept-art finish, atmospheric midnight indigo and deep teal with restrained warm amber window and street light. Camera faces straight across the scene, a horizontal side-on stage rather than a road vanishing point. Keep the bottom quarter as level empty dark asphalt, curb near y=76 percent with the same height at both image edges, unobstructed for a separate vehicle sprite. No people, vehicles, readable text, letters, brands, logos, flags, interface, frame, vignette, watermark, isometric view or driver's perspective. Subject: Lo Wu, a quiet boundary-river setting near a pedestrian crossing. Beyond the level foreground roadway show a low riverside embankment, the narrow calm river, a simple covered pedestrian bridge and restrained transit-building silhouettes, trees and low wooded hills. The scene is a literary game interpretation of a northern crossing landscape, not a navigational diagram. No queues, barriers across the road, political emblems, checkpoint signage or readable information. Emphasize open water, low structures, and tranquil night light rather than a dense waterfront city.",
+      "tool": "image_gen built-in",
+      "groundY": 0.67,
+      "groundYSource": "Visual estimate of the upper roadway boundary in the native image."
+    }
+  ],
+  "expectedIds": [
+    "mong-kok",
+    "prince-edward",
+    "kowloon-tong",
+    "sha-tin",
+    "sheung-shui",
+    "lo-wu"
+  ],
+  "generationStatus": "Completed: all six requested north-route scenes generated with the built-in image tool.",
+  "pending": []
+}

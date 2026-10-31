@@ -12,9 +12,11 @@ Journal combines a side-scrolling driving scene with 23 literary notes about 22 
 - Keyboard and touch controls; the animation pauses when the page loses focus or becomes hidden.
 - Simplified Chinese by default, with complete English UI and all 23 essays translated. Language changes retain the current place and reading paragraph.
 - Standard English place identifiers, including North Point, Causeway Bay, Admiralty, Central, and Taipei.
-- Original layered night scenery and a transparent vehicle sprite. Reduced-motion settings preserve progress with less spatial movement.
+- Twenty-two original 1536×1024 place scenes form a continuous route, with individual road anchors and a bounded image cache. The return to Central reuses its matching scene.
+- The complete stop strip stays at the top and wraps with the viewport; every stop is selectable.
+- Auto play continues after a short dwell at each stop and ends at the destination. Panels, manual advance or pause, stop selection, and leaving the page stop it. Holding boost changes speed without turning auto play off.
+- A transparent vehicle sprite and reduced-motion settings preserve progress with less spatial movement.
 - Local assets and fonts, without analytics, audio, or remote runtime dependencies.
-- Bilingual text download and an AGPL corresponding-source archive available from the About panel.
 
 ## Build and preview
 
@@ -26,7 +28,7 @@ node --test tests/*.test.mjs
 python3 -m http.server 8000 --directory public
 ```
 
-The build creates the app, an error page, hashed assets, the complete bilingual journal, and `source.zip` in `public/`. Preview at `http://localhost:8000`; press `Ctrl+C` to stop the server. The generated output can be removed and rebuilt. Missing translations, incomplete paragraphs, and mismatched place identifiers stop the build.
+The build creates the app, an error page, and hashed assets in `public/`. Preview at `http://localhost:8000`; press `Ctrl+C` to stop the server. The generated output can be removed and rebuilt. Missing translations, incomplete paragraphs, mismatched place identifiers, missing scene images, or invalid road anchors stop the build.
 
 ## Controls
 
@@ -35,12 +37,13 @@ The build creates the app, an error page, hashed assets, the complete bilingual 
 | Travel to the next stop | Drive button or Right Arrow |
 | Pause or resume | Drive button or Space |
 | Boost while driving | Hold the boost button or Shift |
+| Continue automatically | Toggle Auto play in the top bar |
 | Return to the previous stop | Previous button or Left Arrow while parked |
 | Read or choose a place | Book and route buttons |
 | Turn a reading page | Page buttons or Left/Right Arrow in the reader |
 | Close a panel | Close button or Escape |
 
-JavaScript is required for driving and interactive paging. If it is disabled, the complete bilingual journal remains available as a text download.
+JavaScript is required for driving and interactive paging. If it is disabled, the page asks the visitor to enable it. Text and source download endpoints are not published.
 
 ## Structure
 
@@ -49,10 +52,12 @@ content/                 Bilingual place names, titles, and complete essays
 assets/                  Original artwork, local font, and licenses
 src/app.mjs              Interface, language, dialogs, and saved position
 src/drive-engine.mjs     Driving state model and Canvas renderer
+src/scene-strip.mjs      Continuous place scenes and bounded loading cache
+src/autoplay.mjs         Explicit automatic playback and stop handling
 src/pagination.mjs      Text pagination and reading-position mapping
 src/i18n.mjs             Interface translations
 src/site.css             Fixed-viewport layout and visual system
-scripts/build.py        Ordered route, HTML, resources, and source archive
+scripts/build.py        Ordered route, HTML, and complete scene validation
 public/                  Generated deployment files, ignored by Git
 ```
 
@@ -60,9 +65,9 @@ The `ROUTE` list defines the order. IDs use conventional English place names; th
 
 ## Verification and deployment
 
-Logic tests cover travel, pause, boost, route boundaries, hidden-page behavior, fallback scheduling, text preservation, and bilingual reading-position mapping. Source checks also verify DOM identifiers, translation keys, output links, and the source archive allowlist. These checks do not establish visual quality or device frame rates; browser and visual acceptance remain manual.
+Logic tests cover travel, pause, boost, route boundaries, hidden-page behavior, automatic playback, scene geometry and caching, text preservation, and bilingual reading-position mapping. Source checks also verify DOM identifiers, translation keys, output links, image dimensions, and removed download endpoints. These checks do not establish visual quality or device frame rates; browser and visual acceptance remain manual.
 
-Publish only `public/`. The source archive includes the code, content, artwork, and licenses needed to rebuild the app; it excludes private deployment records, credentials, project instructions, and design-process files. Keep previous deployment releases for rollback.
+Publish only `public/`. Private deployment records, credentials, project instructions, and design-process files stay outside it. Keep previous deployment releases for rollback.
 
 ## Assets and license
 
