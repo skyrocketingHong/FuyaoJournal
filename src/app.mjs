@@ -10,7 +10,7 @@ const storage = {
   read(key) { try { return localStorage.getItem(key); } catch { return null; } },
   write(key, value) { try { localStorage.setItem(key, value); } catch { /* Storage may be disabled. */ } }
 };
-let locale = storage.read("journal-language") === "en" ? "en" : "zh";
+let locale = "en";
 const t = (key, values) => translate(locale, key, values);
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const dialogs = [$('reader-dialog'), $('route-dialog'), $('about-dialog')];
@@ -61,24 +61,22 @@ function updateHUD(nextState, force = false) {
   const key = `${index}/${state.driving}/${state.paused}/${state.boost}/${locale}/${visited.size}`;
   const overall = Number.isFinite(state.overall) ? state.overall : index + (state.progress || 0);
   $('journey-progress').value = overall;
-  $('game-stage').style.setProperty("--journey-progress", String(overall / Math.max(1, entries.length - 1)));
   if (!force && key === previousHUD) return;
   previousHUD = key;
   $('current-place').textContent = entry.name[locale];
-  $('place-subtitle').textContent = locale === "zh" ? entry.name.en : entry.dek.en;
   $('station-position').textContent = `${String(index + 1).padStart(2, "0")} / ${entries.length}`;
   $('next-place').textContent = next.name[locale];
+  $('next-place').hidden = index === entries.length - 1;
   $('next-label').textContent = t(index === entries.length - 1 ? "lastStop" : "next");
-  $('note-title').textContent = entry.title[locale];
-  $('visited-count').textContent = t("visited", { count: visited.size, total: entries.length });
-  const statusKey = state.paused ? "paused" : state.driving ? "driving" : index === entries.length - 1 ? "completed" : "ready";
-  $('drive-status').textContent = t(statusKey);
+  $('journey-progress').setAttribute("aria-valuetext", `${index + 1} / ${entries.length} · ${entry.name[locale]}`);
   $('drive-label').textContent = t(state.driving ? (state.paused ? "resume" : "pause") : index === entries.length - 1 ? "restart" : "drive");
   $('previous-stop').disabled = index === 0 || state.driving;
   $('boost-button').disabled = !state.driving || state.paused;
   $('boost-button').setAttribute("aria-pressed", String(Boolean(state.boost)));
   $('drive-button').setAttribute("aria-pressed", String(state.driving && !state.paused));
   document.body.dataset.driving = String(state.driving && !state.paused);
+  document.body.dataset.boosting = String(state.driving && !state.paused && state.boost);
+  document.body.dataset.paused = String(state.paused);
   document.querySelectorAll("#place-strip button[data-stop]").forEach((button) => {
     const position = Number(button.dataset.stop);
     const place = entries[position];
@@ -97,6 +95,7 @@ function updateAutoplayUI() {
   $('autoplay-button').setAttribute("aria-pressed", String(active));
   $('autoplay-button').setAttribute("aria-label", t(active ? "stopAutoplay" : "autoplay"));
   $('autoplay-label').textContent = t(active ? "stopAutoplay" : "autoplay");
+  document.body.dataset.autoplay = String(active);
 }
 
 function applyLanguage() {
@@ -104,8 +103,8 @@ function applyLanguage() {
   document.title = `Journal · ${t("appTitle")}`;
   document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n); });
   document.querySelectorAll("[data-i18n-label]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.i18nLabel)); });
+  document.querySelectorAll("[data-i18n-title]").forEach((node) => { node.setAttribute("title", t(node.dataset.i18nTitle)); });
   document.querySelectorAll("[data-action='language']").forEach((node) => { node.setAttribute("lang", locale === "zh" ? "en" : "zh-Hans"); });
-  storage.write("journal-language", locale);
   updateAutoplayUI();
   if (state) updateHUD(state, true);
   if (activeDialog === $('reader-dialog')) paginateReader(true);
@@ -115,8 +114,17 @@ function applyLanguage() {
 
 function stopBoost() { engine?.setBoost(false); }
 
+function cancelTransientMotion() {
+  clearTimeout(arrivalTimer);
+  $('game-stage').classList.remove("has-arrived");
+  for (const id of ["reader-text", "about-text"]) {
+    $(id).getAnimations?.().forEach((animation) => animation.cancel());
+  }
+}
+
 function openDialog(dialog) {
   if (activeDialog) closeDialog();
+  cancelTransientMotion();
   autoplay?.stop();
   engine?.pause();
   stopBoost();
@@ -131,6 +139,7 @@ function openDialog(dialog) {
 function closeDialog() {
   const closing = activeDialog;
   if (!closing) return;
+  cancelTransientMotion();
   activeDialog = null;
   if (typeof closing.close === "function") closing.close();
   else closing.removeAttribute("open");
@@ -168,7 +177,17 @@ function renderReader() {
 function turnReader(direction) {
   readerPage = Math.max(0, Math.min(readerPages.length - 1, readerPage + direction));
   renderReader();
+  animatePage($('reader-text'), direction);
   announce($('reader-count').textContent);
+}
+
+function animatePage(node, direction = 1) {
+  if (reducedMotion.matches || document.hidden || !node.animate) return;
+  node.getAnimations?.().forEach((animation) => animation.cancel());
+  node.animate([
+    { opacity: 0.35, transform: `translateX(${direction * 22}px)`, filter: "blur(3px)" },
+    { opacity: 1, transform: "translateX(0)", filter: "blur(0)" },
+  ], { duration: 280, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
 }
 
 function openReader() {
@@ -195,6 +214,7 @@ function renderRoute() {
     button.type = "button";
     button.className = "stop-option";
     button.dataset.stop = String(index);
+    button.style.setProperty("--stop-order", String(Math.min(localIndex, 8)));
     button.setAttribute("aria-label", `${String(index + 1).padStart(2, "0")} · ${t("jump", { place: entry.name[locale] })}`);
     if (index === state.index) button.setAttribute("aria-current", "location");
     const number = document.createElement("span");
@@ -230,6 +250,7 @@ function renderAbout() {
 
 function drive() {
   if (!engine || activeDialog) return;
+  cancelTransientMotion();
   autoplay?.stop({ pause: false });
   if (state.driving) state.paused ? engine.resume() : engine.pause();
   else if (state.index === entries.length - 1) { engine.seek(0); saveStop(0); updateHUD(engine.model.state, true); }
@@ -238,6 +259,7 @@ function drive() {
 
 function chooseStop(index) {
   if (!Number.isInteger(index) || !entries[index]) return;
+  cancelTransientMotion();
   autoplay?.stop();
   engine.seek(index);
   saveStop(index);
@@ -251,7 +273,7 @@ document.addEventListener("click", (event) => {
   if (stopButton) return chooseStop(Number(stopButton.dataset.stop));
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "language") { locale = locale === "zh" ? "en" : "zh"; applyLanguage(); }
-  else if (action === "autoplay") { autoplay?.active ? autoplay.stop() : autoplay?.start(); }
+  else if (action === "autoplay") { cancelTransientMotion(); autoplay?.active ? autoplay.stop() : autoplay?.start(); }
   else if (action === "drive") drive();
   else if (action === "read") openReader();
   else if (action === "route") { openDialog($('route-dialog')); routePage = 0; renderRoute(); }
@@ -262,8 +284,8 @@ document.addEventListener("click", (event) => {
   else if (action === "reader-next") turnReader(1);
   else if (action === "route-prev") { routePage = Math.max(0, routePage - 1); renderRoute(); }
   else if (action === "route-next") { routePage += 1; renderRoute(); }
-  else if (action === "about-prev") { aboutPage = Math.max(0, aboutPage - 1); renderAbout(); }
-  else if (action === "about-next") { aboutPage = Math.min(aboutPages.length - 1, aboutPage + 1); renderAbout(); }
+  else if (action === "about-prev") { aboutPage = Math.max(0, aboutPage - 1); renderAbout(); animatePage($('about-text'), -1); }
+  else if (action === "about-next") { aboutPage = Math.min(aboutPages.length - 1, aboutPage + 1); renderAbout(); animatePage($('about-text')); }
 });
 
 dialogs.forEach((dialog) => {
@@ -290,8 +312,12 @@ $('boost-button').addEventListener("keyup", (event) => {
 $('boost-button').addEventListener("blur", stopBoost);
 window.addEventListener("pointerup", stopBoost);
 window.addEventListener("pointercancel", stopBoost);
-window.addEventListener("blur", () => { autoplay?.stop(); stopBoost(); engine?.pause(); });
-document.addEventListener("visibilitychange", () => { if (document.hidden) autoplay?.stop(); });
+window.addEventListener("blur", () => { document.body.dataset.motionPaused = "true"; cancelTransientMotion(); autoplay?.stop(); stopBoost(); engine?.pause(); });
+window.addEventListener("focus", () => { document.body.dataset.motionPaused = String(document.hidden); });
+document.addEventListener("visibilitychange", () => {
+  document.body.dataset.motionPaused = String(document.hidden);
+  if (document.hidden) { cancelTransientMotion(); autoplay?.stop(); }
+});
 window.addEventListener("keydown", (event) => {
   if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
   if (activeDialog) {
@@ -323,7 +349,10 @@ if ("ResizeObserver" in window) {
   const observer = new ResizeObserver(resizePanels);
   dialogs.forEach((dialog) => observer.observe(dialog));
 }
-reducedMotion.addEventListener("change", () => engine?.setReducedMotion(reducedMotion.matches));
+reducedMotion.addEventListener("change", () => {
+  if (reducedMotion.matches) cancelTransientMotion();
+  engine?.setReducedMotion(reducedMotion.matches);
+});
 
 applyLanguage();
 try {
@@ -337,7 +366,7 @@ try {
       updateHUD(engine.model.state, true);
       clearTimeout(arrivalTimer);
       $('game-stage').classList.add("has-arrived");
-      arrivalTimer = setTimeout(() => $('game-stage').classList.remove("has-arrived"), 650);
+      arrivalTimer = setTimeout(() => $('game-stage').classList.remove("has-arrived"), 1100);
       announce(t("arrived", { place: entries[index].name[locale] }));
       autoplay?.arrived();
     }

@@ -11,7 +11,7 @@ export class AutoplayController {
     this.active = true;
     this.generation += 1;
     this.onChange?.(true);
-    if (this.getState().completed) this.rewind();
+    this.rewind();
     this._advance();
   }
 
@@ -32,10 +32,11 @@ export class AutoplayController {
       return;
     }
     if (this.timer !== null) this.clearTimer(this.timer);
-    const generation = this.generation;
+    const generation = ++this.generation;
     this.timer = this.setTimer(() => {
+      if (!this.active || this.generation !== generation) return;
       this.timer = null;
-      if (this.active && this.generation === generation) this._advance();
+      this._advance();
     }, this.dwell);
   }
 

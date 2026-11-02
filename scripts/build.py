@@ -81,33 +81,33 @@ def icon(name: str) -> str:
 
 
 def page_controls(prefix: str, count: str) -> str:
-    return f'''<div class="page-controls"><button type="button" id="{prefix}-prev" data-action="{prefix}-prev" data-i18n-label="prevPage" aria-label="上一页">{icon('left')}</button><span class="page-count" id="{prefix}-count">{count}</span><button type="button" id="{prefix}-next" data-action="{prefix}-next" data-i18n-label="nextPage" aria-label="下一页">{icon('right')}</button></div>'''
+    return f'''<div class="page-controls"><button type="button" id="{prefix}-prev" data-action="{prefix}-prev" data-i18n-label="prevPage" aria-label="Previous page">{icon('left')}</button><span class="page-count" id="{prefix}-count">{count}</span><button type="button" id="{prefix}-next" data-action="{prefix}-next" data-i18n-label="nextPage" aria-label="Next page">{icon('right')}</button></div>'''
 
 
 def close_button() -> str:
-    return f'<button type="button" class="close-button" data-action="close" data-i18n-label="close" aria-label="关闭">{icon("close")}</button>'
+    return f'<button type="button" class="close-button" data-action="close" data-i18n-label="close" aria-label="Close">{icon("close")}</button>'
 
 
 def place_strip(data: list[dict]) -> str:
     buttons = []
     for index, entry in enumerate(data):
         current = ' aria-current="location"' if index == 0 else ''
-        buttons.append(f'<button type="button" class="place-button" data-stop="{index}" data-needs-game disabled aria-label="{index + 1} / {len(data)} · {e(entry["name"]["zh"])}"{current}><span data-place-name>{e(entry["name"]["zh"])}</span></button>')
-    return '<nav class="place-strip" id="place-strip" data-i18n-label="allStops" aria-label="全部地点">' + ''.join(buttons) + '</nav>'
+        buttons.append(f'<button type="button" class="place-button" data-stop="{index}" data-needs-game disabled aria-label="{index + 1} / {len(data)} · {e(entry["name"]["en"])}"{current}><span data-place-name>{e(entry["name"]["en"])}</span></button>')
+    return '<nav class="place-strip" id="place-strip" data-i18n-label="allStops" aria-label="All stops">' + ''.join(buttons) + '</nav>'
 
 
 def document(data: list[dict], assets: dict) -> str:
     payload = json.dumps({"entries": data, "assets": assets}, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     first = data[0]
     return f'''<!doctype html>
-<html lang="zh-Hans">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#081d29">
-  <meta name="description" content="从柴湾出发，沿二十三个停靠点向右前进。Journal 单屏夜行小游戏，收录完整中英双语地点随笔。">
+  <meta name="description" content="A single-screen night drive through 23 stops, with city notes in English and Simplified Chinese.">
   <meta name="referrer" content="same-origin">
-  <title>Journal · 沿途夜行</title>
+  <title>Journal · Along the Way</title>
   <link rel="canonical" href="{ORIGIN}/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="{assets['background']}" as="image">
@@ -117,38 +117,37 @@ def document(data: list[dict], assets: dict) -> str:
 <body>
   <div class="viewport-app" id="game-shell">
     <header class="topbar">
-      <div class="identity"><a class="wordmark" href="/" aria-label="Journal">JOURNAL</a><h1 data-i18n="appTitle">沿途夜行</h1></div>
-      <nav class="top-actions" data-i18n-label="pageActions" aria-label="页面操作"><button type="button" class="quiet-button about-button" data-action="about"><span data-i18n="about">关于</span></button><button type="button" class="quiet-button autoplay-button" id="autoplay-button" data-action="autoplay" data-needs-game disabled aria-pressed="false" aria-label="自动播放"><span id="autoplay-label">自动播放</span></button><button type="button" class="quiet-button language-button" data-action="language" data-i18n-label="languageLabel" aria-label="切换为英文"><span data-i18n="language">English</span></button></nav>
+      <div class="identity"><h1><a class="wordmark" href="/" aria-label="Journal">JOURNAL</a></h1></div>
+      <nav class="top-actions" data-i18n-label="pageActions" aria-label="Page actions"><button type="button" class="quiet-button autoplay-button" id="autoplay-button" data-action="autoplay" data-needs-game disabled aria-pressed="false" aria-label="Auto play"><span id="autoplay-label">Auto play</span></button><button type="button" class="quiet-button language-button" data-action="language" data-i18n-label="languageLabel" aria-label="Switch to Simplified Chinese"><span data-i18n="language">简体中文</span></button></nav>
     </header>
     {place_strip(data)}
-    <main class="game-stage" id="game-stage" data-i18n-label="stageLabel" aria-label="从左向右行驶的城市夜景">
+    <main class="game-stage" id="game-stage" data-i18n-label="stageLabel" aria-label="A city night scene with a car travelling from left to right">
       <img class="scene-background" id="scene-background" src="{assets['background']}" alt="" aria-hidden="true">
       <canvas class="road-canvas" id="road-canvas" width="1400" height="700" aria-hidden="true"></canvas>
       <div class="scene-shade" aria-hidden="true"></div>
-      <div class="scene-heading"><h2 id="current-place">柴湾</h2><p class="place-subtitle" id="place-subtitle">Chai Wan</p><div class="scene-status"><span class="status-dot" aria-hidden="true"></span><span id="drive-status">停靠中</span></div></div>
-      <div class="station-position" id="station-position" data-i18n-label="currentStop" aria-label="当前站点">01 / 23</div>
-      <div class="next-sign"><span id="next-label">下一站</span><strong id="next-place">北角</strong></div>
-      <aside class="arrival-note"><h3 id="note-title">{e(first['title']['zh'])}</h3><button type="button" class="text-button" data-action="read" data-needs-game disabled><span data-i18n="read">读这篇随笔</span></button></aside>
-      <p class="keyboard-hint" data-i18n="keyboard">方向键前进 · 空格暂停 · Shift 加速</p><p class="mobile-hint" data-i18n="mobileHint">点击前进，到下一站自动停车</p>
+      <div class="stage-effects" aria-hidden="true"><div class="light-sweep"></div><div class="speed-frame"></div><div class="arrival-flare"></div></div>
+      <div class="scene-heading"><h2 id="current-place">Chai Wan</h2></div>
+      <div class="station-position" id="station-position" data-i18n-label="currentStop" aria-label="Current stop">01 / 23</div>
+      <div class="next-sign"><span id="next-label">Next stop</span><strong id="next-place">North Point</strong></div>
       <p class="startup-message" id="startup-message" hidden></p>
-      <noscript><section class="no-script"><h2>启用 JavaScript 继续</h2><p>驾驶、阅读和语言切换需要 JavaScript，请启用后重新打开此页。</p><p>Enable JavaScript and reload this page to drive and read.</p></section></noscript>
+      <noscript><section class="no-script"><h2>Enable JavaScript</h2><p>Enable JavaScript and reload this page to drive and read.</p></section></noscript>
     </main>
-    <section class="drive-console" data-i18n-label="controls" aria-label="驾驶操作">
-      <div class="transport"><button type="button" class="icon-button" id="previous-stop" data-action="previous-stop" data-i18n-label="previousStop" aria-label="上一站" data-needs-game disabled>{icon('left')}</button><button type="button" class="drive-button" id="drive-button" data-action="drive" data-needs-game disabled aria-pressed="false">{icon('right')}<span id="drive-label">向右出发</span></button><button type="button" class="boost-button" id="boost-button" data-i18n-label="boostLabel" aria-label="行驶时按住加速" data-needs-game disabled aria-pressed="false">{icon('boost')}<span data-i18n="boost">按住加速</span></button></div>
-      <div class="journey-info"><div class="journey-label"><span data-i18n="progress">旅程进度</span><span id="visited-count">已到访 1 / 23</span></div><progress id="journey-progress" max="22" value="0" data-i18n-label="progress" aria-label="旅程进度"></progress></div>
-      <div class="secondary-actions"><button type="button" class="secondary-button" data-action="route" data-i18n-label="route" aria-label="沿途地点" data-needs-game disabled>{icon('route')}<span class="button-copy" data-i18n="route">沿途地点</span></button><button type="button" class="secondary-button" data-action="read" data-i18n-label="read" aria-label="读这篇随笔" data-needs-game disabled>{icon('book')}<span class="button-copy" data-i18n="reader">随笔</span></button><button type="button" class="secondary-button console-about" data-action="about" data-i18n-label="about" aria-label="关于">{icon('info')}</button></div>
+    <section class="drive-console" data-i18n-label="controls" aria-label="Driving controls">
+      <div class="transport"><button type="button" class="icon-button" id="previous-stop" data-action="previous-stop" data-i18n-label="previousStop" aria-label="Previous stop" data-needs-game disabled>{icon('left')}</button><button type="button" class="drive-button" id="drive-button" data-action="drive" data-needs-game disabled aria-pressed="false">{icon('right')}<span id="drive-label">Next stop</span></button><button type="button" class="boost-button" id="boost-button" data-i18n-label="boostLabel" aria-label="Hold to boost while driving" data-needs-game disabled aria-pressed="false">{icon('boost')}<span data-i18n="boost">Hold to boost</span></button></div>
+      <div class="journey-info"><progress id="journey-progress" max="22" value="0" data-i18n-label="progress" aria-label="Journey progress"></progress></div>
+      <div class="secondary-actions"><button type="button" class="secondary-button route-button" data-action="route" data-i18n-label="route" aria-label="Choose a stop" data-i18n-title="route" title="Choose a stop" data-needs-game disabled>{icon('route')}<span class="button-copy" data-i18n="routeTitle">Stops</span></button><button type="button" class="secondary-button read-button" data-action="read" data-i18n-label="read" aria-label="Read note" data-needs-game disabled>{icon('book')}<span data-i18n="read">Read note</span></button><button type="button" class="icon-button" data-action="about" data-i18n-label="about" aria-label="Controls and about" data-i18n-title="about" title="Controls and about">{icon('info')}</button></div>
     </section>
-    <footer class="site-footer"><p>© 2016 - {YEAR} <a href="https://fuyaoskyrocket.ing/">扶摇skyrocketing</a></p><p><a href="https://status.fuyaoskyrocket.ing/" data-i18n="serviceStatus">服务状态</a> · <span data-i18n="hosting">部署于阿里云</span></p></footer>
+    <footer class="site-footer"><p>© 2016 - {YEAR} <a href="https://fuyaoskyrocket.ing/">扶摇skyrocketing</a></p><p><a href="https://status.fuyaoskyrocket.ing/" data-i18n="serviceStatus">Service status</a> · <span data-i18n="hosting">Deployed on Aliyun</span></p></footer>
   </div>
 
   <dialog id="reader-dialog" aria-labelledby="reader-title" aria-describedby="reader-text">
-    <div class="modal-panel"><header><div class="modal-topline"><p class="reader-place" id="reader-place">柴湾</p><div class="modal-actions"><button type="button" class="quiet-button" data-action="language" data-i18n-label="languageLabel" aria-label="切换为英文"><span data-i18n="language">English</span></button>{close_button()}</div></div><h2 class="modal-heading" id="reader-title">{e(first['title']['zh'])}</h2></header><div class="reader-body" id="reader-body"><p class="reader-text" id="reader-text"></p></div><footer class="modal-footer">{page_controls('reader','第 1 / 3 页')}<button type="button" class="reader-close" data-action="close" data-i18n="continue">继续上路</button></footer></div>
+    <div class="modal-panel"><header><div class="modal-topline"><p class="reader-place" id="reader-place">Chai Wan</p><div class="modal-actions"><button type="button" class="quiet-button" data-action="language" data-i18n-label="languageLabel" aria-label="Switch to Simplified Chinese"><span data-i18n="language">简体中文</span></button>{close_button()}</div></div><h2 class="modal-heading" id="reader-title">{e(first['title']['en'])}</h2></header><div class="reader-body" id="reader-body"><p class="reader-text" id="reader-text"></p></div><footer class="modal-footer">{page_controls('reader','Page 1 / 3')}<button type="button" class="reader-close" data-action="close" data-i18n="continue">Back to journey</button></footer></div>
   </dialog>
   <dialog id="route-dialog" aria-labelledby="route-title">
-    <div class="modal-panel route-panel"><header class="modal-topline"><h2 class="modal-heading" id="route-title" data-i18n="routeTitle">想从哪里开始？</h2>{close_button()}</header><p class="route-intro" data-i18n="routeDescription">按顺序走，也可以选择一处停靠。</p><div class="route-grid" id="route-grid"></div><footer class="modal-footer">{page_controls('route','地点页 1 / 3')}</footer></div>
+    <div class="modal-panel route-panel"><header class="modal-topline"><h2 class="modal-heading" id="route-title" data-i18n="routeTitle">Stops</h2>{close_button()}</header><div class="route-grid" id="route-grid"></div><footer class="modal-footer">{page_controls('route','Stops page 1 / 3')}</footer></div>
   </dialog>
   <dialog id="about-dialog" aria-labelledby="about-title">
-    <div class="modal-panel"><header><div class="modal-topline"><h2 class="modal-heading" id="about-title" data-i18n="aboutTitle">一段路，二十三页</h2>{close_button()}</div></header><div class="reader-body" id="about-body"><p class="reader-text" id="about-text"></p></div><footer class="modal-footer">{page_controls('about','说明 1 / 3')}</footer></div>
+    <div class="modal-panel"><header><div class="modal-topline"><h2 class="modal-heading" id="about-title" data-i18n="aboutTitle">Controls</h2>{close_button()}</div></header><div class="reader-body" id="about-body"><p class="reader-text" id="about-text"></p></div><footer class="modal-footer">{page_controls('about','About 1 / 3')}</footer></div>
   </dialog>
   <p class="visually-hidden" id="announcer" role="status" aria-live="polite"></p>
   <script id="journal-data" type="application/json">{payload}</script>
@@ -211,7 +210,7 @@ def main() -> None:
     (OUT / "index.html").write_text(document(data, assets), encoding="utf-8")
     (OUT / "assets/favicon.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="6" fill="#081d29"/><path d="M15 12h18v16c0 8-5 11-11 11-6 0-10-3-10-9h7c0 2 1 3 3 3 3 0 4-2 4-5V18H15z" fill="#f2cb75"/></svg>\n')
     (OUT / "assets/OFL.txt").write_bytes((ROOT / "assets/fonts/OFL.txt").read_bytes())
-    (OUT / "404.html").write_text(f'''<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>返回 Journal / Return to Journal</title><link rel="stylesheet" href="{assets['css']}"></head><body><main class="no-script"><h1>这一页不在沿途</h1><p>This page is not on the route.</p><a href="/">返回 Journal · Return to Journal</a></main></body></html>''', encoding="utf-8")
+    (OUT / "404.html").write_text(f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Return to Journal</title><link rel="stylesheet" href="{assets['css']}"></head><body><main class="no-script"><h1>Page not found</h1><a href="/">Return to Journal</a></main></body></html>''', encoding="utf-8")
     print(f"Built one-screen app: {len(data)} bilingual notes, {len(set(x['name']['en'] for x in data))} places, {sum(1 for p in OUT.rglob('*') if p.is_file())} public files.")
 
 

@@ -76,17 +76,9 @@
         "role": "neutral",
         "displayName": "模态背景幕"
       },
-      "shadow-soft": {
-        "role": "neutral",
-        "displayName": "轻投影黑"
-      },
       "shadow-deep": {
         "role": "neutral",
         "displayName": "深投影黑"
-      },
-      "shadow-hint": {
-        "role": "neutral",
-        "displayName": "提示文字投影黑"
       }
     },
     "typographyMeta": {
@@ -126,25 +118,9 @@
         "displayName": "辅助信息",
         "purpose": "系统无衬线的说明与状态。"
       },
-      "scene-subtitle": {
-        "displayName": "场景辅文",
-        "purpose": "地点英文辅名或英文摘要；1rem 来自现有 place-subtitle。"
-      },
-      "journey-label": {
-        "displayName": "行程辅助标签",
-        "purpose": "默认行程统计；窄屏状态使用同一字号。"
-      },
       "footer": {
         "displayName": "版权页尾",
-        "purpose": "默认页尾字号；键盘提示、窄屏页码和行程统计也采用 0.75rem，各自行高沿用源码。"
-      },
-      "mobile-hint": {
-        "displayName": "手机提示",
-        "purpose": "48rem 以下的手机驾驶提示；窄屏页尾同字号，页尾行高保持 1.6。"
-      },
-      "arrival-heading": {
-        "displayName": "到站卡片标题",
-        "purpose": "场景内随笔入口标题；地点菜单序号同字号但使用 Road Sign 800 斜体。"
+        "purpose": "默认页尾字号；窄屏页码也采用 0.75rem，各自行高沿用源码。"
       },
       "no-script-heading": {
         "displayName": "无脚本标题",
@@ -176,7 +152,7 @@
       },
       "body-zh-mobile": {
         "displayName": "窄屏中文正文",
-        "purpose": "48rem 以下的中文正文；到站卡片标题同字号，仍保留其 600 字重和 1.6 行高。"
+        "purpose": "48rem 以下的中文正文。"
       },
       "body-en-mobile": {
         "displayName": "窄屏英文正文",
@@ -205,14 +181,21 @@
       "dense-route-en": {
         "displayName": "紧凑英文地点条",
         "purpose": "同一窄短屏条件下的英文地点按钮，12px 并保留 Road Sign 800 斜体。"
+      },
+      "footer-compact": {
+        "displayName": "紧凑页尾",
+        "purpose": "宽度不超过 48rem 或高度不超过 540px 时的页尾字号为 0.6875rem，行高 1.6。"
+      },
+      "reader-close-mobile": {
+        "displayName": "窄屏阅读返回",
+        "purpose": "48rem 以下的阅读返回操作字号为 0.8125rem，保留触控高度和可见文字。"
+      },
+      "boost-narrow": {
+        "displayName": "极窄屏加速文字",
+        "purpose": "25rem 以下为 0.8125rem，隐藏箭头、保留文字；宽高均不超过 37.5rem 时再由后续规则切换为图标按钮。"
       }
     },
     "shadows": [
-      {
-        "name": "arrival-note",
-        "value": "0 10px 28px rgb(0 0 0 / 18%)",
-        "purpose": "场景内的到站随笔卡片。"
-      },
       {
         "name": "modal",
         "value": "0 20px 80px rgb(0 0 0 / 30%)",
@@ -222,11 +205,6 @@
         "name": "scene-heading-text",
         "value": "0 2px 18px rgb(0 0 0 / 30%)",
         "purpose": "场景大字的 text-shadow，不是容器投影。"
-      },
-      {
-        "name": "keyboard-hint-text",
-        "value": "0 1px 5px rgb(0 0 0 / 70%)",
-        "purpose": "键盘操作提示的中性黑 text-shadow；不是彩色光晕或容器投影。"
       }
     ],
     "motion": [
@@ -242,23 +220,78 @@
       },
       {
         "name": "arrival-title",
-        "value": "400ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "到站标题轻微横向收束；减少动态效果时停用。"
-      },
-      {
-        "name": "arrival-note",
-        "value": "450ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "到站卡片上移 0.5rem 与 1deg 旋转归位；减少动态效果时停用。"
+        "value": "680ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "到站标题以位移、倾斜、模糊与裁切收束；减少动态效果时停用。"
       },
       {
         "name": "panel-enter",
-        "value": "180ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "模态面板上移显现；仅未减少动态效果时启用。"
+        "value": "320ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "模态面板以透视、位移和裁切展开；仅未减少动态效果时启用。"
       },
       {
         "name": "autoplay-dwell",
         "value": "1600ms",
         "purpose": "显式启动自动播放后的到站停留；终点、面板、手动前进或暂停、选站、失焦和隐藏时取消，不自行恢复。加速和语言切换保留自动播放状态。"
+      },
+      {
+        "name": "wordmark-enter",
+        "value": "650ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "字标进入，配合裁切、倾斜与位移。"
+      },
+      {
+        "name": "stop-strip-enter",
+        "value": "420ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "地点条三组错开 0、35、70ms 进入；仅未减少动态效果时启用。"
+      },
+      {
+        "name": "console-enter",
+        "value": "550ms 80ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "控制台一次性上移进入。"
+      },
+      {
+        "name": "road-light-pass",
+        "value": "3.2s linear",
+        "purpose": "行驶光扫；加速时周期缩为 1.3 秒，停车时暂停。"
+      },
+      {
+        "name": "boost-pressure",
+        "value": "900ms ease-in-out",
+        "purpose": "加速期间的边缘光往复缩放。"
+      },
+      {
+        "name": "drive-arrow",
+        "value": "750ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "行驶中的方向箭头；加速箭头使用 400ms。"
+      },
+      {
+        "name": "autoplay-scan",
+        "value": "2.8s ease-in-out",
+        "purpose": "仅自动播放启用时显示按钮内循环光带。"
+      },
+      {
+        "name": "arrival-counter",
+        "value": "650ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "到站序号上移进入。"
+      },
+      {
+        "name": "arrival-light",
+        "value": "800ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "到站光带横向扫过，不作为持续闲置动画。"
+      },
+      {
+        "name": "arrival-canvas",
+        "value": "0.9s",
+        "purpose": "Canvas 到站双环与射线；完成、暂停或减少动态效果后不再持续请求动画帧。"
+      },
+      {
+        "name": "menu-stop-enter",
+        "value": "320ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "地点选项依序延迟 24ms 进入。"
+      },
+      {
+        "name": "reader-page",
+        "value": "280ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "阅读和说明翻页方向位移、淡入与模糊复原；减少动态效果时不启用。"
       }
     ],
     "breakpoints": [
@@ -301,6 +334,10 @@
       {
         "name": "dense-route-max-width-and-height",
         "value": "37.5rem"
+      },
+      {
+        "name": "two-row-console-max-width",
+        "value": "56rem"
       }
     ]
   },
@@ -330,36 +367,28 @@
       "css": ".ds-place-strip { display: grid; grid-template-columns: repeat(23, minmax(0, 1fr)); gap: 0.25rem; padding: 0.5rem 1.5rem; background: var(--night, #081d29); border-bottom: 1px solid var(--line, #3b5965); }\n.ds-place-button { min-width: 0; min-height: 1.75rem; padding: 0.25rem 0.15rem; border: 1px solid transparent; color: var(--muted, #a9c0c8); background: transparent; font: 500 0.75rem/1.25 var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif); overflow-wrap: anywhere; }\n.ds-place-button:hover { border-color: var(--line, #3b5965); color: var(--paper, #f6f1e4); }\n.ds-place-button[aria-current=\"location\"] { color: var(--ink, #122d38); background: var(--signal, #f2cb75); border-color: var(--signal, #f2cb75); text-decoration: none; font-weight: 700; }\n.ds-place-strip button{cursor:pointer}.ds-place-strip button:focus-visible{outline:2px solid currentColor;outline-offset:4px}@media(max-width:100rem){.ds-place-strip{grid-template-columns:repeat(12,minmax(0,1fr))}}@media(max-width:56rem){.ds-place-strip{grid-template-columns:repeat(8,minmax(0,1fr))}}@media(max-width:37.5rem){.ds-place-strip{grid-template-columns:repeat(6,minmax(0,1fr))}}\n@media(max-width:37.5rem) and (max-height:37.5rem){.ds-place-strip{display:flex;flex-wrap:wrap;gap:2px;padding:4px 12px}.ds-place-button,html[lang=\"en\"] .ds-place-button{flex:0 0 auto;min-width:24px;min-height:24px;padding:2px;font-size:12px;line-height:1.2;white-space:nowrap;overflow-wrap:normal}}"
     },
     {
-      "name": "到站随笔入口",
-      "kind": "card",
-      "refersTo": "arrival-note",
-      "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
-      "html": "<div class=\"ds-preview-arrival-note\"><aside class=\"ds-arrival-note\"><h3>货梯门合上之前</h3><button type=\"button\" class=\"ds-text-button\">读这篇随笔</button></aside></div>",
-      "css": ".ds-preview-arrival-note{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-arrival-note button{font:inherit;cursor:pointer}.ds-preview-arrival-note button:disabled{cursor:default;opacity:.45}.ds-preview-arrival-note button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-arrival-note svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-arrival-note { position: absolute; top: 43%; right: 2.5rem; width: min(18rem, 34%); padding: 1.25rem 1.5rem; z-index: 1; color: var(--ink, #122d38); background: var(--paper, #f6f1e4); border-radius: 2px; box-shadow: 0 10px 28px rgb(0 0 0 / 18%); }\n.ds-arrival-note h3 { font: 600 1.25rem/1.6 var(--serif, \"Songti SC\", \"STSong\", Georgia, serif); margin-bottom: 0.85rem; }\n.ds-text-button { background: transparent; border: 0; border-bottom: 1px solid currentColor; padding: 0.4rem 0; min-height: 2.75rem; color: inherit; font-size: 0.875rem; }\n.ds-arrival-note{position:relative;top:auto;right:auto;width:min(18rem,100%)}"
-    },
-    {
       "name": "阅读翻页栏",
       "kind": "custom",
       "refersTo": "modal",
       "description": "当前实现的静态样例，保留样式和状态选择器；不运行驾驶或分页逻辑，也不代表视觉验收。",
-      "html": "<div class=\"ds-preview-modal\"><footer class=\"ds-modal-footer\"><div class=\"ds-page-controls\"><button type=\"button\" aria-label=\"上一页\" disabled><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 12H5m6-6-6 6 6 6\"/></svg></button><span class=\"ds-page-count\">第 1 / 3 页</span><button type=\"button\" aria-label=\"下一页\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg></button></div><button type=\"button\" class=\"ds-reader-close\">继续上路</button></footer></div>",
+      "html": "<div class=\"ds-preview-modal\"><footer class=\"ds-modal-footer\"><div class=\"ds-page-controls\"><button type=\"button\" aria-label=\"上一页\" disabled><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 12H5m6-6-6 6 6 6\"/></svg></button><span class=\"ds-page-count\">第 1 / 3 页</span><button type=\"button\" aria-label=\"下一页\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg></button></div><button type=\"button\" class=\"ds-reader-close\">返回旅程</button></footer></div>",
       "css": ".ds-preview-modal{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif);color:var(--ink,#122d38);background:var(--paper,#f6f1e4)}.ds-preview-modal button{font:inherit;cursor:pointer}.ds-preview-modal button:disabled{cursor:default;opacity:.45}.ds-preview-modal button:focus-visible{outline:2px solid currentColor;outline-offset:4px}.ds-preview-modal svg{width:1.25rem;height:1.25rem;flex-shrink:0}\n.ds-modal-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-width: 0; }\n.ds-page-controls { display: flex; align-items: center; gap: 0.5rem; }\n.ds-page-controls button { width: 2.75rem; min-height: 2.75rem; display: grid; place-items: center; background: transparent; color: var(--ink, #122d38); border: 1px solid var(--ink, #122d38); }\n.ds-page-controls button:hover:enabled { background: var(--signal, #f2cb75); }\n.ds-page-count { color: var(--muted-ink, #51616a); font-size: 0.875rem; font-variant-numeric: tabular-nums; }\n.ds-reader-close { border: 0; background: none; color: var(--ink, #122d38); padding: 0.5rem 0; min-height: 2.75rem; font-size: 0.875rem; text-decoration: underline; text-underline-offset: 0.2em; }\n"
     }
   ],
   "narrative": {
     "northStar": "一屏夜港，停靠成页",
-    "overview": "Journal 的当前表面为 Experience 模式：在固定一屏内向右驾驶、到站停车、打开一页随笔。画面由各地点的连续夜景、珊瑚橙双门车和道路运动承担；深海蓝界面框定舞台，浅色控制台与阅读卡片提供停靠后的操作和阅读空间。车灯金色标示当前地点、驾驶状态和加速操作。\n\n默认语言为简体中文，英文覆盖地点、操作、说明、标题与全部正文。23 篇随笔对应 22 个不同地点，两篇中环以 `central` 和 `central-return` 区分；金钟使用 `admiralty`。地点标识采用通行英文名，顺序由构建脚本的 `ROUTE` 维护。场景是原创游戏美术，文章为地点主题的文学想象，路线只表达体验顺序。\n\n本记录提取自 `src/site.css`、`src/app.mjs`、`src/drive-engine.mjs`、`src/scene-strip.mjs`、`src/autoplay.mjs`、`src/pagination.mjs`、`src/i18n.mjs`、`scripts/build.py`、`content/` 与 `assets/`，并遵循当前 `PRODUCT.md` 和表面简报。文档描述源码行为与资源事实；浏览器、画面、设备手感和帧率未验，不据此宣称视觉通过。用户自行完成视觉验收。",
+    "overview": "Journal 的当前表面为 Experience 模式：在固定一屏内向右驾驶、到站停车、打开一页随笔。画面由各地点的羽化连续夜景、珊瑚橙双门车、光轨与道路反光承担；深海蓝界面框定舞台，浅色控制台与阅读卡片提供停靠后的操作和阅读空间。车灯金色标示当前地点、驾驶状态和加速操作。\n\n每次加载默认英文，不读取浏览器、系统或已保存的语言偏好，不保存语言选择；简体中文仅在当前页面临时切换。中英资源覆盖地点、操作、说明、标题与全部正文。23 篇随笔对应 22 个不同地点，两篇中环以 `central` 和 `central-return` 区分；金钟使用 `admiralty`。地点标识采用通行英文名，顺序由构建脚本的 `ROUTE` 维护。场景是原创游戏美术，文章为地点主题的文学想象，路线只表达体验顺序。\n\n本记录提取自 `src/site.css`、`src/app.mjs`、`src/drive-engine.mjs`、`src/scene-strip.mjs`、`src/autoplay.mjs`、`src/pagination.mjs`、`src/i18n.mjs`、`scripts/build.py`、`content/` 与 `assets/`，并遵循当前 `PRODUCT.md` 和表面简报。文档描述源码行为与资源事实；浏览器、画面、设备手感和帧率未验，不据此宣称视觉通过。用户自行完成视觉验收。",
     "keyCharacteristics": [
       "一个固定视口：完整地点条、场景、控制台和版权页尾同屏，阅读与菜单用分页呈现。",
       "22 个不同地点的原生夜景按 23 站连续拼接，与透明珊瑚橙车辆共同构成横向驾驶舞台。",
       "本地许可斜体字标负责街机感；系统无衬线承担操作，宋体和 Georgia 承担双语正文。",
-      "手动前进逐站停靠；自动播放需显式启动，到站停留后继续，终点及指定停止操作会结束自动播放。",
+      "手动前进逐站停靠；每次显式启动自动播放均回到第一站并经过完整路线，到站停留后继续，终点及指定停止操作会结束自动播放。",
       "完整中英内容切换保留驾驶状态，阅读位置按段落与相对字符位置迁移。"
     ],
     "rules": [
       {
         "name": "The State Signal Rule",
-        "body": "金色与珊瑚橙表达已存在的操作或状态；主按钮文字、`aria-pressed`、当前地点属性和状态文字同步表达含义，不能只依赖颜色。",
+        "body": "金色与珊瑚橙表达已存在的操作或状态；主按钮文字、`aria-pressed` 和当前地点属性同步表达含义，不能只依赖颜色。",
         "section": "colors"
       },
       {
@@ -369,8 +398,13 @@
       },
       {
         "name": "The Stage Depth Rule",
-        "body": "深度来自现有场景图、文字遮罩、车辆透明合成和两级纸页面板；不把装饰性阴影扩散到全部按钮和进度条。",
+        "body": "深度来自现有场景图、文字遮罩、车辆透明合成和纸页模态面板；不把装饰性阴影扩散到全部按钮和进度条。",
         "section": "elevation"
+      },
+      {
+        "name": "The Motion Trigger Rule",
+        "body": "行驶光扫与自动播放按钮内光带是明确选择的非文本效果，不移动正文或标签；循环仅随驾驶、加速或自动播放状态启用，支持暂停、失焦冻结与减少动态效果。",
+        "section": "motion"
       }
     ],
     "dos": [
@@ -378,7 +412,8 @@
       "Do 使用各地点原生场景 WebP 与透明车辆素材，保留每图道路锚点、许可字体和来源记录。",
       "Do 将 Road Sign 别名、本地字体文件及其字重和斜体用途一起维护。",
       "Do 同步维护简体中文和完整英文界面、地点、标题及正文，使用通行英文地点 ID。",
-      "Do 保留手动逐站停车、显式自动播放、到站停留，以及面板、手动前进或暂停、选站和后台事件停止自动播放的控制语义；加速与语言切换保留当前自动播放状态。",
+      "Do 让每次自动播放从第一站走到终点，保留手动逐站停车、显式启动、到站停留，以及面板、手动前进或暂停、选站和后台事件停止自动播放的控制语义；加速与语言切换保留当前自动播放状态。",
+      "Do 用布局、层级和清晰按钮表达操作，去除重复副标题、状态文案、入口和常驻教程，保留辅助名称与必要错误提示。",
       "Do 明确区分源码参数、逻辑验证与未完成的视觉、设备和帧率验收。"
     ],
     "donts": [

@@ -1,8 +1,9 @@
-import { sceneTiles, scenePlacement, SceneImageCache } from "./scene-strip.mjs";
+import { sceneTiles, SceneImageCache, SceneStripRenderer } from "./scene-strip.mjs";
 
 const LEG_SECONDS = 2.5;
 const MAX_STEP_SECONDS = 0.05;
 const BOOST_MULTIPLIER = 1.85;
+const ARRIVAL_SECONDS = 0.9;
 const clamp = (value, minimum, maximum) => Math.min(maximum, Math.max(minimum, value));
 
 /** A discrete route with continuous progress between adjacent stops. */
@@ -123,6 +124,9 @@ export class DriveEngine {
     this.width = 1;
     this.height = 1;
     this.dpr = 1;
+    this.effectTime = 0;
+    this.arrivalElapsed = ARRIVAL_SECONDS;
+    this.visualPaused = false;
     this.images = { background: null, car: null };
     this.backgrounds = Array.isArray(backgrounds) ? Array.from({ length: count }, (_, index) => backgrounds[index] ?? null) : null;
     this.sceneLayout = null;
@@ -142,7 +146,11 @@ export class DriveEngine {
         onUpdate?.(state);
         this.requestFrame();
       },
-      onArrive: (state) => { if (!this.destroyed) onArrive?.(state); },
+      onArrive: (state) => {
+        if (this.destroyed) return;
+        this.arrivalElapsed = this.reducedMotion ? ARRIVAL_SECONDS : 0;
+        onArrive?.(state);
+      },
     });
     this.boundFrame = (timestamp) => this._frame(timestamp);
     const ImageClass = this.view?.Image ?? globalThis.Image;
@@ -150,10 +158,13 @@ export class DriveEngine {
       createImage: ImageClass ? () => new ImageClass() : undefined,
       onChange: () => { this._assetState(); this.requestFrame(); },
     }) : null;
+    this.sceneRenderer = this.backgrounds ? new SceneStripRenderer({
+      createCanvas: () => this.document?.createElement?.("canvas"),
+    }) : null;
     this.boundResize = () => this.resize();
     this.boundVisibility = () => {
       if (this.document?.hidden) {
-        this.model.pause();
+        this.pause();
         this.model.setBoost(false);
         this._cancelFrame();
       } else {
@@ -176,26 +187,39 @@ export class DriveEngine {
   startNext() {
     if (this.destroyed || this.document?.hidden) return false;
     const started = this.model.startNext();
-    if (started) this.lastTime = null;
+    if (started) {
+      this.visualPaused = false;
+      this.arrivalElapsed = ARRIVAL_SECONDS;
+      this.lastTime = null;
+    }
     return started;
   }
 
-  pause() { return !this.destroyed && this.model.pause(); }
+  pause() {
+    if (this.destroyed) return false;
+    this.visualPaused = true;
+    return this.model.pause();
+  }
   resume() {
     if (this.destroyed || this.document?.hidden) return false;
     const resumed = this.model.resume();
-    if (resumed) this.lastTime = null;
+    if (resumed) { this.visualPaused = false; this.lastTime = null; }
     return resumed;
   }
   setBoost(enabled) { return !this.destroyed && this.model.setBoost(enabled); }
   seek(index) {
     if (this.destroyed) return false;
     const selected = this.model.seek(index);
-    if (selected) this.lastTime = null;
+    if (selected) {
+      this.visualPaused = false;
+      this.arrivalElapsed = ARRIVAL_SECONDS;
+      this.lastTime = null;
+    }
     return selected;
   }
   setReducedMotion(enabled) {
     this.reducedMotion = Boolean(enabled);
+    if (this.reducedMotion) this.arrivalElapsed = ARRIVAL_SECONDS;
     this.requestFrame();
   }
 
@@ -298,13 +322,23 @@ export class DriveEngine {
   _frame(timestamp) {
     this.frame = null;
     if (this.destroyed || this.document?.hidden) return;
-    const dt = this.lastTime === null ? 0 : (timestamp - this.lastTime) / 1000;
+    const elapsed = this.lastTime === null ? 0 : (timestamp - this.lastTime) / 1000;
+    const dt = Number.isFinite(elapsed) ? clamp(elapsed, 0, MAX_STEP_SECONDS) : 0;
     this.lastTime = timestamp;
+    const before = this.model.state;
+    if (!this.reducedMotion && !this.visualPaused) {
+      if (before.driving && !before.paused) this.effectTime += dt * (before.boost ? BOOST_MULTIPLIER : 1);
+      if (this.arrivalElapsed < ARRIVAL_SECONDS) this.arrivalElapsed = Math.min(ARRIVAL_SECONDS, this.arrivalElapsed + dt);
+    }
     this.model.tick(dt);
     this.draw();
     const state = this.model.state;
-    if (state.driving && !state.paused) this.requestFrame();
+    if ((state.driving && !state.paused) || this._hasActiveEffects()) this.requestFrame();
     else this.lastTime = null;
+  }
+
+  _hasActiveEffects() {
+    return Boolean(this.ctx && !this.reducedMotion && !this.visualPaused && this.arrivalElapsed < ARRIVAL_SECONDS);
   }
 
   draw() {
@@ -331,6 +365,12 @@ export class DriveEngine {
       c.fillStyle = "#112c31";
       c.fillRect(0, roadY, w, h - roadY);
     }
+    if (state.driving && !this.reducedMotion) this._drawLightTrails(this.effectTime, roadY, state.boost);
+    const roadShade = c.createLinearGradient(0, roadY, 0, h);
+    roadShade.addColorStop(0, "rgba(4,19,30,0)");
+    roadShade.addColorStop(1, "rgba(4,19,30,0.44)");
+    c.fillStyle = roadShade;
+    c.fillRect(0, roadY, w, h - roadY);
     c.fillStyle = "#f0ca7a";
     c.globalAlpha = 0.8;
     c.fillRect(0, roadY + 3, w, 2);
@@ -339,29 +379,29 @@ export class DriveEngine {
     c.fillStyle = "#8da4a0";
     for (let x = -roadOffset - 128; x < w + 128; x += 128) c.fillRect(x, roadY + (h - roadY) * 0.72, 60, 3);
 
-    if (moving) this._drawSpeedLines(distance, carX, roadY, state.boost);
+    const carBaseline = roadY + Math.min(28, h * 0.06);
+    if (state.driving && !this.reducedMotion) {
+      this._drawRoadReflections(this.effectTime, roadY, state.boost);
+      this._drawSpeedLines(this.effectTime, state.boost);
+      this._drawSparks(this.effectTime, carX, carBaseline, carWidth, state.boost);
+      if (state.boost) this._drawCarEchoes(carX, carBaseline, carWidth);
+    }
     if (state.driving && !this.reducedMotion) this._drawCheckpoint(carX + carWidth * 0.55, state.progress, roadY);
-    this._drawCar(carX, roadY + Math.min(28, h * 0.06), carWidth, moving ? Math.sin(distance * 43) * 1.1 : 0, moving && state.boost);
+    this._drawCar(carX, carBaseline, carWidth, moving ? Math.sin(distance * 43) * 1.1 : 0, moving && state.boost);
+    if (!this.reducedMotion && this.arrivalElapsed < ARRIVAL_SECONDS) this._drawArrival(carX + carWidth * 0.52, carBaseline, carWidth);
   }
 
   _drawSceneStrip() {
-    const { tiles, position, roadY } = this.sceneLayout;
+    const { tiles, position } = this.sceneLayout;
     const anchor = clamp(Math.floor(position + 0.45), 0, this.backgrounds.length - 1);
     const visible = [...new Set(tiles.map((tile) => tile.index))].sort((a, b) => Math.abs(a - anchor) - Math.abs(b - anchor));
     const indices = [...new Set([anchor, ...visible, anchor + 1, anchor - 1, anchor + 2, anchor - 2])]
       .filter((index) => index >= 0 && index < this.backgrounds.length);
     this.sceneCache.sync(indices.map((index) => this.backgrounds[index]));
-    const c = this.ctx;
-    for (const tile of tiles) {
-      const scene = this.backgrounds[tile.index];
-      const image = this.sceneCache.get(scene?.url);
-      if (!image || !this._hasSceneGround(scene)) continue;
-      const placement = scenePlacement({ sourceWidth: image.naturalWidth, sourceHeight: image.naturalHeight, groundY: scene.groundY, tileWidth: tile.width, stageHeight: this.height, roadY });
-      c.save();
-      c.beginPath(); c.rect(tile.x, 0, tile.width + 0.5, this.height); c.clip();
-      c.drawImage(image, tile.x + placement.x, placement.y, placement.width, placement.height);
-      c.restore();
-    }
+    this.sceneRenderer.draw({
+      context: this.ctx, layout: this.sceneLayout, height: this.height, dpr: this.dpr,
+      scenes: this.backgrounds, getImage: (url) => this.sceneCache.get(url),
+    });
     this._assetState();
   }
 
@@ -392,17 +432,118 @@ export class DriveEngine {
     }
   }
 
-  _drawSpeedLines(distance, carX, roadY, boost) {
-    const c = this.ctx;
-    c.strokeStyle = "#d3e6db";
-    c.lineWidth = 1;
-    c.globalAlpha = boost ? 0.4 : 0.2;
-    for (let i = 0; i < 5; i += 1) {
-      const x = carX - ((distance * 640 + i * 79) % Math.max(1, carX + 70));
-      const y = roadY - 18 - i * 15;
-      c.beginPath(); c.moveTo(x, y); c.lineTo(x - (boost ? 54 : 28), y); c.stroke();
+  _drawLightTrails(time, roadY, boost) {
+    const c = this.ctx, span = this.width + 400;
+    c.save();
+    c.globalCompositeOperation = "screen";
+    for (let i = 0; i < 10; i += 1) {
+      const x = ((i * 173 - time * (110 + (i % 3) * 85)) % span + span) % span - 200;
+      const y = roadY * (0.48 + (i % 5) * 0.085);
+      const length = (80 + (i % 4) * 36) * (boost ? 1.65 : 1);
+      const beam = c.createLinearGradient(x - length, 0, x + 30, 0);
+      beam.addColorStop(0, "rgba(91,195,216,0)");
+      beam.addColorStop(0.75, i % 2 ? "rgba(242,123,83,0.22)" : "rgba(91,195,216,0.2)");
+      beam.addColorStop(1, "rgba(242,203,117,0)");
+      c.fillStyle = beam;
+      c.fillRect(x - length, y, length + 30, i % 3 ? 2 : 4);
     }
-    c.globalAlpha = 1;
+    c.restore();
+  }
+
+  _drawRoadReflections(time, roadY, boost) {
+    const c = this.ctx, w = this.width, depth = this.height - roadY;
+    c.save();
+    c.globalCompositeOperation = "screen";
+    for (let i = 0; i < 8; i += 1) {
+      const span = w + 360;
+      const x = ((i * 179 - time * (boost ? 640 : 390)) % span + span) % span - 180;
+      const y = roadY + depth * (0.15 + (i % 4) * 0.22);
+      const length = 85 + (i % 3) * 55;
+      const reflection = c.createLinearGradient(x - length, 0, x + 45, 0);
+      reflection.addColorStop(0, "rgba(242,203,117,0)");
+      reflection.addColorStop(0.72, i % 2 ? "rgba(242,123,83,0.34)" : "rgba(91,195,216,0.3)");
+      reflection.addColorStop(1, "rgba(242,203,117,0)");
+      c.fillStyle = reflection;
+      c.fillRect(x - length, y, length + 45, 3 + i % 3);
+    }
+    c.restore();
+  }
+
+  _drawSpeedLines(time, boost) {
+    const c = this.ctx;
+    const span = this.width + 260;
+    c.save();
+    c.globalCompositeOperation = "screen";
+    for (let i = 0; i < (boost ? 32 : 18); i += 1) {
+      const phase = (i * 0.61803398875) % 1;
+      const x = ((phase * span - time * (280 + i % 6 * 76)) % span + span) % span;
+      const y = this.height * (0.28 + ((i * 0.38196601125) % 1) * 0.7);
+      const length = (24 + (i % 5) * 15) * (boost ? 2.4 : 1);
+      c.strokeStyle = i % 4 ? "#d3e6db" : "#f2cb75";
+      c.lineWidth = i % 5 === 0 ? 2 : 1;
+      c.globalAlpha = (boost ? 0.35 : 0.16) * (0.45 + phase * 0.55);
+      c.beginPath(); c.moveTo(x, y); c.lineTo(x - length, y); c.stroke();
+    }
+    c.restore();
+  }
+
+  _drawSparks(time, carX, baseline, width, boost) {
+    const c = this.ctx, count = boost ? 30 : 14;
+    c.save();
+    c.globalCompositeOperation = "screen";
+    for (let i = 0; i < count; i += 1) {
+      const phase = (time * (0.9 + i % 3 * 0.15) + i / count) % 1;
+      const x = carX + width * 0.16 - phase * (boost ? 320 : 170);
+      const y = baseline - 4 - Math.sin(phase * Math.PI) * (8 + i % 6 * 5);
+      c.globalAlpha = (1 - phase) * (boost ? 0.72 : 0.4);
+      c.strokeStyle = i % 3 ? "#f2cb75" : "#f27b53";
+      c.lineWidth = i % 4 === 0 ? 2 : 1;
+      c.beginPath(); c.moveTo(x, y); c.lineTo(x - (boost ? 18 : 7) * (1 - phase), y + phase * 3); c.stroke();
+    }
+    c.restore();
+  }
+
+  _drawCarEchoes(x, baseline, width) {
+    const c = this.ctx, image = this.images.car, bounds = this.carBounds;
+    if (!image || !bounds) return;
+    const height = width * bounds.height / bounds.width;
+    c.save();
+    c.globalCompositeOperation = "screen";
+    for (let i = 3; i > 0; i -= 1) {
+      c.globalAlpha = 0.17 / i;
+      c.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height, x - i * width * 0.12, baseline - height, width, height);
+    }
+    c.restore();
+  }
+
+  _drawArrival(center, baseline, width) {
+    const c = this.ctx;
+    const elapsed = clamp(this.arrivalElapsed / ARRIVAL_SECONDS, 0, 1);
+    c.save();
+    c.globalCompositeOperation = "screen";
+    for (let ring = 0; ring < 2; ring += 1) {
+      const t = clamp((elapsed - ring * 0.16) / (1 - ring * 0.16), 0, 1);
+      if (ring && elapsed < 0.16) continue;
+      const spread = 1 - (1 - t) ** 3;
+      c.globalAlpha = (1 - t) * (ring ? 0.55 : 0.8);
+      c.strokeStyle = ring ? "#f27b53" : "#f2cb75";
+      c.lineWidth = 2 + (1 - t) * 2;
+      c.beginPath();
+      c.ellipse(center, baseline + 3, width * 0.32 + spread * Math.min(this.width * 0.6, 520), 5 + spread * this.height * 0.13, 0, 0, Math.PI * 2);
+      c.stroke();
+    }
+    c.globalAlpha = (1 - elapsed) * 0.65;
+    c.strokeStyle = "#f2cb75";
+    c.lineWidth = 2;
+    for (let i = 0; i < 16; i += 1) {
+      const angle = i / 16 * Math.PI * 2;
+      const radius = width * (0.4 + elapsed * 1.2);
+      const x = center + Math.cos(angle) * radius;
+      const y = baseline + Math.sin(angle) * radius * 0.16;
+      c.beginPath(); c.moveTo(x, y);
+      c.lineTo(x + Math.cos(angle) * 22 * (1 - elapsed), y + Math.sin(angle) * 5 * (1 - elapsed)); c.stroke();
+    }
+    c.restore();
   }
 
   _drawCheckpoint(carCenter, progress, roadY) {
@@ -421,12 +562,22 @@ export class DriveEngine {
   _drawCar(x, baseline, width, bob, boost) {
     const c = this.ctx, image = this.images.car, bounds = this.carBounds;
     const height = bounds?.width ? width * bounds.height / bounds.width : width * 0.4;
-    const beam = c.createLinearGradient(x + width * 0.85, 0, x + width + 180, 0);
-    beam.addColorStop(0, boost ? "rgba(255,220,144,0.28)" : "rgba(255,220,144,0.18)");
+    const beamLength = Math.min(this.width * 0.6, boost ? 440 : 280);
+    const beam = c.createLinearGradient(x + width * 0.85, 0, x + width + beamLength, 0);
+    beam.addColorStop(0, boost ? "rgba(255,220,144,0.46)" : "rgba(255,220,144,0.23)");
     beam.addColorStop(1, "rgba(255,220,144,0)");
     c.fillStyle = beam;
     c.beginPath(); c.moveTo(x + width * 0.9, baseline - height * 0.4);
-    c.lineTo(x + width + 180, baseline - height * 0.6); c.lineTo(x + width + 180, baseline + 12); c.closePath(); c.fill();
+    c.lineTo(x + width + beamLength, baseline - height * 0.8); c.lineTo(x + width + beamLength, baseline + 12); c.closePath(); c.fill();
+    c.save();
+    c.translate(x + width * 0.5, baseline);
+    c.scale(width * 0.58, Math.max(8, height * 0.14));
+    const underglow = c.createRadialGradient(0, 0, 0, 0, 0, 1);
+    underglow.addColorStop(0, boost ? "rgba(242,123,83,0.4)" : "rgba(242,203,117,0.2)");
+    underglow.addColorStop(1, "rgba(242,123,83,0)");
+    c.fillStyle = underglow;
+    c.fillRect(-1, -1, 2, 2);
+    c.restore();
     c.fillStyle = "rgba(0,0,0,0.32)";
     c.beginPath(); c.ellipse(x + width * 0.51, baseline + 1, width * 0.46, Math.max(3, height * 0.08), 0, 0, Math.PI * 2); c.fill();
     if (image && bounds) {
@@ -450,6 +601,7 @@ export class DriveEngine {
     this.view?.removeEventListener?.("resize", this.boundResize);
     this.resizeObserver?.disconnect();
     this.sceneCache?.destroy();
+    this.sceneRenderer?.destroy();
     for (const image of this.imageRequests) {
       image.onload = null; image.onerror = null;
       try {

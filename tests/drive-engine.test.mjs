@@ -93,7 +93,7 @@ test("snapshots are immutable and a one-stop route is already complete", () => {
   assert.throws(() => new DriveModel({ count: 1.2 }), RangeError);
 });
 
-function fakeCanvas() {
+function fakeCanvas(context = null) {
   const frames = new Map();
   let id = 0, timestamp = 0;
   const view = new EventTarget();
@@ -103,7 +103,7 @@ function fakeCanvas() {
   const document = new EventTarget();
   document.defaultView = view;
   document.hidden = false;
-  const canvas = { ownerDocument: document, dataset: {}, getContext: () => null, getBoundingClientRect: () => ({ width: 640, height: 320 }) };
+  const canvas = { ownerDocument: document, dataset: {}, getContext: () => context, getBoundingClientRect: () => ({ width: 640, height: 320 }) };
   return {
     canvas, document, view, frames,
     step(ms = 16.667) {
@@ -150,4 +150,75 @@ test("hidden pages pause without automatic resume or accumulated time", () => {
   assert.ok(engine.model.state.travelled > stopped);
   engine.destroy();
   assert.equal(env.frames.size, 0);
+});
+
+function drawingContext() {
+  const calls = [];
+  const gradient = { addColorStop() {} };
+  const context = new Proxy({}, {
+    get(target, key) {
+      if (key in target) return target[key];
+      if (key === "createLinearGradient" || key === "createRadialGradient") return () => gradient;
+      return (...values) => { calls.push([key, ...values]); };
+    },
+    set(target, key, value) { target[key] = value; return true; },
+  });
+  return { context, calls };
+}
+
+test("driving effects freeze while paused and stop scheduling after the arrival settles", () => {
+  const { context, calls } = drawingContext();
+  const env = fakeCanvas(context);
+  const engine = new DriveEngine({ canvas: env.canvas, count: 2 });
+  env.step();
+  engine.startNext();
+  for (let i = 0; i < 12; i += 1) env.step();
+  assert.ok(engine.effectTime > 0);
+  assert.ok(calls.some(([method]) => method === "stroke"));
+  engine.pause();
+  env.step();
+  const frozen = engine.effectTime;
+  env.step(30000);
+  assert.equal(engine.effectTime, frozen);
+  assert.equal(env.frames.size, 0);
+  engine.resume();
+  for (let i = 0; i < 180 && engine.model.state.driving; i += 1) env.step();
+  assert.equal(engine.model.state.index, 1);
+  assert.equal(engine._hasActiveEffects(), true);
+  for (let i = 0; i < 60; i += 1) env.step();
+  assert.equal(engine._hasActiveEffects(), false);
+  assert.equal(env.frames.size, 0);
+  engine.destroy();
+});
+
+test("reduced motion disables travel effects and the post-arrival animation loop", () => {
+  const { context } = drawingContext();
+  const env = fakeCanvas(context);
+  const engine = new DriveEngine({ canvas: env.canvas, count: 2, reducedMotion: true });
+  env.step(); engine.startNext();
+  for (let i = 0; i < 170; i += 1) env.step();
+  assert.equal(engine.model.state.index, 1);
+  assert.equal(engine.effectTime, 0);
+  assert.equal(engine._hasActiveEffects(), false);
+  assert.equal(env.frames.size, 0);
+  engine.destroy();
+});
+
+test("backgrounding during an arrival freezes effects without an automatic restart", () => {
+  const { context } = drawingContext();
+  const env = fakeCanvas(context);
+  const engine = new DriveEngine({ canvas: env.canvas, count: 2 });
+  env.step(); engine.startNext();
+  for (let i = 0; i < 180 && engine.model.state.driving; i += 1) env.step();
+  assert.equal(engine._hasActiveEffects(), true);
+  env.document.hidden = true;
+  env.document.dispatchEvent(new Event("visibilitychange"));
+  const arrival = engine.arrivalElapsed;
+  assert.equal(env.frames.size, 0);
+  env.document.hidden = false;
+  env.document.dispatchEvent(new Event("visibilitychange"));
+  env.step(60000);
+  assert.equal(engine.arrivalElapsed, arrival);
+  assert.equal(env.frames.size, 0);
+  engine.destroy();
 });

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { sceneTiles, scenePlacement, SceneImageCache } from "../src/scene-strip.mjs";
+import { sceneTiles, scenePlacement, SceneStripRenderer, SceneImageCache } from "../src/scene-strip.mjs";
 import { DriveEngine } from "../src/drive-engine.mjs";
 
 test("every stopped car sits over its own scene, including repeated endpoint fills", () => {
@@ -14,8 +14,27 @@ test("every stopped car sits over its own scene, including repeated endpoint fil
       assert.ok(layout.tiles[0].x <= 0);
       assert.ok(layout.tiles.at(-1).x + layout.tileWidth >= width);
       assert.ok(layout.tiles.every((tile) => tile.index >= 0 && tile.index < 23));
-      assert.ok(layout.tiles.length <= 4);
+      assert.ok(layout.tiles.length <= 5);
       layout.tiles.slice(1).forEach((tile, i) => assert.ok(Math.abs(tile.x - layout.tiles[i].x - layout.tileWidth) < 1e-8));
+    }
+  }
+});
+
+test("feathered tiles cover every seam without exceeding the image-cache capacity", () => {
+  for (const [width, height] of [[360, 500], [1200, 600], [6000, 180]]) {
+    for (let position = 0; position <= 22; position += 0.1) {
+      const layout = sceneTiles({ width, height, position, count: 23, carX: width * 0.3, carWidth: 160 });
+      assert.ok(layout.blendWidth > 0 && layout.blendWidth < layout.tileWidth / 2);
+      assert.ok(layout.tiles.length <= 5);
+      const first = layout.tiles[0], last = layout.tiles.at(-1);
+      assert.ok(first.x + layout.blendWidth / 2 <= 1e-8, "first opaque core covers the left viewport edge");
+      assert.ok(last.x + last.width + layout.blendWidth / 2 >= width - 1e-8);
+      for (let index = 1; index < layout.tiles.length; index += 1) {
+        const previous = layout.tiles[index - 1], tile = layout.tiles[index];
+        const previousEnd = previous.x + previous.width + layout.blendWidth / 2;
+        const featherEnd = tile.x + layout.blendWidth / 2;
+        assert.ok(Math.abs(previousEnd - featherEnd) < 1e-8, "outgoing image stays opaque underneath the complete incoming feather");
+      }
     }
   }
 });
@@ -45,6 +64,58 @@ test("individual curb measurements align while retaining aspect ratio and full c
     }
   }
   assert.throws(() => scenePlacement({ sourceWidth: 1536, sourceHeight: 1024, groundY: 0, tileWidth: 600, stageHeight: 400 }), RangeError);
+});
+
+test("renderer feathers only overlapping edges and reuses a bounded mask surface", () => {
+  const masks = [], layers = [], clips = [], maskedImages = [];
+  const maskContext = {
+    setTransform() {}, clearRect() {}, fillRect() {},
+    drawImage: (...args) => maskedImages.push(args),
+    createLinearGradient: (...coordinates) => {
+      const mask = { coordinates, stops: [], addColorStop(offset, color) { this.stops.push([offset, color]); } };
+      masks.push(mask);
+      return mask;
+    },
+  };
+  const context = {
+    save() {}, restore() {}, beginPath() {}, clip() {},
+    rect: (...args) => clips.push(args),
+    drawImage: (...args) => layers.push(args),
+  };
+  const buffer = { width: 0, height: 0, getContext: () => maskContext };
+  let created = 0;
+  const renderer = new SceneStripRenderer({ createCanvas: () => { created += 1; return buffer; } });
+  const scenes = Array.from({ length: 23 }, (_, index) => ({ url: `/scene-${index}`, groundY: index % 2 ? 0.64 : 0.85 }));
+  const images = new Map(scenes.map((scene) => [scene.url, { url: scene.url, naturalWidth: 1536, naturalHeight: 1024 }]));
+  const layout = sceneTiles({ width: 1200, height: 600, position: 5.5, count: 23, carX: 360, carWidth: 160 });
+  const draw = () => renderer.draw({ context, layout, height: 600, dpr: 2, scenes, getImage: (url) => images.get(url) });
+  draw();
+  assert.equal(created, 1);
+  assert.equal(masks.length, 1);
+  assert.deepEqual(masks[0].coordinates, [0, 0, layout.blendWidth, 0]);
+  assert.deepEqual(masks[0].stops[0], [0, "rgba(0,0,0,0)"]);
+  assert.deepEqual(masks[0].stops.at(-1), [1, "rgba(0,0,0,1)"]);
+  assert.equal(layers.length, layout.tiles.length * 2);
+  layout.tiles.forEach((tile, index) => {
+    const direct = layers[index * 2], feather = layers[index * 2 + 1];
+    assert.equal(direct[0], images.get(scenes[tile.index].url));
+    assert.ok(Math.abs(direct[2] + scenes[tile.index].groundY * direct[4] - layout.roadY) < 1e-8);
+    assert.equal(clips[index][0], tile.x + layout.blendWidth / 2);
+    assert.equal(feather[0], buffer);
+    assert.equal(feather[5], tile.x - layout.blendWidth / 2);
+    assert.equal(feather[7], layout.blendWidth);
+    assert.equal(maskedImages[index][2], direct[2]);
+  });
+  draw();
+  assert.equal(created, 1);
+  assert.equal(masks.length, 1);
+  const huge = sceneTiles({ width: 8000, height: 4000, position: 6, count: 23, carX: 2400, carWidth: 300 });
+  renderer.draw({ context, layout: huge, height: 4000, dpr: 2, scenes, getImage: (url) => images.get(url) });
+  assert.ok(buffer.width * buffer.height <= 4_000_000);
+  assert.equal(created, 1);
+  renderer.destroy();
+  assert.equal(buffer.width, 0);
+  assert.equal(buffer.height, 0);
 });
 
 function loader() {
@@ -128,7 +199,7 @@ test("renderer uses the requested scene in reduced motion and refreshes a parked
   view.cancelAnimationFrame = (id) => frames.delete(id);
   const doc = new EventTarget(); doc.defaultView = view; doc.hidden = false;
   const ctx = new Proxy({}, { get: (_, name) => name === "drawImage" ? (img) => drawn.push(img.url)
-    : name === "createLinearGradient" ? () => ({ addColorStop() {} }) : () => {} });
+    : ["createLinearGradient", "createRadialGradient"].includes(name) ? () => ({ addColorStop() {} }) : () => {} });
   const canvas = { ownerDocument: doc, dataset: {}, getContext: () => ctx, getBoundingClientRect: () => ({ width: 700, height: 500 }) };
   const engine = new DriveEngine({ canvas, backgrounds: Array.from({ length: 23 }, (_, i) => scene(i)), reducedMotion: true });
   const step = () => { const pending = [...frames.values()]; frames.clear(); pending.forEach((fn) => fn(10)); };
